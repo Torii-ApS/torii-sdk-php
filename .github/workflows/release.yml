@@ -1,0 +1,53 @@
+name: Release
+
+# Tag-triggered release.
+#
+# Packagist auto-syncs on GitHub tag webhook — no upload step needed in CI.
+# This workflow:
+#   1. Verifies tests pass on the tagged SHA (last line of defense).
+#   2. Creates a GitHub Release.
+#   3. Optionally pings Packagist's API to trigger an immediate update
+#      (skip if the webhook is configured — it'll fire on its own).
+#
+# Prerequisites (one-time, see torii repo docs/Publishing-SDKs.md):
+#   1. packagist.org → Submit → paste https://github.com/Torii-ApS/torii-sdk-php
+#   2. Packagist creates the GitHub webhook automatically.
+#   3. Verify the webhook in Settings → Webhooks.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: packagist
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: curl, json, mbstring, openssl
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-security-blocking
+
+      - name: Test on tagged SHA
+        run: vendor/bin/phpunit
+
+      - name: Create GitHub Release
+        # Packagist's webhook listens for this event (release.created) as
+        # well as the raw tag push, so this both notifies users and pokes
+        # Packagist.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            --title "${GITHUB_REF_NAME}" \
+            --generate-notes
