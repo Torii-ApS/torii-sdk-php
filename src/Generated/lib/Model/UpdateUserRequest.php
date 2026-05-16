@@ -57,12 +57,12 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $openAPITypes = [
-        'name' => 'mixed',
-        'phone' => 'mixed',
-        'avatar_url' => 'mixed',
-        'locale' => 'mixed',
-        'address' => 'mixed',
-        'date_of_birth' => 'mixed'
+        'name' => 'string',
+        'phone' => 'string',
+        'avatar_url' => 'string',
+        'locale' => 'string',
+        'address' => 'string',
+        'date_of_birth' => '\DateTime'
     ];
 
     /**
@@ -78,7 +78,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
         'avatar_url' => null,
         'locale' => null,
         'address' => null,
-        'date_of_birth' => null
+        'date_of_birth' => 'date'
     ];
 
     /**
@@ -87,12 +87,12 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'name' => true,
-        'phone' => true,
-        'avatar_url' => true,
-        'locale' => true,
-        'address' => true,
-        'date_of_birth' => true
+        'name' => false,
+        'phone' => false,
+        'avatar_url' => false,
+        'locale' => false,
+        'address' => false,
+        'date_of_birth' => false
     ];
 
     /**
@@ -258,6 +258,21 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
         return self::$openAPIModelName;
     }
 
+    public const LOCALE_EN = 'en';
+    public const LOCALE_DA = 'da';
+
+    /**
+     * Gets allowable values of the enum
+     *
+     * @return string[]
+     */
+    public function getLocaleAllowableValues()
+    {
+        return [
+            self::LOCALE_EN,
+            self::LOCALE_DA,
+        ];
+    }
 
     /**
      * Associative array for storing property values
@@ -309,6 +324,15 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     {
         $invalidProperties = [];
 
+        $allowedValues = $this->getLocaleAllowableValues();
+        if (!is_null($this->container['locale']) && !in_array($this->container['locale'], $allowedValues, true)) {
+            $invalidProperties[] = sprintf(
+                "invalid value '%s' for 'locale', must be one of '%s'",
+                $this->container['locale'],
+                implode("', '", $allowedValues)
+            );
+        }
+
         return $invalidProperties;
     }
 
@@ -327,7 +351,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets name
      *
-     * @return mixed|null
+     * @return string|null
      */
     public function getName()
     {
@@ -337,21 +361,14 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets name
      *
-     * @param mixed|null $name name
+     * @param string|null $name name
      *
      * @return self
      */
     public function setName($name)
     {
         if (is_null($name)) {
-            array_push($this->openAPINullablesSetToNull, 'name');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('name', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+            throw new \InvalidArgumentException('non-nullable name cannot be null');
         }
         $this->container['name'] = $name;
 
@@ -361,7 +378,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets phone
      *
-     * @return mixed|null
+     * @return string|null
      */
     public function getPhone()
     {
@@ -371,21 +388,14 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets phone
      *
-     * @param mixed|null $phone phone
+     * @param string|null $phone phone
      *
      * @return self
      */
     public function setPhone($phone)
     {
         if (is_null($phone)) {
-            array_push($this->openAPINullablesSetToNull, 'phone');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('phone', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+            throw new \InvalidArgumentException('non-nullable phone cannot be null');
         }
         $this->container['phone'] = $phone;
 
@@ -395,7 +405,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets avatar_url
      *
-     * @return mixed|null
+     * @return string|null
      */
     public function getAvatarUrl()
     {
@@ -405,21 +415,14 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets avatar_url
      *
-     * @param mixed|null $avatar_url avatar_url
+     * @param string|null $avatar_url avatar_url
      *
      * @return self
      */
     public function setAvatarUrl($avatar_url)
     {
         if (is_null($avatar_url)) {
-            array_push($this->openAPINullablesSetToNull, 'avatar_url');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('avatar_url', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+            throw new \InvalidArgumentException('non-nullable avatar_url cannot be null');
         }
         $this->container['avatar_url'] = $avatar_url;
 
@@ -429,7 +432,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets locale
      *
-     * @return mixed|null
+     * @return string|null
      */
     public function getLocale()
     {
@@ -439,21 +442,24 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets locale
      *
-     * @param mixed|null $locale locale
+     * @param string|null $locale locale
      *
      * @return self
      */
     public function setLocale($locale)
     {
         if (is_null($locale)) {
-            array_push($this->openAPINullablesSetToNull, 'locale');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('locale', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+            throw new \InvalidArgumentException('non-nullable locale cannot be null');
+        }
+        $allowedValues = $this->getLocaleAllowableValues();
+        if (!in_array($locale, $allowedValues, true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value '%s' for 'locale', must be one of '%s'",
+                    $locale,
+                    implode("', '", $allowedValues)
+                )
+            );
         }
         $this->container['locale'] = $locale;
 
@@ -463,7 +469,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets address
      *
-     * @return mixed|null
+     * @return string|null
      */
     public function getAddress()
     {
@@ -473,21 +479,14 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets address
      *
-     * @param mixed|null $address address
+     * @param string|null $address address
      *
      * @return self
      */
     public function setAddress($address)
     {
         if (is_null($address)) {
-            array_push($this->openAPINullablesSetToNull, 'address');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('address', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+            throw new \InvalidArgumentException('non-nullable address cannot be null');
         }
         $this->container['address'] = $address;
 
@@ -497,7 +496,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets date_of_birth
      *
-     * @return mixed|null
+     * @return \DateTime|null
      */
     public function getDateOfBirth()
     {
@@ -507,21 +506,14 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets date_of_birth
      *
-     * @param mixed|null $date_of_birth date_of_birth
+     * @param \DateTime|null $date_of_birth date_of_birth
      *
      * @return self
      */
     public function setDateOfBirth($date_of_birth)
     {
         if (is_null($date_of_birth)) {
-            array_push($this->openAPINullablesSetToNull, 'date_of_birth');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('date_of_birth', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+            throw new \InvalidArgumentException('non-nullable date_of_birth cannot be null');
         }
         $this->container['date_of_birth'] = $date_of_birth;
 

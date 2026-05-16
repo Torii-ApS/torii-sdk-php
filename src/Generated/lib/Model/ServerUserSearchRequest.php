@@ -57,9 +57,9 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $openAPITypes = [
-        'name' => 'mixed',
-        'email' => 'mixed',
-        'statuses' => 'mixed',
+        'name' => 'string',
+        'email' => 'string',
+        'statuses' => 'string[]',
         'created_after' => '\DateTime',
         'created_before' => '\DateTime'
     ];
@@ -85,9 +85,9 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'name' => true,
-        'email' => true,
-        'statuses' => true,
+        'name' => false,
+        'email' => false,
+        'statuses' => false,
         'created_after' => true,
         'created_before' => true
     ];
@@ -252,6 +252,25 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
         return self::$openAPIModelName;
     }
 
+    public const STATUSES_PENDING_VERIFICATION = 'pending_verification';
+    public const STATUSES_ACTIVE = 'active';
+    public const STATUSES_BANNED = 'banned';
+    public const STATUSES_DELETED = 'deleted';
+
+    /**
+     * Gets allowable values of the enum
+     *
+     * @return string[]
+     */
+    public function getStatusesAllowableValues()
+    {
+        return [
+            self::STATUSES_PENDING_VERIFICATION,
+            self::STATUSES_ACTIVE,
+            self::STATUSES_BANNED,
+            self::STATUSES_DELETED,
+        ];
+    }
 
     /**
      * Associative array for storing property values
@@ -320,7 +339,7 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets name
      *
-     * @return mixed|null
+     * @return string|null
      */
     public function getName()
     {
@@ -330,21 +349,14 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets name
      *
-     * @param mixed|null $name name
+     * @param string|null $name name
      *
      * @return self
      */
     public function setName($name)
     {
         if (is_null($name)) {
-            array_push($this->openAPINullablesSetToNull, 'name');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('name', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+            throw new \InvalidArgumentException('non-nullable name cannot be null');
         }
         $this->container['name'] = $name;
 
@@ -354,7 +366,7 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets email
      *
-     * @return mixed|null
+     * @return string|null
      */
     public function getEmail()
     {
@@ -364,21 +376,14 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets email
      *
-     * @param mixed|null $email email
+     * @param string|null $email email
      *
      * @return self
      */
     public function setEmail($email)
     {
         if (is_null($email)) {
-            array_push($this->openAPINullablesSetToNull, 'email');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('email', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+            throw new \InvalidArgumentException('non-nullable email cannot be null');
         }
         $this->container['email'] = $email;
 
@@ -388,7 +393,7 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets statuses
      *
-     * @return mixed|null
+     * @return string[]|null
      */
     public function getStatuses()
     {
@@ -398,22 +403,26 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets statuses
      *
-     * @param mixed|null $statuses statuses
+     * @param string[]|null $statuses statuses
      *
      * @return self
      */
     public function setStatuses($statuses)
     {
         if (is_null($statuses)) {
-            array_push($this->openAPINullablesSetToNull, 'statuses');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('statuses', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+            throw new \InvalidArgumentException('non-nullable statuses cannot be null');
         }
+        $allowedValues = $this->getStatusesAllowableValues();
+        if (array_diff($statuses, $allowedValues)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value for 'statuses', must be one of '%s'",
+                    implode("', '", $allowedValues)
+                )
+            );
+        }
+
+
         $this->container['statuses'] = $statuses;
 
         return $this;
