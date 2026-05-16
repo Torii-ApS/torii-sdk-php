@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Torii\Backend;
 
 use DateTimeInterface;
+use GuzzleHttp\Psr7\Request as Psr7Request;
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Client\ClientInterface;
 use Torii\Backend\Generated\Api\ServerUsersApi;
 use Torii\Backend\Generated\ApiException as GeneratedApiException;
 use Torii\Backend\Generated\Model\CreateUserRequest;
 use Torii\Backend\Generated\Model\CursorPageResponseUserResponse;
 use Torii\Backend\Generated\Model\ServerUserSearchRequest;
-use Torii\Backend\Generated\Model\UpdateUserRequest;
 use Torii\Backend\Generated\Model\UserResponse;
+use Torii\Backend\Generated\ObjectSerializer;
 
 /**
  * REST client for `/api/server/v1/users`. Thin wrapper around the generated
@@ -20,8 +23,11 @@ use Torii\Backend\Generated\Model\UserResponse;
  */
 final class Users
 {
-    public function __construct(private readonly ServerUsersApi $api)
-    {
+    public function __construct(
+        private readonly ServerUsersApi $api,
+        private readonly ClientInterface $httpClient,
+        private readonly string $host,
+    ) {
     }
 
     /**
@@ -81,17 +87,90 @@ final class Users
     }
 
     /**
-     * Update a user (PATCH).
+     * Update a user (PATCH) with tri-state field semantics.
      *
-     * @param array<string, mixed> $data Maps to {@see UpdateUserRequest} fields.
+     * PHP arrays can't natively distinguish "leave field alone" from
+     * "set field to null", so each value must be a {@see Patch} instance:
+     *
+     *     $torii->users->update($id, [
+     *         'name'  => Patch::set('Ada'),
+     *         'phone' => Patch::clear(),
+     *     ]);
+     *
+     * Omit a field from `$patches` entirely to leave the server value alone.
+     *
+     * @param array<string, Patch> $patches Field name → {@see Patch} instance.
      */
-    public function update(string $userId, array $data): UserResponse
+    public function update(string $userId, array $patches): UserResponse
     {
-        try {
-            return $this->api->updateUser($userId, new UpdateUserRequest(_torii_snake_keys($data)));
-        } catch (GeneratedApiException $e) {
-            throw _torii_wrap_api_exception($e);
+        $body = [];
+        foreach ($patches as $field => $patch) {
+            if (!($patch instanceof Patch)) {
+                throw new \InvalidArgumentException(
+                    "Users::update: field '$field' must be a "
+                    . Patch::class . " instance; got " . get_debug_type($patch)
+                );
+            }
+            if ($patch->state === Patch::STATE_SET) {
+                $body[$field] = $patch->value instanceof DateTimeInterface
+                    ? $patch->value->format('Y-m-d')
+                    : $patch->value;
+            } elseif ($patch->state === Patch::STATE_CLEAR) {
+                $body[$field] = null;
+            }
         }
+
+        try {
+            $json = json_encode((object) $body, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            throw new \InvalidArgumentException(
+                'Users::update: failed to JSON-encode patch body: ' . $e->getMessage(),
+                previous: $e,
+            );
+        }
+
+        $request = new Psr7Request(
+            'PATCH',
+            $this->host . '/api/server/v1/users/' . rawurlencode($userId),
+            [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            $json,
+        );
+
+        try {
+            $response = $this->httpClient->sendRequest($request);
+        } catch (ClientExceptionInterface $e) {
+            throw new ApiException(
+                message: 'torii API request failed: ' . $e->getMessage(),
+                statusCode: 0,
+                body: null,
+                previous: $e,
+            );
+        }
+
+        $status = $response->getStatusCode();
+        $responseBody = (string) $response->getBody();
+
+        if ($status < 200 || $status >= 300) {
+            $parsed = null;
+            if ($responseBody !== '') {
+                try {
+                    $parsed = json_decode($responseBody, true, flags: JSON_THROW_ON_ERROR);
+                } catch (\JsonException) {
+                    $parsed = $responseBody;
+                }
+            }
+            throw new ApiException(
+                message: "torii API error ($status)",
+                statusCode: $status,
+                body: $parsed,
+            );
+        }
+
+        $decoded = json_decode($responseBody);
+        return ObjectSerializer::deserialize($decoded, UserResponse::class, []);
     }
 
     public function delete(string $userId): void

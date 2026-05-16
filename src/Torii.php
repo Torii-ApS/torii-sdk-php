@@ -34,8 +34,10 @@ final class Torii
     private function __construct(
         ServerUsersApi $usersApi,
         ServerSessionsApi $sessionsApi,
+        ClientInterface $httpClient,
+        string $host,
     ) {
-        $this->users = new Users($usersApi);
+        $this->users = new Users($usersApi, $httpClient, $host);
         $this->sessions = new Sessions($sessionsApi);
     }
 
@@ -71,6 +73,8 @@ final class Torii
         return new self(
             usersApi: new ServerUsersApi($client, $config),
             sessionsApi: new ServerSessionsApi($client, $config),
+            httpClient: $client,
+            host: $host,
         );
     }
 
