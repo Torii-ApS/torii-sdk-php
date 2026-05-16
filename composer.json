@@ -1,0 +1,56 @@
+{
+    "name": "torii/backend",
+    "description": "Backend SDK for torii — verify end-user JWTs without a per-request round trip, manage users from your PHP server.",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://torii.so",
+    "keywords": ["torii", "auth", "sdk", "jwt", "laravel"],
+    "require": {
+        "php": "^8.2",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
+        "firebase/php-jwt": "^6.10",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^1.1 || ^2.0",
+        "psr/cache": "^2.0 || ^3.0",
+        "psr/simple-cache": "^2.0 || ^3.0",
+        "guzzlehttp/guzzle": "^7.8",
+        "guzzlehttp/psr7": "^1.7 || ^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0",
+        "symfony/process": "^6.4 || ^7.0",
+        "illuminate/http": "^11.0 || ^12.0",
+        "illuminate/support": "^11.0 || ^12.0",
+        "illuminate/contracts": "^11.0 || ^12.0"
+    },
+    "suggest": {
+        "illuminate/support": "Required to use the Laravel service provider and middleware (^11.0)."
+    },
+    "autoload": {
+        "psr-4": {
+            "Torii\\Backend\\": "src/",
+            "Torii\\Backend\\Generated\\": "src/Generated/lib/"
+        },
+        "files": [
+            "src/Verify.php",
+            "src/AuthenticateRequest.php",
+            "src/Webhook.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Torii\\Backend\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "audit": {
+            "abandoned": "report"
+        }
+    },
+    "minimum-stability": "stable"
+}
