@@ -136,12 +136,12 @@ class ServerSessionsApi
      *
      * List user sessions
      *
-     * @param  string $user_id user_id (required)
+     * @param  string $user_id Identifier of the user whose sessions to list. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listSessions'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \Torii\Backend\Generated\Model\UserSessionResponse[]
+     * @return \Torii\Backend\Generated\Model\UserSessionResponse[]|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail
      */
     public function listSessions($user_id, string $contentType = self::contentTypes['listSessions'][0])
     {
@@ -154,12 +154,12 @@ class ServerSessionsApi
      *
      * List user sessions
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user whose sessions to list. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listSessions'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \Torii\Backend\Generated\Model\UserSessionResponse[], HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Torii\Backend\Generated\Model\UserSessionResponse[]|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail, HTTP status code, HTTP response headers (array of strings)
      */
     public function listSessionsWithHttpInfo($user_id, string $contentType = self::contentTypes['listSessions'][0])
     {
@@ -195,6 +195,18 @@ class ServerSessionsApi
                         $request,
                         $response,
                     );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 403:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
             }
 
             
@@ -227,6 +239,22 @@ class ServerSessionsApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 403:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
         
 
@@ -239,7 +267,7 @@ class ServerSessionsApi
      *
      * List user sessions
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user whose sessions to list. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listSessions'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -260,7 +288,7 @@ class ServerSessionsApi
      *
      * List user sessions
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user whose sessions to list. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listSessions'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -310,7 +338,7 @@ class ServerSessionsApi
     /**
      * Create request for operation 'listSessions'
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user whose sessions to list. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listSessions'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -347,7 +375,7 @@ class ServerSessionsApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['application/json', ],
+            ['application/json', 'application/problem+json', ],
             $contentType,
             $multipart
         );
@@ -404,7 +432,7 @@ class ServerSessionsApi
      *
      * Revoke all sessions
      *
-     * @param  string $user_id user_id (required)
+     * @param  string $user_id Identifier of the user whose sessions to revoke. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['revokeAllSessions'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
@@ -421,7 +449,7 @@ class ServerSessionsApi
      *
      * Revoke all sessions
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user whose sessions to revoke. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['revokeAllSessions'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
@@ -458,6 +486,22 @@ class ServerSessionsApi
             return [null, $statusCode, $response->getHeaders()];
         } catch (ApiException $e) {
             switch ($e->getCode()) {
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 403:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
         
 
@@ -470,7 +514,7 @@ class ServerSessionsApi
      *
      * Revoke all sessions
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user whose sessions to revoke. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['revokeAllSessions'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -491,7 +535,7 @@ class ServerSessionsApi
      *
      * Revoke all sessions
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user whose sessions to revoke. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['revokeAllSessions'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -528,7 +572,7 @@ class ServerSessionsApi
     /**
      * Create request for operation 'revokeAllSessions'
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user whose sessions to revoke. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['revokeAllSessions'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -565,7 +609,7 @@ class ServerSessionsApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            [],
+            ['application/problem+json', ],
             $contentType,
             $multipart
         );
@@ -622,8 +666,8 @@ class ServerSessionsApi
      *
      * Revoke specific session
      *
-     * @param  string $user_id user_id (required)
-     * @param  string $session_id session_id (required)
+     * @param  string $user_id Identifier of the user who owns the session. (required)
+     * @param  string $session_id Identifier of the session to revoke. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['revokeSession'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
@@ -640,8 +684,8 @@ class ServerSessionsApi
      *
      * Revoke specific session
      *
-     * @param  string $user_id (required)
-     * @param  string $session_id (required)
+     * @param  string $user_id Identifier of the user who owns the session. (required)
+     * @param  string $session_id Identifier of the session to revoke. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['revokeSession'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
@@ -678,6 +722,22 @@ class ServerSessionsApi
             return [null, $statusCode, $response->getHeaders()];
         } catch (ApiException $e) {
             switch ($e->getCode()) {
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 403:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
         
 
@@ -690,8 +750,8 @@ class ServerSessionsApi
      *
      * Revoke specific session
      *
-     * @param  string $user_id (required)
-     * @param  string $session_id (required)
+     * @param  string $user_id Identifier of the user who owns the session. (required)
+     * @param  string $session_id Identifier of the session to revoke. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['revokeSession'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -712,8 +772,8 @@ class ServerSessionsApi
      *
      * Revoke specific session
      *
-     * @param  string $user_id (required)
-     * @param  string $session_id (required)
+     * @param  string $user_id Identifier of the user who owns the session. (required)
+     * @param  string $session_id Identifier of the session to revoke. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['revokeSession'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -750,8 +810,8 @@ class ServerSessionsApi
     /**
      * Create request for operation 'revokeSession'
      *
-     * @param  string $user_id (required)
-     * @param  string $session_id (required)
+     * @param  string $user_id Identifier of the user who owns the session. (required)
+     * @param  string $session_id Identifier of the session to revoke. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['revokeSession'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -803,7 +863,7 @@ class ServerSessionsApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            [],
+            ['application/problem+json', ],
             $contentType,
             $multipart
         );

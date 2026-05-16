@@ -1,6 +1,6 @@
 <?php
 /**
- * UpdateUserRequest
+ * ProblemDetail
  *
  * PHP version 8.1
  *
@@ -32,16 +32,15 @@ use \ArrayAccess;
 use \Torii\Backend\Generated\ObjectSerializer;
 
 /**
- * UpdateUserRequest Class Doc Comment
+ * ProblemDetail Class Doc Comment
  *
  * @category Class
- * @description PATCH body for updating an end-user. Every field is tri-state: omit the key entirely to leave the field unchanged, send a non-null value to set it, or send JSON null to clear it.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializable
+class ProblemDetail implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +49,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      *
      * @var string
      */
-    protected static $openAPIModelName = 'UpdateUserRequest';
+    protected static $openAPIModelName = 'ProblemDetail';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,12 +57,12 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $openAPITypes = [
-        'name' => 'string',
-        'phone' => 'string',
-        'avatar_url' => 'string',
-        'locale' => 'string',
-        'address' => 'string',
-        'date_of_birth' => '\DateTime'
+        'type' => 'string',
+        'title' => 'string',
+        'status' => 'int',
+        'detail' => 'string',
+        'instance' => 'string',
+        'properties' => 'array<string,mixed>'
     ];
 
     /**
@@ -74,12 +73,12 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'name' => null,
-        'phone' => null,
-        'avatar_url' => null,
-        'locale' => null,
-        'address' => null,
-        'date_of_birth' => 'date'
+        'type' => 'uri',
+        'title' => null,
+        'status' => 'int32',
+        'detail' => null,
+        'instance' => 'uri',
+        'properties' => null
     ];
 
     /**
@@ -88,12 +87,12 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'name' => true,
-        'phone' => true,
-        'avatar_url' => true,
-        'locale' => true,
-        'address' => true,
-        'date_of_birth' => true
+        'type' => false,
+        'title' => false,
+        'status' => false,
+        'detail' => false,
+        'instance' => false,
+        'properties' => false
     ];
 
     /**
@@ -182,12 +181,12 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $attributeMap = [
-        'name' => 'name',
-        'phone' => 'phone',
-        'avatar_url' => 'avatarUrl',
-        'locale' => 'locale',
-        'address' => 'address',
-        'date_of_birth' => 'dateOfBirth'
+        'type' => 'type',
+        'title' => 'title',
+        'status' => 'status',
+        'detail' => 'detail',
+        'instance' => 'instance',
+        'properties' => 'properties'
     ];
 
     /**
@@ -196,12 +195,12 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $setters = [
-        'name' => 'setName',
-        'phone' => 'setPhone',
-        'avatar_url' => 'setAvatarUrl',
-        'locale' => 'setLocale',
-        'address' => 'setAddress',
-        'date_of_birth' => 'setDateOfBirth'
+        'type' => 'setType',
+        'title' => 'setTitle',
+        'status' => 'setStatus',
+        'detail' => 'setDetail',
+        'instance' => 'setInstance',
+        'properties' => 'setProperties'
     ];
 
     /**
@@ -210,12 +209,12 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $getters = [
-        'name' => 'getName',
-        'phone' => 'getPhone',
-        'avatar_url' => 'getAvatarUrl',
-        'locale' => 'getLocale',
-        'address' => 'getAddress',
-        'date_of_birth' => 'getDateOfBirth'
+        'type' => 'getType',
+        'title' => 'getTitle',
+        'status' => 'getStatus',
+        'detail' => 'getDetail',
+        'instance' => 'getInstance',
+        'properties' => 'getProperties'
     ];
 
     /**
@@ -259,21 +258,6 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
         return self::$openAPIModelName;
     }
 
-    public const LOCALE_EN = 'en';
-    public const LOCALE_DA = 'da';
-
-    /**
-     * Gets allowable values of the enum
-     *
-     * @return string[]
-     */
-    public function getLocaleAllowableValues()
-    {
-        return [
-            self::LOCALE_EN,
-            self::LOCALE_DA,
-        ];
-    }
 
     /**
      * Associative array for storing property values
@@ -290,12 +274,12 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('name', $data ?? [], null);
-        $this->setIfExists('phone', $data ?? [], null);
-        $this->setIfExists('avatar_url', $data ?? [], null);
-        $this->setIfExists('locale', $data ?? [], null);
-        $this->setIfExists('address', $data ?? [], null);
-        $this->setIfExists('date_of_birth', $data ?? [], null);
+        $this->setIfExists('type', $data ?? [], null);
+        $this->setIfExists('title', $data ?? [], null);
+        $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('detail', $data ?? [], null);
+        $this->setIfExists('instance', $data ?? [], null);
+        $this->setIfExists('properties', $data ?? [], null);
     }
 
     /**
@@ -325,15 +309,6 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     {
         $invalidProperties = [];
 
-        $allowedValues = $this->getLocaleAllowableValues();
-        if (!is_null($this->container['locale']) && !in_array($this->container['locale'], $allowedValues, true)) {
-            $invalidProperties[] = sprintf(
-                "invalid value '%s' for 'locale', must be one of '%s'",
-                $this->container['locale'],
-                implode("', '", $allowedValues)
-            );
-        }
-
         return $invalidProperties;
     }
 
@@ -350,215 +325,163 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
 
 
     /**
-     * Gets name
+     * Gets type
      *
      * @return string|null
      */
-    public function getName()
+    public function getType()
     {
-        return $this->container['name'];
+        return $this->container['type'];
     }
 
     /**
-     * Sets name
+     * Sets type
      *
-     * @param string|null $name New display name. Send null to clear; omit to leave unchanged.
+     * @param string|null $type type
      *
      * @return self
      */
-    public function setName($name)
+    public function setType($type)
     {
-        if (is_null($name)) {
-            array_push($this->openAPINullablesSetToNull, 'name');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('name', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($type)) {
+            throw new \InvalidArgumentException('non-nullable type cannot be null');
         }
-        $this->container['name'] = $name;
+        $this->container['type'] = $type;
 
         return $this;
     }
 
     /**
-     * Gets phone
+     * Gets title
      *
      * @return string|null
      */
-    public function getPhone()
+    public function getTitle()
     {
-        return $this->container['phone'];
+        return $this->container['title'];
     }
 
     /**
-     * Sets phone
+     * Sets title
      *
-     * @param string|null $phone New phone number. Send null to clear; omit to leave unchanged.
+     * @param string|null $title title
      *
      * @return self
      */
-    public function setPhone($phone)
+    public function setTitle($title)
     {
-        if (is_null($phone)) {
-            array_push($this->openAPINullablesSetToNull, 'phone');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('phone', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($title)) {
+            throw new \InvalidArgumentException('non-nullable title cannot be null');
         }
-        $this->container['phone'] = $phone;
+        $this->container['title'] = $title;
 
         return $this;
     }
 
     /**
-     * Gets avatar_url
+     * Gets status
      *
-     * @return string|null
+     * @return int|null
      */
-    public function getAvatarUrl()
+    public function getStatus()
     {
-        return $this->container['avatar_url'];
+        return $this->container['status'];
     }
 
     /**
-     * Sets avatar_url
+     * Sets status
      *
-     * @param string|null $avatar_url New avatar URL. Send null to clear; omit to leave unchanged.
+     * @param int|null $status status
      *
      * @return self
      */
-    public function setAvatarUrl($avatar_url)
+    public function setStatus($status)
     {
-        if (is_null($avatar_url)) {
-            array_push($this->openAPINullablesSetToNull, 'avatar_url');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('avatar_url', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($status)) {
+            throw new \InvalidArgumentException('non-nullable status cannot be null');
         }
-        $this->container['avatar_url'] = $avatar_url;
+        $this->container['status'] = $status;
 
         return $this;
     }
 
     /**
-     * Gets locale
+     * Gets detail
      *
      * @return string|null
      */
-    public function getLocale()
+    public function getDetail()
     {
-        return $this->container['locale'];
+        return $this->container['detail'];
     }
 
     /**
-     * Sets locale
+     * Sets detail
      *
-     * @param string|null $locale New preferred locale. Send null to clear; omit to leave unchanged.
+     * @param string|null $detail detail
      *
      * @return self
      */
-    public function setLocale($locale)
+    public function setDetail($detail)
     {
-        if (is_null($locale)) {
-            array_push($this->openAPINullablesSetToNull, 'locale');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('locale', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($detail)) {
+            throw new \InvalidArgumentException('non-nullable detail cannot be null');
         }
-        $allowedValues = $this->getLocaleAllowableValues();
-        if (!is_null($locale) && !in_array($locale, $allowedValues, true)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    "Invalid value '%s' for 'locale', must be one of '%s'",
-                    $locale,
-                    implode("', '", $allowedValues)
-                )
-            );
-        }
-        $this->container['locale'] = $locale;
+        $this->container['detail'] = $detail;
 
         return $this;
     }
 
     /**
-     * Gets address
+     * Gets instance
      *
      * @return string|null
      */
-    public function getAddress()
+    public function getInstance()
     {
-        return $this->container['address'];
+        return $this->container['instance'];
     }
 
     /**
-     * Sets address
+     * Sets instance
      *
-     * @param string|null $address New postal address. Send null to clear; omit to leave unchanged.
+     * @param string|null $instance instance
      *
      * @return self
      */
-    public function setAddress($address)
+    public function setInstance($instance)
     {
-        if (is_null($address)) {
-            array_push($this->openAPINullablesSetToNull, 'address');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('address', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($instance)) {
+            throw new \InvalidArgumentException('non-nullable instance cannot be null');
         }
-        $this->container['address'] = $address;
+        $this->container['instance'] = $instance;
 
         return $this;
     }
 
     /**
-     * Gets date_of_birth
+     * Gets properties
      *
-     * @return \DateTime|null
+     * @return array<string,mixed>|null
      */
-    public function getDateOfBirth()
+    public function getProperties()
     {
-        return $this->container['date_of_birth'];
+        return $this->container['properties'];
     }
 
     /**
-     * Sets date_of_birth
+     * Sets properties
      *
-     * @param \DateTime|null $date_of_birth New date of birth (YYYY-MM-DD). Send null to clear; omit to leave unchanged.
+     * @param array<string,mixed>|null $properties properties
      *
      * @return self
      */
-    public function setDateOfBirth($date_of_birth)
+    public function setProperties($properties)
     {
-        if (is_null($date_of_birth)) {
-            array_push($this->openAPINullablesSetToNull, 'date_of_birth');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('date_of_birth', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($properties)) {
+            throw new \InvalidArgumentException('non-nullable properties cannot be null');
         }
-        $this->container['date_of_birth'] = $date_of_birth;
+        $this->container['properties'] = $properties;
 
         return $this;
     }

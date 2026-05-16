@@ -21,13 +21,26 @@ composer install
 vendor/bin/phpunit
 ```
 
-The REST client under `src/Generated/` is produced by [`openapi-generator`](https://openapi-generator.tech/) from `spec/server-v1.json`. Don't hand-edit it. To regenerate after a spec update:
+The REST client under `src/Generated/` is produced by [`openapi-generator`](https://openapi-generator.tech/) from `spec/server-v1.json`. Don't hand-edit it. The namespace contains backslashes, which don't survive shell escaping through `--additional-properties`, so pass them via a JSON config file. To regenerate after a spec update:
 
 ```sh
+# Step 1: write a one-off config to avoid shell-escaping the backslashes in the PHP namespace.
+cat > /tmp/torii-php-gen.json <<'JSON'
+{
+  "invokerPackage": "Torii\\Backend\\Generated",
+  "packageName": "torii-backend-generated"
+}
+JSON
+
+# Step 2: regenerate.
 npx -y @openapitools/openapi-generator-cli generate \
   -i spec/server-v1.json -g php -o src/Generated \
-  --additional-properties=invokerPackage=Torii\\Backend\\Generated,packageName=torii-backend-generated,gitUserId=Torii-ApS,gitRepoId=torii
-# Delete docs/, test/, composer.json, README.md, .travis.yml, .openapi-generator/, etc. afterwards.
+  -c /tmp/torii-php-gen.json
+
+# Step 3: strip generator-emitted scaffolding the SDK doesn't ship.
+cd src/Generated && rm -rf docs test composer.json README.md .travis.yml \
+  .openapi-generator .openapi-generator-ignore .gitignore \
+  phpunit.xml.dist git_push.sh .php-cs-fixer.dist.php
 ```
 
 The hand-written surface is where bug reports and PRs typically land:

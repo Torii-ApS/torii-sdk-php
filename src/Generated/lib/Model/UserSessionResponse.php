@@ -35,6 +35,7 @@ use \Torii\Backend\Generated\ObjectSerializer;
  * UserSessionResponse Class Doc Comment
  *
  * @category Class
+ * @description An active end-user session in your environment.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
@@ -369,7 +370,7 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets id
      *
-     * @param string $id id
+     * @param string $id Unique identifier for this session.
      *
      * @return self
      */
@@ -396,7 +397,7 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets user_id
      *
-     * @param string $user_id user_id
+     * @param string $user_id Identifier of the end-user this session belongs to.
      *
      * @return self
      */
@@ -423,7 +424,7 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets environment_id
      *
-     * @param string $environment_id environment_id
+     * @param string $environment_id Identifier of the environment this session belongs to.
      *
      * @return self
      */
@@ -450,7 +451,7 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets user_agent
      *
-     * @param string|null $user_agent user_agent
+     * @param string|null $user_agent Raw User-Agent string captured when the session was created.
      *
      * @return self
      */
@@ -484,7 +485,7 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets ip_address
      *
-     * @param string|null $ip_address ip_address
+     * @param string|null $ip_address IP address captured when the session was created.
      *
      * @return self
      */
@@ -518,7 +519,7 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets created_at
      *
-     * @param \DateTime $created_at created_at
+     * @param \DateTime $created_at When this session was created (ISO-8601 UTC).
      *
      * @return self
      */
@@ -545,7 +546,7 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets expires_at
      *
-     * @param \DateTime $expires_at expires_at
+     * @param \DateTime $expires_at When this session expires (ISO-8601 UTC).
      *
      * @return self
      */
@@ -572,7 +573,7 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets last_used_at
      *
-     * @param \DateTime $last_used_at last_used_at
+     * @param \DateTime $last_used_at When this session was last seen by the API (ISO-8601 UTC).
      *
      * @return self
      */
