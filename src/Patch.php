@@ -5,33 +5,24 @@ declare(strict_types=1);
 namespace Torii\Backend;
 
 /**
- * Tri-state wrapper for PATCH body fields.
+ * Tri-state wrapper for PATCH body fields. Mirrors the server-side
+ * PatchValue<T> exactly: a "present" state carrying a value (which may
+ * be null to clear the field), and the absence of the entry in the
+ * patch array, which leaves the server-side field alone.
  *
- * PHP arrays don't natively distinguish "key absent" from "key present with
- * null". This wrapper makes the three PATCH states explicit:
- *
- * - {@see Patch::set()}   → server updates field to the given value.
- * - {@see Patch::clear()} → server clears the field (sends JSON `null`).
- * - Omit the entry from the patch array entirely → server leaves field alone.
+ * - {@see Patch::set()} with a non-null value → server updates the field
+ * - {@see Patch::set()} with null              → server clears the field (sends JSON `null`)
+ * - Omit the entry from the patch array       → server leaves the field unchanged
  */
 final class Patch
 {
-    public const STATE_SET = 'set';
-    public const STATE_CLEAR = 'clear';
-
     private function __construct(
-        public readonly string $state,
-        public readonly mixed $value = null,
+        public readonly mixed $value,
     ) {
     }
 
     public static function set(mixed $value): self
     {
-        return new self(self::STATE_SET, $value);
-    }
-
-    public static function clear(): self
-    {
-        return new self(self::STATE_CLEAR);
+        return new self($value);
     }
 }

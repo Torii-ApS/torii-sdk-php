@@ -84,7 +84,7 @@ final class UsersUpdateTest extends TestCase
         $torii = $this->makeTorii();
 
         $torii->users->update('11111111-1111-1111-1111-111111111111', [
-            'phone' => Patch::clear(),
+            'phone' => Patch::set(null),
         ]);
 
         $decoded = json_decode((string) $this->lastRequest()->getBody(), true);
@@ -125,7 +125,7 @@ final class UsersUpdateTest extends TestCase
 
         $torii->users->update('11111111-1111-1111-1111-111111111111', [
             'name' => Patch::set('Ada'),
-            'phone' => Patch::clear(),
+            'phone' => Patch::set(null),
             'address' => Patch::set('1 Main St'),
         ]);
 

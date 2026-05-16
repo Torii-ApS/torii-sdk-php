@@ -94,7 +94,7 @@ final class Users
      *
      *     $torii->users->update($id, [
      *         'name'  => Patch::set('Ada'),
-     *         'phone' => Patch::clear(),
+     *         'phone' => Patch::set(null),    // clear
      *     ]);
      *
      * Omit a field from `$patches` entirely to leave the server value alone.
@@ -111,13 +111,10 @@ final class Users
                     . Patch::class . " instance; got " . get_debug_type($patch)
                 );
             }
-            if ($patch->state === Patch::STATE_SET) {
-                $body[$field] = $patch->value instanceof DateTimeInterface
-                    ? $patch->value->format('Y-m-d')
-                    : $patch->value;
-            } elseif ($patch->state === Patch::STATE_CLEAR) {
-                $body[$field] = null;
-            }
+            // Patch::set(value) emits the key; null value → JSON null (clear).
+            $body[$field] = $patch->value instanceof DateTimeInterface
+                ? $patch->value->format('Y-m-d')
+                : $patch->value;
         }
 
         try {
