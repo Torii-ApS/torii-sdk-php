@@ -2,7 +2,7 @@
 
 Backend SDK for [torii](https://torii.so) — verify end-user JWTs without a per-request round trip, manage users from your PHP server, react to events from torii.
 
-> **Status: 0.0.x preview.** Stable for verify + users + sessions. Outbound webhooks (`verify_webhook`) is a stub that throws until torii's webhook subsystem ships (tracked in [#424](https://github.com/GOOD-Code-ApS/torii/issues/424) Phase 0.5).
+> **Status: 0.0.x preview.** Stable for verify + users + sessions. Outbound webhooks (`verify_webhook`) is a stub that throws until torii's webhook subsystem ships (tracked in [#424](https://github.com/Torii-ApS/torii/issues/424) Phase 0.5).
 
 ## Install
 
@@ -109,7 +109,7 @@ npx -y @openapitools/openapi-generator-cli generate \
   -i spec/server-v1.json \
   -g php \
   -o src/Generated \
-  --additional-properties=invokerPackage=Torii\\Backend\\Generated,packageName=torii-backend-generated,gitUserId=GOOD-Code-ApS,gitRepoId=torii
+  --additional-properties=invokerPackage=Torii\\Backend\\Generated,packageName=torii-backend-generated,gitUserId=Torii-ApS,gitRepoId=torii
 # Delete docs/, test/, composer.json, README.md, .travis.yml, .openapi-generator/, etc. afterwards.
 ```
 

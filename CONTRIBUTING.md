@@ -15,7 +15,7 @@ For security-sensitive issues (anything that could let an attacker forge or bypa
 ## Development
 
 ```sh
-git clone https://github.com/GOOD-Code-ApS/torii-sdk-php
+git clone https://github.com/Torii-ApS/torii-sdk-php
 cd torii-sdk-php
 composer install
 vendor/bin/phpunit
@@ -26,7 +26,7 @@ The REST client under `src/Generated/` is produced by [`openapi-generator`](http
 ```sh
 npx -y @openapitools/openapi-generator-cli generate \
   -i spec/server-v1.json -g php -o src/Generated \
-  --additional-properties=invokerPackage=Torii\\Backend\\Generated,packageName=torii-backend-generated,gitUserId=GOOD-Code-ApS,gitRepoId=torii
+  --additional-properties=invokerPackage=Torii\\Backend\\Generated,packageName=torii-backend-generated,gitUserId=Torii-ApS,gitRepoId=torii
 # Delete docs/, test/, composer.json, README.md, .travis.yml, .openapi-generator/, etc. afterwards.
 ```
 
