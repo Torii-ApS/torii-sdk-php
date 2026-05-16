@@ -1,33 +1,48 @@
 # torii/backend
 
-Backend SDK for [torii](https://torii.so) — verify end-user JWTs without a per-request round trip, manage users from your PHP server, react to events from torii.
+Backend SDK for [torii](https://torii.so) — verify end-user JWTs without a per-request round trip and manage users from your PHP server.
 
-> **Status: 0.0.x preview.** Stable for verify + users + sessions. Outbound webhooks (`verify_webhook`) is a stub that throws until torii's webhook subsystem ships (tracked in [#424](https://github.com/Torii-ApS/torii/issues/424) Phase 0.5).
+> **v0.x — API may still change.**
 
-## Install
+## Setup
 
-```sh
-composer require torii/backend
-```
+1. Sign in to [app.torii.so](https://app.torii.so) and from your dashboard copy:
+   - your **issuer URL** (e.g. `https://acme.torii.so`)
+   - a **secret key** (`sk_test_…` for development, `sk_live_…` for production)
 
-Requires PHP 8.2+ with the `openssl`, `curl`, `json`, and `mbstring` extensions.
+2. Install the SDK:
 
-## Verify a JWT
+   ```sh
+   composer require torii/backend
+   ```
 
-```php
-use function Torii\Backend\verify_token;
+   Requires PHP 8.2+ with the `openssl`, `curl`, `json`, and `mbstring` extensions.
 
-$auth = verify_token(
-    token: $bearerToken,
-    issuer: 'https://acme.torii.so', // or your verified custom domain
-);
+3. Verify an end-user JWT:
 
-echo $auth->userId, $auth->environmentId, $auth->emailVerified;
-```
+   ```php
+   use function Torii\Backend\verify_token;
 
-The first call fetches the issuer's JWKS; subsequent calls reuse the cache and rotate keys automatically (handled by [`firebase/php-jwt`](https://github.com/firebase/php-jwt)'s `CachedKeySet`). No network round trip per request.
+   $auth = verify_token(
+       token: $bearerToken,
+       issuer: 'https://acme.torii.so',
+   );
 
-Pass a PSR-6 `CacheItemPoolInterface` via the `cache:` argument to share JWKS storage with Redis/Memcached.
+   echo $auth->userId, $auth->environmentId, $auth->emailVerified;
+   ```
+
+   The first call fetches the issuer's JWKS; subsequent calls reuse the cache and rotate keys automatically (handled by [`firebase/php-jwt`](https://github.com/firebase/php-jwt)'s `CachedKeySet`). No round trip per request. Pass a PSR-6 `CacheItemPoolInterface` via the `cache:` argument to share JWKS storage with Redis/Memcached.
+
+4. Call the backend REST API:
+
+   ```php
+   use Torii\Backend\Torii;
+
+   $torii = Torii::create(secretKey: getenv('TORII_SECRET_KEY'));
+   $user = $torii->users->get($userId);
+   ```
+
+   Default base URL is `https://api.torii.so`. Override with `Torii::create($secret, $apiUrl)` for staging or self-hosted.
 
 ## Authenticate a request
 
@@ -91,9 +106,6 @@ On failure the middleware returns `401` with:
 
 ```php
 use Torii\Backend\Patch;
-use Torii\Backend\Torii;
-
-$torii = Torii::create(secretKey: getenv('TORII_SECRET_KEY'));
 
 $page = $torii->users->list(limit: 50);
 $user = $torii->users->create(['email' => 'x@y.com', 'name' => 'Ada']);
@@ -112,7 +124,7 @@ use Torii\Backend\Patch;
 
 $torii->users->update($user->getId(), [
     'name'  => Patch::set('Ada Lovelace'), // update field
-    'phone' => Patch::set(null),             // explicitly null on the server
+    'phone' => Patch::set(null),           // explicitly null on the server
     // omit a key entirely → server leaves that field alone
 ]);
 ```
@@ -128,19 +140,8 @@ npx -y @openapitools/openapi-generator-cli generate \
   -i spec/server-v1.json \
   -g php \
   -o src/Generated \
-  --additional-properties=invokerPackage=Torii\\Backend\\Generated,packageName=torii-backend-generated,gitUserId=Torii-ApS,gitRepoId=torii
+  --additional-properties=invokerPackage=Torii\\Backend\\Generated,packageName=torii-backend-generated
 # Delete docs/, test/, composer.json, README.md, .travis.yml, .openapi-generator/, etc. afterwards.
-```
-
-The default backend API URL is `https://api.torii.so`. Override with `Torii::create($secret, $apiUrl)` for staging or self-hosted.
-
-## Verify outbound webhooks
-
-```php
-use function Torii\Backend\verify_webhook;
-
-// Currently throws — awaiting Phase 0.5 of #424.
-$event = verify_webhook(secret: $secret, headers: $request->headers, payload: $request->getContent());
 ```
 
 ## Tests

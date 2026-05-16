@@ -12,10 +12,10 @@ use function Torii\Backend\verify_webhook;
 final class WebhookTest extends TestCase
 {
     #[Test]
-    public function stub_throws_with_phase_reference(): void
+    public function stub_throws_until_implemented(): void
     {
         $this->expectException(AuthException::class);
-        $this->expectExceptionMessageMatches('/#424 Phase 0.5/');
+        $this->expectExceptionMessageMatches('/not yet available/');
         verify_webhook(secret: 'whsec_xxx', headers: [], payload: '{}');
     }
 }
