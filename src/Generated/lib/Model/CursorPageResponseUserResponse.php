@@ -35,6 +35,7 @@ use \Torii\Backend\Generated\ObjectSerializer;
  * CursorPageResponseUserResponse Class Doc Comment
  *
  * @category Class
+ * @description A single page of results in a cursor-paginated list. Pass &#x60;nextCursor&#x60; as the &#x60;cursor&#x60; query parameter to fetch the following page.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
@@ -322,7 +323,7 @@ class CursorPageResponseUserResponse implements ModelInterface, ArrayAccess, \Js
     /**
      * Sets items
      *
-     * @param \Torii\Backend\Generated\Model\UserResponse[] $items items
+     * @param \Torii\Backend\Generated\Model\UserResponse[] $items Items in this page, in stable order.
      *
      * @return self
      */
@@ -349,7 +350,7 @@ class CursorPageResponseUserResponse implements ModelInterface, ArrayAccess, \Js
     /**
      * Sets next_cursor
      *
-     * @param string|null $next_cursor next_cursor
+     * @param string|null $next_cursor Cursor to pass to fetch the next page. Null when this is the last page.
      *
      * @return self
      */
@@ -383,7 +384,7 @@ class CursorPageResponseUserResponse implements ModelInterface, ArrayAccess, \Js
     /**
      * Sets has_more
      *
-     * @param bool $has_more has_more
+     * @param bool $has_more True if more pages are available (equivalent to `nextCursor != null`).
      *
      * @return self
      */

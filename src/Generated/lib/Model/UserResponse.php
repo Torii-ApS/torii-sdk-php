@@ -35,6 +35,7 @@ use \Torii\Backend\Generated\ObjectSerializer;
  * UserResponse Class Doc Comment
  *
  * @category Class
+ * @description An end-user belonging to one of your environments.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
@@ -453,7 +454,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets id
      *
-     * @param string $id id
+     * @param string $id Unique identifier for this user.
      *
      * @return self
      */
@@ -480,7 +481,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets environment_id
      *
-     * @param string $environment_id environment_id
+     * @param string $environment_id Identifier of the environment this user belongs to.
      *
      * @return self
      */
@@ -507,7 +508,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets name
      *
-     * @param string|null $name name
+     * @param string|null $name Full name on the profile, if any.
      *
      * @return self
      */
@@ -541,7 +542,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets phone
      *
-     * @param string|null $phone phone
+     * @param string|null $phone Phone number on the profile, if any. Not guaranteed to be verified.
      *
      * @return self
      */
@@ -575,7 +576,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets avatar_url
      *
-     * @param string|null $avatar_url avatar_url
+     * @param string|null $avatar_url URL of the user's avatar image, if any.
      *
      * @return self
      */
@@ -609,7 +610,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets locale
      *
-     * @param string|null $locale locale
+     * @param string|null $locale Preferred locale for emails and UI messages.
      *
      * @return self
      */
@@ -653,7 +654,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets address
      *
-     * @param string|null $address address
+     * @param string|null $address Free-form address string, if provided.
      *
      * @return self
      */
@@ -687,7 +688,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets date_of_birth
      *
-     * @param \DateTime|null $date_of_birth date_of_birth
+     * @param \DateTime|null $date_of_birth Date of birth in ISO-8601 (YYYY-MM-DD), if provided.
      *
      * @return self
      */
@@ -721,7 +722,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets status
      *
-     * @param string $status status
+     * @param string $status Lifecycle status of the user (e.g. active, banned).
      *
      * @return self
      */
@@ -758,7 +759,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets created_at
      *
-     * @param \DateTime $created_at created_at
+     * @param \DateTime $created_at When this user was created (ISO-8601 UTC).
      *
      * @return self
      */
@@ -785,7 +786,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets updated_at
      *
-     * @param \DateTime $updated_at updated_at
+     * @param \DateTime $updated_at When this user was last modified (ISO-8601 UTC).
      *
      * @return self
      */
@@ -812,7 +813,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets email
      *
-     * @param string|null $email email
+     * @param string|null $email Primary email on the profile, if any. Not guaranteed to be verified.
      *
      * @return self
      */
@@ -846,7 +847,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets deleted_at
      *
-     * @param \DateTime|null $deleted_at deleted_at
+     * @param \DateTime|null $deleted_at When this user was deleted, if soft-deleted. Null for active users.
      *
      * @return self
      */

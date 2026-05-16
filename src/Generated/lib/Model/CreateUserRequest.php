@@ -35,6 +35,7 @@ use \Torii\Backend\Generated\ObjectSerializer;
  * CreateUserRequest Class Doc Comment
  *
  * @category Class
+ * @description Request body for creating an end-user in your environment. All fields are optional; supply at minimum an email if you want the user to be able to sign in via email + password.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
@@ -337,7 +338,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets email
      *
-     * @param string|null $email email
+     * @param string|null $email Primary email for the new user. If omitted, the user is created without a sign-in identity.
      *
      * @return self
      */
@@ -371,7 +372,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets password
      *
-     * @param string|null $password password
+     * @param string|null $password Initial password. Subject to the environment's password policy. Omit to create a passwordless user (e.g. social-only).
      *
      * @return self
      */
@@ -405,7 +406,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets name
      *
-     * @param string|null $name name
+     * @param string|null $name Display name to seed on the profile.
      *
      * @return self
      */
@@ -439,7 +440,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets phone
      *
-     * @param string|null $phone phone
+     * @param string|null $phone Phone number to seed on the profile.
      *
      * @return self
      */
@@ -473,7 +474,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets address
      *
-     * @param string|null $address address
+     * @param string|null $address Postal address to seed on the profile.
      *
      * @return self
      */
@@ -507,7 +508,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets date_of_birth
      *
-     * @param \DateTime|null $date_of_birth date_of_birth
+     * @param \DateTime|null $date_of_birth Date of birth in ISO-8601 (YYYY-MM-DD).
      *
      * @return self
      */

@@ -148,12 +148,12 @@ class ServerUsersApi
      *
      * Ban user
      *
-     * @param  string $user_id user_id (required)
+     * @param  string $user_id Identifier of the user to ban. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['banUser'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \Torii\Backend\Generated\Model\UserResponse
+     * @return \Torii\Backend\Generated\Model\UserResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail
      */
     public function banUser($user_id, string $contentType = self::contentTypes['banUser'][0])
     {
@@ -166,12 +166,12 @@ class ServerUsersApi
      *
      * Ban user
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to ban. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['banUser'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \Torii\Backend\Generated\Model\UserResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Torii\Backend\Generated\Model\UserResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail, HTTP status code, HTTP response headers (array of strings)
      */
     public function banUserWithHttpInfo($user_id, string $contentType = self::contentTypes['banUser'][0])
     {
@@ -207,6 +207,24 @@ class ServerUsersApi
                         $request,
                         $response,
                     );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 403:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
             }
 
             
@@ -239,6 +257,30 @@ class ServerUsersApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 403:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
         
 
@@ -251,7 +293,7 @@ class ServerUsersApi
      *
      * Ban user
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to ban. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['banUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -272,7 +314,7 @@ class ServerUsersApi
      *
      * Ban user
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to ban. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['banUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -322,7 +364,7 @@ class ServerUsersApi
     /**
      * Create request for operation 'banUser'
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to ban. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['banUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -359,7 +401,7 @@ class ServerUsersApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['application/json', ],
+            ['application/json', 'application/problem+json', ],
             $contentType,
             $multipart
         );
@@ -421,7 +463,7 @@ class ServerUsersApi
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \Torii\Backend\Generated\Model\UserResponse
+     * @return \Torii\Backend\Generated\Model\UserResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail
      */
     public function createUser($create_user_request, string $contentType = self::contentTypes['createUser'][0])
     {
@@ -439,7 +481,7 @@ class ServerUsersApi
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \Torii\Backend\Generated\Model\UserResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Torii\Backend\Generated\Model\UserResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail, HTTP status code, HTTP response headers (array of strings)
      */
     public function createUserWithHttpInfo($create_user_request, string $contentType = self::contentTypes['createUser'][0])
     {
@@ -469,9 +511,27 @@ class ServerUsersApi
 
 
             switch($statusCode) {
-                case 200:
+                case 201:
                     return $this->handleResponseWithDataType(
                         '\Torii\Backend\Generated\Model\UserResponse',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 409:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
                         $request,
                         $response,
                     );
@@ -499,10 +559,34 @@ class ServerUsersApi
             );
         } catch (ApiException $e) {
             switch ($e->getCode()) {
-                case 200:
+                case 201:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\Torii\Backend\Generated\Model\UserResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 409:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -619,7 +703,7 @@ class ServerUsersApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['application/json', ],
+            ['application/json', 'application/problem+json', ],
             $contentType,
             $multipart
         );
@@ -683,7 +767,7 @@ class ServerUsersApi
      *
      * Delete user
      *
-     * @param  string $user_id user_id (required)
+     * @param  string $user_id Identifier of the user to delete. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteUser'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
@@ -700,7 +784,7 @@ class ServerUsersApi
      *
      * Delete user
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to delete. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteUser'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
@@ -737,6 +821,22 @@ class ServerUsersApi
             return [null, $statusCode, $response->getHeaders()];
         } catch (ApiException $e) {
             switch ($e->getCode()) {
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 403:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
         
 
@@ -749,7 +849,7 @@ class ServerUsersApi
      *
      * Delete user
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to delete. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -770,7 +870,7 @@ class ServerUsersApi
      *
      * Delete user
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to delete. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -807,7 +907,7 @@ class ServerUsersApi
     /**
      * Create request for operation 'deleteUser'
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to delete. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -844,7 +944,7 @@ class ServerUsersApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            [],
+            ['application/problem+json', ],
             $contentType,
             $multipart
         );
@@ -901,12 +1001,12 @@ class ServerUsersApi
      *
      * Get user
      *
-     * @param  string $user_id user_id (required)
+     * @param  string $user_id Identifier of the user to fetch. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getUser'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \Torii\Backend\Generated\Model\UserResponse
+     * @return \Torii\Backend\Generated\Model\UserResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail
      */
     public function getUser($user_id, string $contentType = self::contentTypes['getUser'][0])
     {
@@ -919,12 +1019,12 @@ class ServerUsersApi
      *
      * Get user
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to fetch. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getUser'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \Torii\Backend\Generated\Model\UserResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Torii\Backend\Generated\Model\UserResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail, HTTP status code, HTTP response headers (array of strings)
      */
     public function getUserWithHttpInfo($user_id, string $contentType = self::contentTypes['getUser'][0])
     {
@@ -960,6 +1060,24 @@ class ServerUsersApi
                         $request,
                         $response,
                     );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 403:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
             }
 
             
@@ -992,6 +1110,30 @@ class ServerUsersApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 403:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
         
 
@@ -1004,7 +1146,7 @@ class ServerUsersApi
      *
      * Get user
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to fetch. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -1025,7 +1167,7 @@ class ServerUsersApi
      *
      * Get user
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to fetch. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -1075,7 +1217,7 @@ class ServerUsersApi
     /**
      * Create request for operation 'getUser'
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to fetch. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -1112,7 +1254,7 @@ class ServerUsersApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['application/json', ],
+            ['application/json', 'application/problem+json', ],
             $contentType,
             $multipart
         );
@@ -1169,14 +1311,14 @@ class ServerUsersApi
      *
      * Search users
      *
-     * @param  int|null $limit limit (optional, default to 20)
-     * @param  string|null $cursor cursor (optional)
+     * @param  int|null $limit Maximum number of items in the returned page (default 20). (optional, default to 20)
+     * @param  string|null $cursor Opaque cursor returned by the previous page&#39;s &#x60;nextCursor&#x60;. Omit to fetch the first page. (optional)
      * @param  \Torii\Backend\Generated\Model\ServerUserSearchRequest|null $server_user_search_request server_user_search_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['searchUsers'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \Torii\Backend\Generated\Model\CursorPageResponseUserResponse
+     * @return \Torii\Backend\Generated\Model\CursorPageResponseUserResponse|\Torii\Backend\Generated\Model\ProblemDetail
      */
     public function searchUsers($limit = 20, $cursor = null, $server_user_search_request = null, string $contentType = self::contentTypes['searchUsers'][0])
     {
@@ -1189,14 +1331,14 @@ class ServerUsersApi
      *
      * Search users
      *
-     * @param  int|null $limit (optional, default to 20)
-     * @param  string|null $cursor (optional)
+     * @param  int|null $limit Maximum number of items in the returned page (default 20). (optional, default to 20)
+     * @param  string|null $cursor Opaque cursor returned by the previous page&#39;s &#x60;nextCursor&#x60;. Omit to fetch the first page. (optional)
      * @param  \Torii\Backend\Generated\Model\ServerUserSearchRequest|null $server_user_search_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['searchUsers'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \Torii\Backend\Generated\Model\CursorPageResponseUserResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Torii\Backend\Generated\Model\CursorPageResponseUserResponse|\Torii\Backend\Generated\Model\ProblemDetail, HTTP status code, HTTP response headers (array of strings)
      */
     public function searchUsersWithHttpInfo($limit = 20, $cursor = null, $server_user_search_request = null, string $contentType = self::contentTypes['searchUsers'][0])
     {
@@ -1232,6 +1374,12 @@ class ServerUsersApi
                         $request,
                         $response,
                     );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
             }
 
             
@@ -1264,6 +1412,14 @@ class ServerUsersApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
         
 
@@ -1276,8 +1432,8 @@ class ServerUsersApi
      *
      * Search users
      *
-     * @param  int|null $limit (optional, default to 20)
-     * @param  string|null $cursor (optional)
+     * @param  int|null $limit Maximum number of items in the returned page (default 20). (optional, default to 20)
+     * @param  string|null $cursor Opaque cursor returned by the previous page&#39;s &#x60;nextCursor&#x60;. Omit to fetch the first page. (optional)
      * @param  \Torii\Backend\Generated\Model\ServerUserSearchRequest|null $server_user_search_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['searchUsers'] to see the possible values for this operation
      *
@@ -1299,8 +1455,8 @@ class ServerUsersApi
      *
      * Search users
      *
-     * @param  int|null $limit (optional, default to 20)
-     * @param  string|null $cursor (optional)
+     * @param  int|null $limit Maximum number of items in the returned page (default 20). (optional, default to 20)
+     * @param  string|null $cursor Opaque cursor returned by the previous page&#39;s &#x60;nextCursor&#x60;. Omit to fetch the first page. (optional)
      * @param  \Torii\Backend\Generated\Model\ServerUserSearchRequest|null $server_user_search_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['searchUsers'] to see the possible values for this operation
      *
@@ -1351,8 +1507,8 @@ class ServerUsersApi
     /**
      * Create request for operation 'searchUsers'
      *
-     * @param  int|null $limit (optional, default to 20)
-     * @param  string|null $cursor (optional)
+     * @param  int|null $limit Maximum number of items in the returned page (default 20). (optional, default to 20)
+     * @param  string|null $cursor Opaque cursor returned by the previous page&#39;s &#x60;nextCursor&#x60;. Omit to fetch the first page. (optional)
      * @param  \Torii\Backend\Generated\Model\ServerUserSearchRequest|null $server_user_search_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['searchUsers'] to see the possible values for this operation
      *
@@ -1396,7 +1552,7 @@ class ServerUsersApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['application/json', ],
+            ['application/json', 'application/problem+json', ],
             $contentType,
             $multipart
         );
@@ -1460,12 +1616,12 @@ class ServerUsersApi
      *
      * Unban user
      *
-     * @param  string $user_id user_id (required)
+     * @param  string $user_id Identifier of the user to unban. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['unbanUser'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \Torii\Backend\Generated\Model\UserResponse
+     * @return \Torii\Backend\Generated\Model\UserResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail
      */
     public function unbanUser($user_id, string $contentType = self::contentTypes['unbanUser'][0])
     {
@@ -1478,12 +1634,12 @@ class ServerUsersApi
      *
      * Unban user
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to unban. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['unbanUser'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \Torii\Backend\Generated\Model\UserResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Torii\Backend\Generated\Model\UserResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail, HTTP status code, HTTP response headers (array of strings)
      */
     public function unbanUserWithHttpInfo($user_id, string $contentType = self::contentTypes['unbanUser'][0])
     {
@@ -1519,6 +1675,24 @@ class ServerUsersApi
                         $request,
                         $response,
                     );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 403:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
             }
 
             
@@ -1551,6 +1725,30 @@ class ServerUsersApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 403:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
         
 
@@ -1563,7 +1761,7 @@ class ServerUsersApi
      *
      * Unban user
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to unban. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['unbanUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -1584,7 +1782,7 @@ class ServerUsersApi
      *
      * Unban user
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to unban. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['unbanUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -1634,7 +1832,7 @@ class ServerUsersApi
     /**
      * Create request for operation 'unbanUser'
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to unban. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['unbanUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
@@ -1671,7 +1869,7 @@ class ServerUsersApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['application/json', ],
+            ['application/json', 'application/problem+json', ],
             $contentType,
             $multipart
         );
@@ -1728,13 +1926,13 @@ class ServerUsersApi
      *
      * Update user
      *
-     * @param  string $user_id user_id (required)
+     * @param  string $user_id Identifier of the user to update. (required)
      * @param  \Torii\Backend\Generated\Model\UpdateUserRequest $update_user_request update_user_request (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateUser'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \Torii\Backend\Generated\Model\UserResponse
+     * @return \Torii\Backend\Generated\Model\UserResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail
      */
     public function updateUser($user_id, $update_user_request, string $contentType = self::contentTypes['updateUser'][0])
     {
@@ -1747,13 +1945,13 @@ class ServerUsersApi
      *
      * Update user
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to update. (required)
      * @param  \Torii\Backend\Generated\Model\UpdateUserRequest $update_user_request (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateUser'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \Torii\Backend\Generated\Model\UserResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Torii\Backend\Generated\Model\UserResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail, HTTP status code, HTTP response headers (array of strings)
      */
     public function updateUserWithHttpInfo($user_id, $update_user_request, string $contentType = self::contentTypes['updateUser'][0])
     {
@@ -1789,6 +1987,30 @@ class ServerUsersApi
                         $request,
                         $response,
                     );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 403:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
             }
 
             
@@ -1821,6 +2043,38 @@ class ServerUsersApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 403:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
         
 
@@ -1833,7 +2087,7 @@ class ServerUsersApi
      *
      * Update user
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to update. (required)
      * @param  \Torii\Backend\Generated\Model\UpdateUserRequest $update_user_request (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateUser'] to see the possible values for this operation
      *
@@ -1855,7 +2109,7 @@ class ServerUsersApi
      *
      * Update user
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to update. (required)
      * @param  \Torii\Backend\Generated\Model\UpdateUserRequest $update_user_request (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateUser'] to see the possible values for this operation
      *
@@ -1906,7 +2160,7 @@ class ServerUsersApi
     /**
      * Create request for operation 'updateUser'
      *
-     * @param  string $user_id (required)
+     * @param  string $user_id Identifier of the user to update. (required)
      * @param  \Torii\Backend\Generated\Model\UpdateUserRequest $update_user_request (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateUser'] to see the possible values for this operation
      *
@@ -1951,7 +2205,7 @@ class ServerUsersApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['application/json', ],
+            ['application/json', 'application/problem+json', ],
             $contentType,
             $multipart
         );

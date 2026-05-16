@@ -35,6 +35,7 @@ use \Torii\Backend\Generated\ObjectSerializer;
  * ServerUserSearchRequest Class Doc Comment
  *
  * @category Class
+ * @description Optional filter body for &#x60;POST /users/search&#x60;. Every field is tri-state: omit to skip that filter, send a value to require it, send JSON null to require null.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
@@ -85,8 +86,8 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'name' => false,
-        'email' => false,
+        'name' => true,
+        'email' => true,
         'statuses' => false,
         'created_after' => true,
         'created_before' => true
@@ -349,14 +350,21 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets name
      *
-     * @param string|null $name name
+     * @param string|null $name Filter by name (exact match). Send null to require users with no name.
      *
      * @return self
      */
     public function setName($name)
     {
         if (is_null($name)) {
-            throw new \InvalidArgumentException('non-nullable name cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'name');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('name', $nullablesSetToNull);
+            if ($index !== FALSE) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['name'] = $name;
 
@@ -376,14 +384,21 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets email
      *
-     * @param string|null $email email
+     * @param string|null $email Filter by primary email (exact match). Send null to require users with no email.
      *
      * @return self
      */
     public function setEmail($email)
     {
         if (is_null($email)) {
-            throw new \InvalidArgumentException('non-nullable email cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'email');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('email', $nullablesSetToNull);
+            if ($index !== FALSE) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['email'] = $email;
 
@@ -403,7 +418,7 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets statuses
      *
-     * @param string[]|null $statuses statuses
+     * @param string[]|null $statuses Filter by user status. Returns users matching any of the supplied statuses.
      *
      * @return self
      */
@@ -441,7 +456,7 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets created_after
      *
-     * @param \DateTime|null $created_after created_after
+     * @param \DateTime|null $created_after Only return users created at or after this instant (ISO-8601 UTC).
      *
      * @return self
      */
@@ -475,7 +490,7 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets created_before
      *
-     * @param \DateTime|null $created_before created_before
+     * @param \DateTime|null $created_before Only return users created at or before this instant (ISO-8601 UTC).
      *
      * @return self
      */
