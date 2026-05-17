@@ -42,7 +42,7 @@ Backend SDK for [torii](https://torii.so) — verify end-user JWTs without a per
    $user = $torii->users->get($userId);
    ```
 
-   Default base URL is `https://api.torii.so`. Override with `Torii::create($secret, $apiUrl)` for staging or self-hosted.
+   Default base URL is `https://api.torii.so`. Override with `Torii::create($secret, $apiUrl)` for staging or testing environments.
 
 ## Authenticate a request
 
