@@ -60,7 +60,6 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     protected static $openAPITypes = [
         'name' => 'string',
         'phone' => 'string',
-        'avatar_url' => 'string',
         'locale' => 'string',
         'address' => 'string',
         'date_of_birth' => '\DateTime'
@@ -76,7 +75,6 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     protected static $openAPIFormats = [
         'name' => null,
         'phone' => null,
-        'avatar_url' => null,
         'locale' => null,
         'address' => null,
         'date_of_birth' => 'date'
@@ -90,7 +88,6 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     protected static array $openAPINullables = [
         'name' => true,
         'phone' => true,
-        'avatar_url' => true,
         'locale' => true,
         'address' => true,
         'date_of_birth' => true
@@ -184,7 +181,6 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     protected static $attributeMap = [
         'name' => 'name',
         'phone' => 'phone',
-        'avatar_url' => 'avatarUrl',
         'locale' => 'locale',
         'address' => 'address',
         'date_of_birth' => 'dateOfBirth'
@@ -198,7 +194,6 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     protected static $setters = [
         'name' => 'setName',
         'phone' => 'setPhone',
-        'avatar_url' => 'setAvatarUrl',
         'locale' => 'setLocale',
         'address' => 'setAddress',
         'date_of_birth' => 'setDateOfBirth'
@@ -212,7 +207,6 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     protected static $getters = [
         'name' => 'getName',
         'phone' => 'getPhone',
-        'avatar_url' => 'getAvatarUrl',
         'locale' => 'getLocale',
         'address' => 'getAddress',
         'date_of_birth' => 'getDateOfBirth'
@@ -292,7 +286,6 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     {
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('phone', $data ?? [], null);
-        $this->setIfExists('avatar_url', $data ?? [], null);
         $this->setIfExists('locale', $data ?? [], null);
         $this->setIfExists('address', $data ?? [], null);
         $this->setIfExists('date_of_birth', $data ?? [], null);
@@ -413,40 +406,6 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
             }
         }
         $this->container['phone'] = $phone;
-
-        return $this;
-    }
-
-    /**
-     * Gets avatar_url
-     *
-     * @return string|null
-     */
-    public function getAvatarUrl()
-    {
-        return $this->container['avatar_url'];
-    }
-
-    /**
-     * Sets avatar_url
-     *
-     * @param string|null $avatar_url New avatar URL. Send null to clear; omit to leave unchanged.
-     *
-     * @return self
-     */
-    public function setAvatarUrl($avatar_url)
-    {
-        if (is_null($avatar_url)) {
-            array_push($this->openAPINullablesSetToNull, 'avatar_url');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('avatar_url', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['avatar_url'] = $avatar_url;
 
         return $this;
     }

@@ -837,6 +837,14 @@ class ServerUsersApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
         
 

@@ -62,7 +62,6 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
         'environment_id' => 'string',
         'name' => 'string',
         'phone' => 'string',
-        'avatar_url' => 'string',
         'locale' => 'string',
         'address' => 'string',
         'date_of_birth' => '\DateTime',
@@ -85,7 +84,6 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
         'environment_id' => 'uuid',
         'name' => null,
         'phone' => null,
-        'avatar_url' => null,
         'locale' => null,
         'address' => null,
         'date_of_birth' => 'date',
@@ -106,7 +104,6 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
         'environment_id' => false,
         'name' => true,
         'phone' => true,
-        'avatar_url' => true,
         'locale' => true,
         'address' => true,
         'date_of_birth' => true,
@@ -207,7 +204,6 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
         'environment_id' => 'environmentId',
         'name' => 'name',
         'phone' => 'phone',
-        'avatar_url' => 'avatarUrl',
         'locale' => 'locale',
         'address' => 'address',
         'date_of_birth' => 'dateOfBirth',
@@ -228,7 +224,6 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
         'environment_id' => 'setEnvironmentId',
         'name' => 'setName',
         'phone' => 'setPhone',
-        'avatar_url' => 'setAvatarUrl',
         'locale' => 'setLocale',
         'address' => 'setAddress',
         'date_of_birth' => 'setDateOfBirth',
@@ -249,7 +244,6 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
         'environment_id' => 'getEnvironmentId',
         'name' => 'getName',
         'phone' => 'getPhone',
-        'avatar_url' => 'getAvatarUrl',
         'locale' => 'getLocale',
         'address' => 'getAddress',
         'date_of_birth' => 'getDateOfBirth',
@@ -355,7 +349,6 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('environment_id', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('phone', $data ?? [], null);
-        $this->setIfExists('avatar_url', $data ?? [], null);
         $this->setIfExists('locale', $data ?? [], null);
         $this->setIfExists('address', $data ?? [], null);
         $this->setIfExists('date_of_birth', $data ?? [], null);
@@ -559,40 +552,6 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['phone'] = $phone;
-
-        return $this;
-    }
-
-    /**
-     * Gets avatar_url
-     *
-     * @return string|null
-     */
-    public function getAvatarUrl()
-    {
-        return $this->container['avatar_url'];
-    }
-
-    /**
-     * Sets avatar_url
-     *
-     * @param string|null $avatar_url URL of the user's avatar image, if any.
-     *
-     * @return self
-     */
-    public function setAvatarUrl($avatar_url)
-    {
-        if (is_null($avatar_url)) {
-            array_push($this->openAPINullablesSetToNull, 'avatar_url');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('avatar_url', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['avatar_url'] = $avatar_url;
 
         return $this;
     }

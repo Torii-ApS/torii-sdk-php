@@ -35,7 +35,7 @@ use \Torii\Backend\Generated\ObjectSerializer;
  * ServerUserSearchRequest Class Doc Comment
  *
  * @category Class
- * @description Optional filter body for &#x60;POST /users/search&#x60;. Every field is tri-state: omit to skip that filter, send a value to require it, send JSON null to require null.
+ * @description Optional filter body for &#x60;POST /users/search&#x60;. Every field is tri-state: omit to skip that filter, send a value to require it. Fields whose inner type is nullable (currently &#x60;name&#x60;, &#x60;email&#x60;) additionally accept JSON null to filter for users where that column is null; the non-nullable &#x60;statuses&#x60; field rejects null.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
@@ -350,7 +350,7 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets name
      *
-     * @param string|null $name Filter by name (exact match). Send null to require users with no name.
+     * @param string|null $name Filter by name (case-insensitive substring match). Send null to require users with no name.
      *
      * @return self
      */
@@ -384,7 +384,7 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets email
      *
-     * @param string|null $email Filter by primary email (exact match). Send null to require users with no email.
+     * @param string|null $email Filter by primary email (case-insensitive substring match). Send null to require users with no email.
      *
      * @return self
      */

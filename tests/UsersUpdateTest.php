@@ -32,7 +32,6 @@ final class UsersUpdateTest extends TestCase
         "environmentId": "22222222-2222-2222-2222-222222222222",
         "name": "Ada",
         "phone": null,
-        "avatarUrl": null,
         "locale": null,
         "address": null,
         "dateOfBirth": null,
