@@ -253,7 +253,6 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
         return self::$openAPIModelName;
     }
 
-    public const STATUSES_PENDING_VERIFICATION = 'pending_verification';
     public const STATUSES_ACTIVE = 'active';
     public const STATUSES_BANNED = 'banned';
     public const STATUSES_DELETED = 'deleted';
@@ -266,7 +265,6 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     public function getStatusesAllowableValues()
     {
         return [
-            self::STATUSES_PENDING_VERIFICATION,
             self::STATUSES_ACTIVE,
             self::STATUSES_BANNED,
             self::STATUSES_DELETED,
