@@ -65,7 +65,8 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
         'ip_address' => 'string',
         'created_at' => '\DateTime',
         'expires_at' => '\DateTime',
-        'last_used_at' => '\DateTime'
+        'last_used_at' => '\DateTime',
+        'active_organization_id' => 'string'
     ];
 
     /**
@@ -83,7 +84,8 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
         'ip_address' => null,
         'created_at' => 'date-time',
         'expires_at' => 'date-time',
-        'last_used_at' => 'date-time'
+        'last_used_at' => 'date-time',
+        'active_organization_id' => 'uuid'
     ];
 
     /**
@@ -99,7 +101,8 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
         'ip_address' => true,
         'created_at' => false,
         'expires_at' => false,
-        'last_used_at' => false
+        'last_used_at' => false,
+        'active_organization_id' => true
     ];
 
     /**
@@ -195,7 +198,8 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
         'ip_address' => 'ipAddress',
         'created_at' => 'createdAt',
         'expires_at' => 'expiresAt',
-        'last_used_at' => 'lastUsedAt'
+        'last_used_at' => 'lastUsedAt',
+        'active_organization_id' => 'activeOrganizationId'
     ];
 
     /**
@@ -211,7 +215,8 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
         'ip_address' => 'setIpAddress',
         'created_at' => 'setCreatedAt',
         'expires_at' => 'setExpiresAt',
-        'last_used_at' => 'setLastUsedAt'
+        'last_used_at' => 'setLastUsedAt',
+        'active_organization_id' => 'setActiveOrganizationId'
     ];
 
     /**
@@ -227,7 +232,8 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
         'ip_address' => 'getIpAddress',
         'created_at' => 'getCreatedAt',
         'expires_at' => 'getExpiresAt',
-        'last_used_at' => 'getLastUsedAt'
+        'last_used_at' => 'getLastUsedAt',
+        'active_organization_id' => 'getActiveOrganizationId'
     ];
 
     /**
@@ -295,6 +301,7 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
         $this->setIfExists('created_at', $data ?? [], null);
         $this->setIfExists('expires_at', $data ?? [], null);
         $this->setIfExists('last_used_at', $data ?? [], null);
+        $this->setIfExists('active_organization_id', $data ?? [], null);
     }
 
     /**
@@ -583,6 +590,40 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
             throw new \InvalidArgumentException('non-nullable last_used_at cannot be null');
         }
         $this->container['last_used_at'] = $last_used_at;
+
+        return $this;
+    }
+
+    /**
+     * Gets active_organization_id
+     *
+     * @return string|null
+     */
+    public function getActiveOrganizationId()
+    {
+        return $this->container['active_organization_id'];
+    }
+
+    /**
+     * Sets active_organization_id
+     *
+     * @param string|null $active_organization_id Active organization pinned to this session (`org_id` claim on re-mint).
+     *
+     * @return self
+     */
+    public function setActiveOrganizationId($active_organization_id)
+    {
+        if (is_null($active_organization_id)) {
+            array_push($this->openAPINullablesSetToNull, 'active_organization_id');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('active_organization_id', $nullablesSetToNull);
+            if ($index !== FALSE) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['active_organization_id'] = $active_organization_id;
 
         return $this;
     }

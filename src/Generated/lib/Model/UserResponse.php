@@ -69,6 +69,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
         'created_at' => '\DateTime',
         'updated_at' => '\DateTime',
         'email' => 'string',
+        'email_verified_at' => '\DateTime',
         'deleted_at' => '\DateTime'
     ];
 
@@ -91,6 +92,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
         'created_at' => 'date-time',
         'updated_at' => 'date-time',
         'email' => null,
+        'email_verified_at' => 'date-time',
         'deleted_at' => 'date-time'
     ];
 
@@ -111,6 +113,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
         'created_at' => false,
         'updated_at' => false,
         'email' => true,
+        'email_verified_at' => true,
         'deleted_at' => true
     ];
 
@@ -211,6 +214,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
         'created_at' => 'createdAt',
         'updated_at' => 'updatedAt',
         'email' => 'email',
+        'email_verified_at' => 'emailVerifiedAt',
         'deleted_at' => 'deletedAt'
     ];
 
@@ -231,6 +235,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
         'created_at' => 'setCreatedAt',
         'updated_at' => 'setUpdatedAt',
         'email' => 'setEmail',
+        'email_verified_at' => 'setEmailVerifiedAt',
         'deleted_at' => 'setDeletedAt'
     ];
 
@@ -251,6 +256,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
         'created_at' => 'getCreatedAt',
         'updated_at' => 'getUpdatedAt',
         'email' => 'getEmail',
+        'email_verified_at' => 'getEmailVerifiedAt',
         'deleted_at' => 'getDeletedAt'
     ];
 
@@ -297,7 +303,6 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 
     public const LOCALE_EN = 'en';
     public const LOCALE_DA = 'da';
-    public const STATUS_PENDING_VERIFICATION = 'pending_verification';
     public const STATUS_ACTIVE = 'active';
     public const STATUS_BANNED = 'banned';
     public const STATUS_DELETED = 'deleted';
@@ -323,7 +328,6 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     public function getStatusAllowableValues()
     {
         return [
-            self::STATUS_PENDING_VERIFICATION,
             self::STATUS_ACTIVE,
             self::STATUS_BANNED,
             self::STATUS_DELETED,
@@ -356,6 +360,7 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('created_at', $data ?? [], null);
         $this->setIfExists('updated_at', $data ?? [], null);
         $this->setIfExists('email', $data ?? [], null);
+        $this->setIfExists('email_verified_at', $data ?? [], null);
         $this->setIfExists('deleted_at', $data ?? [], null);
     }
 
@@ -789,6 +794,40 @@ class UserResponse implements ModelInterface, ArrayAccess, \JsonSerializable
             }
         }
         $this->container['email'] = $email;
+
+        return $this;
+    }
+
+    /**
+     * Gets email_verified_at
+     *
+     * @return \DateTime|null
+     */
+    public function getEmailVerifiedAt()
+    {
+        return $this->container['email_verified_at'];
+    }
+
+    /**
+     * Sets email_verified_at
+     *
+     * @param \DateTime|null $email_verified_at When this user's primary email was verified, if it has been verified.
+     *
+     * @return self
+     */
+    public function setEmailVerifiedAt($email_verified_at)
+    {
+        if (is_null($email_verified_at)) {
+            array_push($this->openAPINullablesSetToNull, 'email_verified_at');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('email_verified_at', $nullablesSetToNull);
+            if ($index !== FALSE) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['email_verified_at'] = $email_verified_at;
 
         return $this;
     }
