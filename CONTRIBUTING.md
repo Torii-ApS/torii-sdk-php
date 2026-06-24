@@ -21,7 +21,7 @@ composer install
 vendor/bin/phpunit
 ```
 
-The REST client under `src/Generated/` is produced by [`openapi-generator`](https://openapi-generator.tech/) from `spec/server-v1.json`. Don't hand-edit it. The namespace contains backslashes, which don't survive shell escaping through `--additional-properties`, so pass them via a JSON config file. To regenerate after a spec update:
+The REST client under `src/Generated/` is produced by [`openapi-generator`](https://openapi-generator.tech/) from `spec/server-v1.json`. Don't hand-edit it. Run `./regen.sh` to regenerate it (it encapsulates the steps below). The namespace contains backslashes, which don't survive shell escaping through `--additional-properties`, so pass them via a JSON config file. To regenerate after a spec update:
 
 ```sh
 # Step 1: write a one-off config to avoid shell-escaping the backslashes in the PHP namespace.
