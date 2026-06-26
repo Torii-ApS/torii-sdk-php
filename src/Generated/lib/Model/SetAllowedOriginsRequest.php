@@ -1,6 +1,6 @@
 <?php
 /**
- * UpdateUserRequest
+ * SetAllowedOriginsRequest
  *
  * PHP version 8.1
  *
@@ -32,16 +32,15 @@ use \ArrayAccess;
 use \Torii\Backend\Generated\ObjectSerializer;
 
 /**
- * UpdateUserRequest Class Doc Comment
+ * SetAllowedOriginsRequest Class Doc Comment
  *
  * @category Class
- * @description PATCH body for updating an end-user. Every field is tri-state: omit the key entirely to leave the field unchanged, send a non-null value to set it, or send JSON null to clear it.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializable
+class SetAllowedOriginsRequest implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +49,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      *
      * @var string
      */
-    protected static $openAPIModelName = 'UpdateUserRequest';
+    protected static $openAPIModelName = 'SetAllowedOriginsRequest';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,10 +57,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $openAPITypes = [
-        'first_name' => 'string',
-        'last_name' => 'string',
-        'locale' => 'string',
-        'unsafe_metadata' => 'array<string,mixed>'
+        'origins' => 'string[]'
     ];
 
     /**
@@ -72,10 +68,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'first_name' => null,
-        'last_name' => null,
-        'locale' => null,
-        'unsafe_metadata' => null
+        'origins' => null
     ];
 
     /**
@@ -84,10 +77,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'first_name' => true,
-        'last_name' => true,
-        'locale' => true,
-        'unsafe_metadata' => false
+        'origins' => false
     ];
 
     /**
@@ -176,10 +166,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $attributeMap = [
-        'first_name' => 'firstName',
-        'last_name' => 'lastName',
-        'locale' => 'locale',
-        'unsafe_metadata' => 'unsafeMetadata'
+        'origins' => 'origins'
     ];
 
     /**
@@ -188,10 +175,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $setters = [
-        'first_name' => 'setFirstName',
-        'last_name' => 'setLastName',
-        'locale' => 'setLocale',
-        'unsafe_metadata' => 'setUnsafeMetadata'
+        'origins' => 'setOrigins'
     ];
 
     /**
@@ -200,10 +184,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $getters = [
-        'first_name' => 'getFirstName',
-        'last_name' => 'getLastName',
-        'locale' => 'getLocale',
-        'unsafe_metadata' => 'getUnsafeMetadata'
+        'origins' => 'getOrigins'
     ];
 
     /**
@@ -247,21 +228,6 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
         return self::$openAPIModelName;
     }
 
-    public const LOCALE_EN = 'en';
-    public const LOCALE_DA = 'da';
-
-    /**
-     * Gets allowable values of the enum
-     *
-     * @return string[]
-     */
-    public function getLocaleAllowableValues()
-    {
-        return [
-            self::LOCALE_EN,
-            self::LOCALE_DA,
-        ];
-    }
 
     /**
      * Associative array for storing property values
@@ -278,10 +244,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('first_name', $data ?? [], null);
-        $this->setIfExists('last_name', $data ?? [], null);
-        $this->setIfExists('locale', $data ?? [], null);
-        $this->setIfExists('unsafe_metadata', $data ?? [], null);
+        $this->setIfExists('origins', $data ?? [], null);
     }
 
     /**
@@ -311,15 +274,9 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     {
         $invalidProperties = [];
 
-        $allowedValues = $this->getLocaleAllowableValues();
-        if (!is_null($this->container['locale']) && !in_array($this->container['locale'], $allowedValues, true)) {
-            $invalidProperties[] = sprintf(
-                "invalid value '%s' for 'locale', must be one of '%s'",
-                $this->container['locale'],
-                implode("', '", $allowedValues)
-            );
+        if ($this->container['origins'] === null) {
+            $invalidProperties[] = "'origins' can't be null";
         }
-
         return $invalidProperties;
     }
 
@@ -336,140 +293,28 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
 
 
     /**
-     * Gets first_name
+     * Gets origins
      *
-     * @return string|null
+     * @return string[]
      */
-    public function getFirstName()
+    public function getOrigins()
     {
-        return $this->container['first_name'];
+        return $this->container['origins'];
     }
 
     /**
-     * Sets first_name
+     * Sets origins
      *
-     * @param string|null $first_name New first (given) name. Send null to clear; omit to leave unchanged.
+     * @param string[] $origins origins
      *
      * @return self
      */
-    public function setFirstName($first_name)
+    public function setOrigins($origins)
     {
-        if (is_null($first_name)) {
-            array_push($this->openAPINullablesSetToNull, 'first_name');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('first_name', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($origins)) {
+            throw new \InvalidArgumentException('non-nullable origins cannot be null');
         }
-        $this->container['first_name'] = $first_name;
-
-        return $this;
-    }
-
-    /**
-     * Gets last_name
-     *
-     * @return string|null
-     */
-    public function getLastName()
-    {
-        return $this->container['last_name'];
-    }
-
-    /**
-     * Sets last_name
-     *
-     * @param string|null $last_name New last (family) name. Send null to clear; omit to leave unchanged.
-     *
-     * @return self
-     */
-    public function setLastName($last_name)
-    {
-        if (is_null($last_name)) {
-            array_push($this->openAPINullablesSetToNull, 'last_name');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('last_name', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['last_name'] = $last_name;
-
-        return $this;
-    }
-
-    /**
-     * Gets locale
-     *
-     * @return string|null
-     */
-    public function getLocale()
-    {
-        return $this->container['locale'];
-    }
-
-    /**
-     * Sets locale
-     *
-     * @param string|null $locale New preferred locale. Send null to clear; omit to leave unchanged.
-     *
-     * @return self
-     */
-    public function setLocale($locale)
-    {
-        if (is_null($locale)) {
-            array_push($this->openAPINullablesSetToNull, 'locale');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('locale', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $allowedValues = $this->getLocaleAllowableValues();
-        if (!is_null($locale) && !in_array($locale, $allowedValues, true)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    "Invalid value '%s' for 'locale', must be one of '%s'",
-                    $locale,
-                    implode("', '", $allowedValues)
-                )
-            );
-        }
-        $this->container['locale'] = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Gets unsafe_metadata
-     *
-     * @return array<string,mixed>|null
-     */
-    public function getUnsafeMetadata()
-    {
-        return $this->container['unsafe_metadata'];
-    }
-
-    /**
-     * Sets unsafe_metadata
-     *
-     * @param array<string,mixed>|null $unsafe_metadata Deep-merges into the user's unsafe metadata (a key set to null removes it); omit to leave unchanged. Merged result max 512 bytes.
-     *
-     * @return self
-     */
-    public function setUnsafeMetadata($unsafe_metadata)
-    {
-        if (is_null($unsafe_metadata)) {
-            throw new \InvalidArgumentException('non-nullable unsafe_metadata cannot be null');
-        }
-        $this->container['unsafe_metadata'] = $unsafe_metadata;
+        $this->container['origins'] = $origins;
 
         return $this;
     }
