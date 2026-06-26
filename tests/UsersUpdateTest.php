@@ -30,16 +30,19 @@ final class UsersUpdateTest extends TestCase
     {
         "id": "11111111-1111-1111-1111-111111111111",
         "environmentId": "22222222-2222-2222-2222-222222222222",
-        "name": "Ada",
-        "phone": null,
-        "locale": null,
-        "address": null,
-        "dateOfBirth": null,
+        "name": "Ada Lovelace",
+        "firstName": "Ada",
+        "lastName": "Lovelace",
+        "locale": "en",
         "status": "active",
         "createdAt": "2024-01-01T00:00:00Z",
         "updatedAt": "2024-01-02T00:00:00Z",
         "email": "ada@example.com",
-        "deletedAt": null
+        "emailVerifiedAt": null,
+        "deletedAt": null,
+        "publicMetadata": {},
+        "privateMetadata": {},
+        "unsafeMetadata": {}
     }
     JSON;
 
@@ -68,11 +71,11 @@ final class UsersUpdateTest extends TestCase
         $torii = $this->makeTorii();
 
         $torii->users->update('11111111-1111-1111-1111-111111111111', [
-            'name' => Patch::set('Ada'),
+            'firstName' => Patch::set('Ada'),
         ]);
 
         $this->assertSame(
-            ['name' => 'Ada'],
+            ['firstName' => 'Ada'],
             json_decode((string) $this->lastRequest()->getBody(), true),
         );
     }
@@ -83,13 +86,13 @@ final class UsersUpdateTest extends TestCase
         $torii = $this->makeTorii();
 
         $torii->users->update('11111111-1111-1111-1111-111111111111', [
-            'phone' => Patch::set(null),
+            'lastName' => Patch::set(null),
         ]);
 
         $decoded = json_decode((string) $this->lastRequest()->getBody(), true);
         $this->assertIsArray($decoded);
-        $this->assertArrayHasKey('phone', $decoded);
-        $this->assertNull($decoded['phone']);
+        $this->assertArrayHasKey('lastName', $decoded);
+        $this->assertNull($decoded['lastName']);
     }
 
     #[Test]
@@ -98,12 +101,12 @@ final class UsersUpdateTest extends TestCase
         $torii = $this->makeTorii();
 
         $torii->users->update('11111111-1111-1111-1111-111111111111', [
-            'name' => Patch::set('Ada'),
+            'firstName' => Patch::set('Ada'),
         ]);
 
         $decoded = json_decode((string) $this->lastRequest()->getBody(), true);
-        $this->assertArrayNotHasKey('phone', $decoded);
-        $this->assertArrayNotHasKey('address', $decoded);
+        $this->assertArrayNotHasKey('lastName', $decoded);
+        $this->assertArrayNotHasKey('locale', $decoded);
     }
 
     #[Test]
@@ -123,29 +126,32 @@ final class UsersUpdateTest extends TestCase
         $torii = $this->makeTorii();
 
         $torii->users->update('11111111-1111-1111-1111-111111111111', [
-            'name' => Patch::set('Ada'),
-            'phone' => Patch::set(null),
-            'address' => Patch::set('1 Main St'),
+            'firstName' => Patch::set('Ada'),
+            'lastName' => Patch::set(null),
+            'locale' => Patch::set('en'),
         ]);
 
         $decoded = json_decode((string) $this->lastRequest()->getBody(), true);
         $this->assertSame(
-            ['name' => 'Ada', 'phone' => null, 'address' => '1 Main St'],
+            ['firstName' => 'Ada', 'lastName' => null, 'locale' => 'en'],
             $decoded,
         );
     }
 
     #[Test]
-    public function patch_set_with_datetime_formats_as_date(): void
+    public function patch_set_unsafe_metadata_serialises_as_object(): void
     {
         $torii = $this->makeTorii();
 
         $torii->users->update('11111111-1111-1111-1111-111111111111', [
-            'dateOfBirth' => Patch::set(new \DateTimeImmutable('1815-12-10T00:00:00Z')),
+            'unsafeMetadata' => Patch::set(['tier' => 'pro']),
         ]);
 
-        $decoded = json_decode((string) $this->lastRequest()->getBody(), true);
-        $this->assertSame('1815-12-10', $decoded['dateOfBirth']);
+        // The bag must serialise as a JSON object, and tri-state is preserved.
+        $this->assertSame(
+            '{"unsafeMetadata":{"tier":"pro"}}',
+            (string) $this->lastRequest()->getBody(),
+        );
     }
 
     #[Test]
@@ -154,10 +160,10 @@ final class UsersUpdateTest extends TestCase
         $torii = $this->makeTorii();
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage("field 'name' must be a Torii\\Backend\\Patch instance");
+        $this->expectExceptionMessage("field 'firstName' must be a Torii\\Backend\\Patch instance");
 
         /** @phpstan-ignore-next-line — deliberately bad input */
-        $torii->users->update('11111111-1111-1111-1111-111111111111', ['name' => 'Ada']);
+        $torii->users->update('11111111-1111-1111-1111-111111111111', ['firstName' => 'Ada']);
     }
 
     #[Test]
@@ -166,7 +172,7 @@ final class UsersUpdateTest extends TestCase
         $torii = $this->makeTorii();
 
         $torii->users->update('11111111-1111-1111-1111-111111111111', [
-            'name' => Patch::set('Ada'),
+            'firstName' => Patch::set('Ada'),
         ]);
 
         $req = $this->lastRequest();

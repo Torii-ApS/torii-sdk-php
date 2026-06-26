@@ -10,10 +10,9 @@ use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Torii\Backend\Generated\Api\ServerUsersApi;
 use Torii\Backend\Generated\ApiException as GeneratedApiException;
-use Torii\Backend\Generated\Model\CreateUserRequest;
-use Torii\Backend\Generated\Model\CursorPageResponseUserResponse;
+use Torii\Backend\Generated\Model\CursorPageResponseServerUserResponse;
+use Torii\Backend\Generated\Model\ServerUserResponse;
 use Torii\Backend\Generated\Model\ServerUserSearchRequest;
-use Torii\Backend\Generated\Model\UserResponse;
 use Torii\Backend\Generated\ObjectSerializer;
 
 /**
@@ -43,7 +42,7 @@ final class Users
         ?array $statuses = null,
         DateTimeInterface|string|null $createdAfter = null,
         DateTimeInterface|string|null $createdBefore = null,
-    ): CursorPageResponseUserResponse {
+    ): CursorPageResponseServerUserResponse {
         $body = new ServerUserSearchRequest([
             'name' => $name,
             'email' => $email,
@@ -62,7 +61,7 @@ final class Users
         }
     }
 
-    public function get(string $userId): UserResponse
+    public function get(string $userId): ServerUserResponse
     {
         try {
             return $this->api->getUser($userId);
@@ -74,16 +73,24 @@ final class Users
     /**
      * Create a user.
      *
-     * @param array<string, mixed> $data Maps to {@see CreateUserRequest} fields:
-     *                                   email, password, name, phone, address, dateOfBirth.
+     * @param array<string, mixed> $data Create fields, camelCase to match the
+     *        wire: `email`, `password`, `firstName`, `lastName`, and the three
+     *        metadata bags `publicMetadata` / `privateMetadata` /
+     *        `unsafeMetadata`. Each metadata bag is required by the API and
+     *        defaults to an empty object (`{}`) when omitted — a brand-new user
+     *        has no metadata to clobber.
      */
-    public function create(array $data): UserResponse
+    public function create(array $data): ServerUserResponse
     {
-        try {
-            return $this->api->createUser(new CreateUserRequest(_torii_snake_keys($data)));
-        } catch (GeneratedApiException $e) {
-            throw _torii_wrap_api_exception($e);
+        // The three metadata bags are required objects. Default each to an
+        // empty object when the caller omits it. PHP's `[]` would JSON-encode
+        // as `[]` (array), which the server rejects, so use stdClass for `{}`.
+        foreach (['publicMetadata', 'privateMetadata', 'unsafeMetadata'] as $bag) {
+            if (!array_key_exists($bag, $data) || $data[$bag] === null || $data[$bag] === []) {
+                $data[$bag] = new \stdClass();
+            }
         }
+        return $this->sendJson('POST', '/api/server/v1/users', $data);
     }
 
     /**
@@ -93,15 +100,17 @@ final class Users
      * "set field to null", so each value must be a {@see Patch} instance:
      *
      *     $torii->users->update($id, [
-     *         'name'  => Patch::set('Ada'),
-     *         'phone' => Patch::set(null),    // clear
+     *         'firstName'      => Patch::set('Ada'),
+     *         'lastName'       => Patch::set(null),               // clear
+     *         'unsafeMetadata' => Patch::set(['tier' => 'pro']),  // replace bag
      *     ]);
      *
      * Omit a field from `$patches` entirely to leave the server value alone.
+     * Patchable fields: `firstName`, `lastName`, `locale`, `unsafeMetadata`.
      *
      * @param array<string, Patch> $patches Field name → {@see Patch} instance.
      */
-    public function update(string $userId, array $patches): UserResponse
+    public function update(string $userId, array $patches): ServerUserResponse
     {
         $body = [];
         foreach ($patches as $field => $patch) {
@@ -112,23 +121,35 @@ final class Users
                 );
             }
             // Patch::set(value) emits the key; null value → JSON null (clear).
-            $body[$field] = $patch->value instanceof DateTimeInterface
-                ? $patch->value->format('Y-m-d')
-                : $patch->value;
+            $body[$field] = $patch->value;
         }
 
+        return $this->sendJson('PATCH', '/api/server/v1/users/' . rawurlencode($userId), $body);
+    }
+
+    /**
+     * Send a JSON body to the users API and deserialize the response into a
+     * {@see ServerUserResponse}. Bypasses the generated request DTOs so the
+     * body we build (tri-state PATCH keys, `{}` metadata bags) survives
+     * serialization untouched.
+     *
+     * @param array<string, mixed> $bodyData
+     */
+    private function sendJson(string $method, string $path, array $bodyData): ServerUserResponse
+    {
         try {
-            $json = json_encode((object) $body, JSON_THROW_ON_ERROR);
+            // Cast to object so an empty body serializes as `{}`, not `[]`.
+            $json = json_encode((object) $bodyData, JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             throw new \InvalidArgumentException(
-                'Users::update: failed to JSON-encode patch body: ' . $e->getMessage(),
+                "Users: failed to JSON-encode $method body: " . $e->getMessage(),
                 previous: $e,
             );
         }
 
         $request = new Psr7Request(
-            'PATCH',
-            $this->host . '/api/server/v1/users/' . rawurlencode($userId),
+            $method,
+            $this->host . $path,
             [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
@@ -167,7 +188,7 @@ final class Users
         }
 
         $decoded = json_decode($responseBody);
-        return ObjectSerializer::deserialize($decoded, UserResponse::class, []);
+        return ObjectSerializer::deserialize($decoded, ServerUserResponse::class, []);
     }
 
     public function delete(string $userId): void
@@ -179,7 +200,7 @@ final class Users
         }
     }
 
-    public function ban(string $userId): UserResponse
+    public function ban(string $userId): ServerUserResponse
     {
         try {
             return $this->api->banUser($userId);
@@ -188,7 +209,7 @@ final class Users
         }
     }
 
-    public function unban(string $userId): UserResponse
+    public function unban(string $userId): ServerUserResponse
     {
         try {
             return $this->api->unbanUser($userId);
@@ -196,25 +217,6 @@ final class Users
             throw _torii_wrap_api_exception($e);
         }
     }
-}
-
-/**
- * The generated DTOs expect snake_case property names but real-world callers
- * naturally pass camelCase (matches the JSON wire). Convert at the boundary.
- *
- * @param array<string, mixed> $data
- * @return array<string, mixed>
- *
- * @internal
- */
-function _torii_snake_keys(array $data): array
-{
-    $out = [];
-    foreach ($data as $key => $value) {
-        $snake = strtolower((string) preg_replace('/([A-Z])/', '_$1', (string) $key));
-        $out[ltrim($snake, '_')] = $value;
-    }
-    return $out;
 }
 
 /**
