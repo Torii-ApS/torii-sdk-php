@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # composer.json requires php: ^8.2
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, json, mbstring, openssl
+          tools: composer:v2
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Install dependencies
+        # firebase/php-jwt has an open security advisory (PKSA-y2cr-5h3j-g3ys)
+        # that newer Composer treats as blocking. The smoke containers in the
+        # main torii repo use --no-security-blocking with an honest comment;
+        # we match that here so CI doesn't silently disagree with smoke.
+        run: composer install --prefer-dist --no-progress --no-security-blocking
+
+      - name: PHPUnit
+        run: vendor/bin/phpunit
