@@ -183,4 +183,38 @@ final class UsersUpdateTest extends TestCase
         );
         $this->assertSame('application/json', $req->getHeaderLine('Content-Type'));
     }
+
+    #[Test]
+    public function update_carries_bearer_auth_on_the_hand_rolled_path(): void
+    {
+        // The PATCH path bypasses the generated client, so it must attach the
+        // bearer token itself (read from the same config the generated calls use).
+        $torii = $this->makeTorii();
+
+        $torii->users->update('11111111-1111-1111-1111-111111111111', [
+            'firstName' => Patch::set('Ada'),
+        ]);
+
+        $this->assertSame('Bearer sk_test_abc', $this->lastRequest()->getHeaderLine('Authorization'));
+    }
+
+    #[Test]
+    public function create_uses_generated_client_with_bearer_and_omits_metadata(): void
+    {
+        // create() runs through the generated createUser: auth comes from the
+        // bearerAuth scheme, and unset metadata bags are omitted (the server
+        // defaults them to {}), so no hand-defaulting.
+        $torii = $this->makeTorii();
+
+        $torii->users->create(['email' => 'ada@example.com']);
+
+        $req = $this->lastRequest();
+        $this->assertSame('POST', $req->getMethod());
+        $this->assertSame('https://api.example/api/server/v1/users', (string) $req->getUri());
+        $this->assertSame('Bearer sk_test_abc', $req->getHeaderLine('Authorization'));
+        $this->assertSame(
+            ['email' => 'ada@example.com'],
+            json_decode((string) $req->getBody(), true),
+        );
+    }
 }

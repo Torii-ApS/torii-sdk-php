@@ -10,6 +10,7 @@ use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Torii\Backend\Generated\Api\ServerUsersApi;
 use Torii\Backend\Generated\ApiException as GeneratedApiException;
+use Torii\Backend\Generated\Model\CreateUserRequest;
 use Torii\Backend\Generated\Model\CursorPageResponseServerUserResponse;
 use Torii\Backend\Generated\Model\ServerUserResponse;
 use Torii\Backend\Generated\Model\ServerUserSearchRequest;
@@ -73,24 +74,19 @@ final class Users
     /**
      * Create a user.
      *
-     * @param array<string, mixed> $data Create fields, camelCase to match the
-     *        wire: `email`, `password`, `firstName`, `lastName`, and the three
-     *        metadata bags `publicMetadata` / `privateMetadata` /
-     *        `unsafeMetadata`. Each metadata bag is required by the API and
-     *        defaults to an empty object (`{}`) when omitted — a brand-new user
-     *        has no metadata to clobber.
+     * @param array<string, mixed> $data Create fields (camelCase to match the
+     *        wire): `email`, `password`, `firstName`, `lastName`, and the
+     *        optional metadata bags `publicMetadata` / `privateMetadata` /
+     *        `unsafeMetadata`. Omit a bag to leave it empty — the server
+     *        defaults it to `{}`.
      */
     public function create(array $data): ServerUserResponse
     {
-        // The three metadata bags are required objects. Default each to an
-        // empty object when the caller omits it. PHP's `[]` would JSON-encode
-        // as `[]` (array), which the server rejects, so use stdClass for `{}`.
-        foreach (['publicMetadata', 'privateMetadata', 'unsafeMetadata'] as $bag) {
-            if (!array_key_exists($bag, $data) || $data[$bag] === null || $data[$bag] === []) {
-                $data[$bag] = new \stdClass();
-            }
+        try {
+            return $this->api->createUser(new CreateUserRequest(_torii_snake_keys($data)));
+        } catch (GeneratedApiException $e) {
+            throw _torii_wrap_api_exception($e);
         }
-        return $this->sendJson('POST', '/api/server/v1/users', $data);
     }
 
     /**
@@ -128,10 +124,14 @@ final class Users
     }
 
     /**
-     * Send a JSON body to the users API and deserialize the response into a
-     * {@see ServerUserResponse}. Bypasses the generated request DTOs so the
-     * body we build (tri-state PATCH keys, `{}` metadata bags) survives
-     * serialization untouched.
+     * Send the hand-built PATCH body and deserialize the response into a
+     * {@see ServerUserResponse}. Bypasses the generated request DTO so the
+     * tri-state patch keys survive serialization untouched (the generated
+     * model would drop nulls and collapse the "clear" case).
+     *
+     * Auth: this path doesn't run through the generated client, so it carries
+     * the bearer token explicitly, read from the same config the generated
+     * operations use.
      *
      * @param array<string, mixed> $bodyData
      */
@@ -153,6 +153,7 @@ final class Users
             [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . $this->api->getConfig()->getAccessToken(),
             ],
             $json,
         );
@@ -217,6 +218,25 @@ final class Users
             throw _torii_wrap_api_exception($e);
         }
     }
+}
+
+/**
+ * The generated DTOs expect snake_case property names but real-world callers
+ * naturally pass camelCase (matches the JSON wire). Convert at the boundary.
+ *
+ * @param array<string, mixed> $data
+ * @return array<string, mixed>
+ *
+ * @internal
+ */
+function _torii_snake_keys(array $data): array
+{
+    $out = [];
+    foreach ($data as $key => $value) {
+        $snake = strtolower((string) preg_replace('/([A-Z])/', '_$1', (string) $key));
+        $out[ltrim($snake, '_')] = $value;
+    }
+    return $out;
 }
 
 /**

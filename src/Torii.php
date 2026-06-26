@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Torii\Backend;
 
 use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
 use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\RequestInterface;
 use Torii\Backend\Generated\Api\ServerSessionsApi;
 use Torii\Backend\Generated\Api\ServerUsersApi;
 use Torii\Backend\Generated\Configuration;
@@ -48,13 +45,13 @@ final class Torii
      * @param string|null $apiUrl Backend API base URL. Defaults to
      *                            `https://api.torii.so`.
      * @param ClientInterface|null $httpClient Optional PSR-18 client. Mostly
-     *                                         useful for testing — pass a
-     *                                         mock or a pre-configured Guzzle
-     *                                         instance. If supplied, the
-     *                                         caller is responsible for
-     *                                         attaching the bearer header;
-     *                                         when null, we create a Guzzle
-     *                                         client wired up with auth.
+     *                                         useful for testing — pass a mock
+     *                                         or a pre-configured Guzzle
+     *                                         instance. Auth is applied from
+     *                                         the generated `bearerAuth` scheme
+     *                                         (the secret key on the config),
+     *                                         so a custom client needs no auth
+     *                                         wiring of its own.
      */
     public static function create(
         string $secretKey,
@@ -66,9 +63,12 @@ final class Torii
         }
 
         $host = rtrim($apiUrl ?? self::DEFAULT_API_URL, '/');
-        $config = (new Configuration())->setHost($host);
+        // The spec declares a `bearerAuth` scheme; the generated operations
+        // send `Authorization: Bearer <accessToken>` from the config. The
+        // hand-rolled PATCH reads the same token off the config.
+        $config = (new Configuration())->setHost($host)->setAccessToken($secretKey);
 
-        $client = $httpClient ?? self::buildDefaultHttpClient($secretKey);
+        $client = $httpClient ?? new GuzzleClient(['timeout' => 30.0, 'http_errors' => true]);
 
         return new self(
             usersApi: new ServerUsersApi($client, $config),
@@ -76,28 +76,5 @@ final class Torii
             httpClient: $client,
             host: $host,
         );
-    }
-
-    /**
-     * Guzzle client wired up with secret-key auth + JSON accept header.
-     *
-     * Using a handler-stack middleware (rather than baking the header into
-     * default options) so callers passing their own ClientInterface can layer
-     * extra middleware without losing auth.
-     */
-    private static function buildDefaultHttpClient(string $secretKey): GuzzleClient
-    {
-        $stack = HandlerStack::create();
-        $stack->push(Middleware::mapRequest(static function (RequestInterface $request) use ($secretKey): RequestInterface {
-            return $request
-                ->withHeader('Authorization', 'Bearer ' . $secretKey)
-                ->withHeader('Accept', 'application/json');
-        }), 'torii-auth');
-
-        return new GuzzleClient([
-            'handler' => $stack,
-            'timeout' => 30.0,
-            'http_errors' => true,
-        ]);
     }
 }

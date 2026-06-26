@@ -317,15 +317,6 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     {
         $invalidProperties = [];
 
-        if ($this->container['public_metadata'] === null) {
-            $invalidProperties[] = "'public_metadata' can't be null";
-        }
-        if ($this->container['private_metadata'] === null) {
-            $invalidProperties[] = "'private_metadata' can't be null";
-        }
-        if ($this->container['unsafe_metadata'] === null) {
-            $invalidProperties[] = "'unsafe_metadata' can't be null";
-        }
         return $invalidProperties;
     }
 
@@ -480,7 +471,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets public_metadata
      *
-     * @return array<string,mixed>
+     * @return array<string,mixed>|null
      */
     public function getPublicMetadata()
     {
@@ -490,7 +481,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets public_metadata
      *
-     * @param array<string,mixed> $public_metadata Initial public metadata (SDK-readable, server-written). Max 512 bytes.
+     * @param array<string,mixed>|null $public_metadata Initial public metadata (SDK-readable, server-written). Max 512 bytes.
      *
      * @return self
      */
@@ -507,7 +498,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets private_metadata
      *
-     * @return array<string,mixed>
+     * @return array<string,mixed>|null
      */
     public function getPrivateMetadata()
     {
@@ -517,7 +508,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets private_metadata
      *
-     * @param array<string,mixed> $private_metadata Initial private metadata (server-only). Max 4096 bytes.
+     * @param array<string,mixed>|null $private_metadata Initial private metadata (server-only). Max 4096 bytes.
      *
      * @return self
      */
@@ -534,7 +525,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets unsafe_metadata
      *
-     * @return array<string,mixed>
+     * @return array<string,mixed>|null
      */
     public function getUnsafeMetadata()
     {
@@ -544,7 +535,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets unsafe_metadata
      *
-     * @param array<string,mixed> $unsafe_metadata Initial unsafe metadata (end-user writable). Max 512 bytes.
+     * @param array<string,mixed>|null $unsafe_metadata Initial unsafe metadata (end-user writable). Max 512 bytes.
      *
      * @return self
      */
