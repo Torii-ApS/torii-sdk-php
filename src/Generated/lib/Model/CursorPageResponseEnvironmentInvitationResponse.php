@@ -1,6 +1,6 @@
 <?php
 /**
- * CreateUserRequest
+ * CursorPageResponseEnvironmentInvitationResponse
  *
  * PHP version 8.1
  *
@@ -32,16 +32,16 @@ use \ArrayAccess;
 use \Torii\Backend\Generated\ObjectSerializer;
 
 /**
- * CreateUserRequest Class Doc Comment
+ * CursorPageResponseEnvironmentInvitationResponse Class Doc Comment
  *
  * @category Class
- * @description Request body for creating an end-user in your environment. All fields are optional; supply at minimum an email if you want the user to be able to sign in via email + password.
+ * @description A single page of results in a cursor-paginated list. Pass &#x60;nextCursor&#x60; as the &#x60;cursor&#x60; query parameter to fetch the following page.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializable
+class CursorPageResponseEnvironmentInvitationResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      *
      * @var string
      */
-    protected static $openAPIModelName = 'CreateUserRequest';
+    protected static $openAPIModelName = 'CursorPageResponseEnvironmentInvitationResponse';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,13 +58,9 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $openAPITypes = [
-        'email' => 'string',
-        'password' => 'string',
-        'first_name' => 'string',
-        'last_name' => 'string',
-        'public_metadata' => 'array<string,mixed>',
-        'private_metadata' => 'array<string,mixed>',
-        'unsafe_metadata' => 'array<string,mixed>'
+        'items' => '\Torii\Backend\Generated\Model\EnvironmentInvitationResponse[]',
+        'next_cursor' => 'string',
+        'has_more' => 'bool'
     ];
 
     /**
@@ -75,13 +71,9 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'email' => null,
-        'password' => null,
-        'first_name' => null,
-        'last_name' => null,
-        'public_metadata' => null,
-        'private_metadata' => null,
-        'unsafe_metadata' => null
+        'items' => null,
+        'next_cursor' => 'uuid',
+        'has_more' => null
     ];
 
     /**
@@ -90,13 +82,9 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'email' => true,
-        'password' => true,
-        'first_name' => true,
-        'last_name' => true,
-        'public_metadata' => false,
-        'private_metadata' => false,
-        'unsafe_metadata' => false
+        'items' => false,
+        'next_cursor' => true,
+        'has_more' => false
     ];
 
     /**
@@ -185,13 +173,9 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $attributeMap = [
-        'email' => 'email',
-        'password' => 'password',
-        'first_name' => 'firstName',
-        'last_name' => 'lastName',
-        'public_metadata' => 'publicMetadata',
-        'private_metadata' => 'privateMetadata',
-        'unsafe_metadata' => 'unsafeMetadata'
+        'items' => 'items',
+        'next_cursor' => 'nextCursor',
+        'has_more' => 'hasMore'
     ];
 
     /**
@@ -200,13 +184,9 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $setters = [
-        'email' => 'setEmail',
-        'password' => 'setPassword',
-        'first_name' => 'setFirstName',
-        'last_name' => 'setLastName',
-        'public_metadata' => 'setPublicMetadata',
-        'private_metadata' => 'setPrivateMetadata',
-        'unsafe_metadata' => 'setUnsafeMetadata'
+        'items' => 'setItems',
+        'next_cursor' => 'setNextCursor',
+        'has_more' => 'setHasMore'
     ];
 
     /**
@@ -215,13 +195,9 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $getters = [
-        'email' => 'getEmail',
-        'password' => 'getPassword',
-        'first_name' => 'getFirstName',
-        'last_name' => 'getLastName',
-        'public_metadata' => 'getPublicMetadata',
-        'private_metadata' => 'getPrivateMetadata',
-        'unsafe_metadata' => 'getUnsafeMetadata'
+        'items' => 'getItems',
+        'next_cursor' => 'getNextCursor',
+        'has_more' => 'getHasMore'
     ];
 
     /**
@@ -281,13 +257,9 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('email', $data ?? [], null);
-        $this->setIfExists('password', $data ?? [], null);
-        $this->setIfExists('first_name', $data ?? [], null);
-        $this->setIfExists('last_name', $data ?? [], null);
-        $this->setIfExists('public_metadata', $data ?? [], null);
-        $this->setIfExists('private_metadata', $data ?? [], null);
-        $this->setIfExists('unsafe_metadata', $data ?? [], null);
+        $this->setIfExists('items', $data ?? [], null);
+        $this->setIfExists('next_cursor', $data ?? [], null);
+        $this->setIfExists('has_more', $data ?? [], null);
     }
 
     /**
@@ -317,6 +289,12 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     {
         $invalidProperties = [];
 
+        if ($this->container['items'] === null) {
+            $invalidProperties[] = "'items' can't be null";
+        }
+        if ($this->container['has_more'] === null) {
+            $invalidProperties[] = "'has_more' can't be null";
+        }
         return $invalidProperties;
     }
 
@@ -333,218 +311,89 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
 
 
     /**
-     * Gets email
+     * Gets items
      *
-     * @return string|null
+     * @return \Torii\Backend\Generated\Model\EnvironmentInvitationResponse[]
      */
-    public function getEmail()
+    public function getItems()
     {
-        return $this->container['email'];
+        return $this->container['items'];
     }
 
     /**
-     * Sets email
+     * Sets items
      *
-     * @param string|null $email Primary email for the new user. If omitted, the user is created without a sign-in identity.
+     * @param \Torii\Backend\Generated\Model\EnvironmentInvitationResponse[] $items Items in this page, in stable order.
      *
      * @return self
      */
-    public function setEmail($email)
+    public function setItems($items)
     {
-        if (is_null($email)) {
-            array_push($this->openAPINullablesSetToNull, 'email');
+        if (is_null($items)) {
+            throw new \InvalidArgumentException('non-nullable items cannot be null');
+        }
+        $this->container['items'] = $items;
+
+        return $this;
+    }
+
+    /**
+     * Gets next_cursor
+     *
+     * @return string|null
+     */
+    public function getNextCursor()
+    {
+        return $this->container['next_cursor'];
+    }
+
+    /**
+     * Sets next_cursor
+     *
+     * @param string|null $next_cursor Cursor to pass to fetch the next page. Null when this is the last page.
+     *
+     * @return self
+     */
+    public function setNextCursor($next_cursor)
+    {
+        if (is_null($next_cursor)) {
+            array_push($this->openAPINullablesSetToNull, 'next_cursor');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('email', $nullablesSetToNull);
+            $index = array_search('next_cursor', $nullablesSetToNull);
             if ($index !== FALSE) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['email'] = $email;
+        $this->container['next_cursor'] = $next_cursor;
 
         return $this;
     }
 
     /**
-     * Gets password
+     * Gets has_more
      *
-     * @return string|null
+     * @return bool
      */
-    public function getPassword()
+    public function getHasMore()
     {
-        return $this->container['password'];
+        return $this->container['has_more'];
     }
 
     /**
-     * Sets password
+     * Sets has_more
      *
-     * @param string|null $password Initial password. Subject to the environment's password policy. Omit to create a passwordless user (e.g. social-only).
+     * @param bool $has_more True if more pages are available (equivalent to `nextCursor != null`).
      *
      * @return self
      */
-    public function setPassword($password)
+    public function setHasMore($has_more)
     {
-        if (is_null($password)) {
-            array_push($this->openAPINullablesSetToNull, 'password');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('password', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($has_more)) {
+            throw new \InvalidArgumentException('non-nullable has_more cannot be null');
         }
-        $this->container['password'] = $password;
-
-        return $this;
-    }
-
-    /**
-     * Gets first_name
-     *
-     * @return string|null
-     */
-    public function getFirstName()
-    {
-        return $this->container['first_name'];
-    }
-
-    /**
-     * Sets first_name
-     *
-     * @param string|null $first_name First (given) name to seed on the profile.
-     *
-     * @return self
-     */
-    public function setFirstName($first_name)
-    {
-        if (is_null($first_name)) {
-            array_push($this->openAPINullablesSetToNull, 'first_name');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('first_name', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['first_name'] = $first_name;
-
-        return $this;
-    }
-
-    /**
-     * Gets last_name
-     *
-     * @return string|null
-     */
-    public function getLastName()
-    {
-        return $this->container['last_name'];
-    }
-
-    /**
-     * Sets last_name
-     *
-     * @param string|null $last_name Last (family) name to seed on the profile.
-     *
-     * @return self
-     */
-    public function setLastName($last_name)
-    {
-        if (is_null($last_name)) {
-            array_push($this->openAPINullablesSetToNull, 'last_name');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('last_name', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['last_name'] = $last_name;
-
-        return $this;
-    }
-
-    /**
-     * Gets public_metadata
-     *
-     * @return array<string,mixed>|null
-     */
-    public function getPublicMetadata()
-    {
-        return $this->container['public_metadata'];
-    }
-
-    /**
-     * Sets public_metadata
-     *
-     * @param array<string,mixed>|null $public_metadata Initial public metadata (SDK-readable, server-written). Part of the 8 KB combined metadata budget.
-     *
-     * @return self
-     */
-    public function setPublicMetadata($public_metadata)
-    {
-        if (is_null($public_metadata)) {
-            throw new \InvalidArgumentException('non-nullable public_metadata cannot be null');
-        }
-        $this->container['public_metadata'] = $public_metadata;
-
-        return $this;
-    }
-
-    /**
-     * Gets private_metadata
-     *
-     * @return array<string,mixed>|null
-     */
-    public function getPrivateMetadata()
-    {
-        return $this->container['private_metadata'];
-    }
-
-    /**
-     * Sets private_metadata
-     *
-     * @param array<string,mixed>|null $private_metadata Initial private metadata (server-only). Part of the 8 KB combined metadata budget.
-     *
-     * @return self
-     */
-    public function setPrivateMetadata($private_metadata)
-    {
-        if (is_null($private_metadata)) {
-            throw new \InvalidArgumentException('non-nullable private_metadata cannot be null');
-        }
-        $this->container['private_metadata'] = $private_metadata;
-
-        return $this;
-    }
-
-    /**
-     * Gets unsafe_metadata
-     *
-     * @return array<string,mixed>|null
-     */
-    public function getUnsafeMetadata()
-    {
-        return $this->container['unsafe_metadata'];
-    }
-
-    /**
-     * Sets unsafe_metadata
-     *
-     * @param array<string,mixed>|null $unsafe_metadata Initial unsafe metadata (end-user writable). Part of the 8 KB combined metadata budget.
-     *
-     * @return self
-     */
-    public function setUnsafeMetadata($unsafe_metadata)
-    {
-        if (is_null($unsafe_metadata)) {
-            throw new \InvalidArgumentException('non-nullable unsafe_metadata cannot be null');
-        }
-        $this->container['unsafe_metadata'] = $unsafe_metadata;
+        $this->container['has_more'] = $has_more;
 
         return $this;
     }

@@ -317,7 +317,7 @@ class UpdateUserMetadataRequest implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets public_metadata
      *
-     * @param array<string,mixed>|null $public_metadata Public metadata bag: SDK-readable, server-written. Max 512 bytes.
+     * @param array<string,mixed>|null $public_metadata Public metadata bag: SDK-readable, server-written. Part of the 8 KB combined metadata budget.
      *
      * @return self
      */
@@ -344,7 +344,7 @@ class UpdateUserMetadataRequest implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets private_metadata
      *
-     * @param array<string,mixed>|null $private_metadata Private metadata bag: server-only, never exposed to the SDK or in a JWT. Max 4096 bytes.
+     * @param array<string,mixed>|null $private_metadata Private metadata bag: server-only, never exposed to the SDK or in a JWT. Part of the 8 KB combined metadata budget.
      *
      * @return self
      */
@@ -371,7 +371,7 @@ class UpdateUserMetadataRequest implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets unsafe_metadata
      *
-     * @param array<string,mixed>|null $unsafe_metadata Unsafe metadata bag: readable and writable by the end-user via the SDK. Max 512 bytes.
+     * @param array<string,mixed>|null $unsafe_metadata Unsafe metadata bag: readable and writable by the end-user via the SDK. Part of the 8 KB combined metadata budget.
      *
      * @return self
      */

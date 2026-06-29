@@ -1345,7 +1345,7 @@ class ServerUsersApi
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \Torii\Backend\Generated\Model\CursorPageResponseServerUserResponse|\Torii\Backend\Generated\Model\ProblemDetail
+     * @return \Torii\Backend\Generated\Model\CursorPageResponseServerUserResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail
      */
     public function searchUsers($limit = 20, $cursor = null, $server_user_search_request = null, string $contentType = self::contentTypes['searchUsers'][0])
     {
@@ -1365,7 +1365,7 @@ class ServerUsersApi
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \Torii\Backend\Generated\Model\CursorPageResponseServerUserResponse|\Torii\Backend\Generated\Model\ProblemDetail, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Torii\Backend\Generated\Model\CursorPageResponseServerUserResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail, HTTP status code, HTTP response headers (array of strings)
      */
     public function searchUsersWithHttpInfo($limit = 20, $cursor = null, $server_user_search_request = null, string $contentType = self::contentTypes['searchUsers'][0])
     {
@@ -1398,6 +1398,12 @@ class ServerUsersApi
                 case 200:
                     return $this->handleResponseWithDataType(
                         '\Torii\Backend\Generated\Model\CursorPageResponseServerUserResponse',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
                         $request,
                         $response,
                     );
@@ -1435,6 +1441,14 @@ class ServerUsersApi
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\Torii\Backend\Generated\Model\CursorPageResponseServerUserResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);

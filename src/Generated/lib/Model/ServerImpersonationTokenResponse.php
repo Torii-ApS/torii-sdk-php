@@ -1,6 +1,6 @@
 <?php
 /**
- * CreateUserRequest
+ * ServerImpersonationTokenResponse
  *
  * PHP version 8.1
  *
@@ -32,16 +32,16 @@ use \ArrayAccess;
 use \Torii\Backend\Generated\ObjectSerializer;
 
 /**
- * CreateUserRequest Class Doc Comment
+ * ServerImpersonationTokenResponse Class Doc Comment
  *
  * @category Class
- * @description Request body for creating an end-user in your environment. All fields are optional; supply at minimum an email if you want the user to be able to sign in via email + password.
+ * @description A minted impersonation token.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializable
+class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      *
      * @var string
      */
-    protected static $openAPIModelName = 'CreateUserRequest';
+    protected static $openAPIModelName = 'ServerImpersonationTokenResponse';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,13 +58,8 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $openAPITypes = [
-        'email' => 'string',
-        'password' => 'string',
-        'first_name' => 'string',
-        'last_name' => 'string',
-        'public_metadata' => 'array<string,mixed>',
-        'private_metadata' => 'array<string,mixed>',
-        'unsafe_metadata' => 'array<string,mixed>'
+        'token' => 'string',
+        'expires_in_seconds' => 'int'
     ];
 
     /**
@@ -75,13 +70,8 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'email' => null,
-        'password' => null,
-        'first_name' => null,
-        'last_name' => null,
-        'public_metadata' => null,
-        'private_metadata' => null,
-        'unsafe_metadata' => null
+        'token' => null,
+        'expires_in_seconds' => 'int64'
     ];
 
     /**
@@ -90,13 +80,8 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'email' => true,
-        'password' => true,
-        'first_name' => true,
-        'last_name' => true,
-        'public_metadata' => false,
-        'private_metadata' => false,
-        'unsafe_metadata' => false
+        'token' => false,
+        'expires_in_seconds' => false
     ];
 
     /**
@@ -185,13 +170,8 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $attributeMap = [
-        'email' => 'email',
-        'password' => 'password',
-        'first_name' => 'firstName',
-        'last_name' => 'lastName',
-        'public_metadata' => 'publicMetadata',
-        'private_metadata' => 'privateMetadata',
-        'unsafe_metadata' => 'unsafeMetadata'
+        'token' => 'token',
+        'expires_in_seconds' => 'expiresInSeconds'
     ];
 
     /**
@@ -200,13 +180,8 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $setters = [
-        'email' => 'setEmail',
-        'password' => 'setPassword',
-        'first_name' => 'setFirstName',
-        'last_name' => 'setLastName',
-        'public_metadata' => 'setPublicMetadata',
-        'private_metadata' => 'setPrivateMetadata',
-        'unsafe_metadata' => 'setUnsafeMetadata'
+        'token' => 'setToken',
+        'expires_in_seconds' => 'setExpiresInSeconds'
     ];
 
     /**
@@ -215,13 +190,8 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $getters = [
-        'email' => 'getEmail',
-        'password' => 'getPassword',
-        'first_name' => 'getFirstName',
-        'last_name' => 'getLastName',
-        'public_metadata' => 'getPublicMetadata',
-        'private_metadata' => 'getPrivateMetadata',
-        'unsafe_metadata' => 'getUnsafeMetadata'
+        'token' => 'getToken',
+        'expires_in_seconds' => 'getExpiresInSeconds'
     ];
 
     /**
@@ -281,13 +251,8 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('email', $data ?? [], null);
-        $this->setIfExists('password', $data ?? [], null);
-        $this->setIfExists('first_name', $data ?? [], null);
-        $this->setIfExists('last_name', $data ?? [], null);
-        $this->setIfExists('public_metadata', $data ?? [], null);
-        $this->setIfExists('private_metadata', $data ?? [], null);
-        $this->setIfExists('unsafe_metadata', $data ?? [], null);
+        $this->setIfExists('token', $data ?? [], null);
+        $this->setIfExists('expires_in_seconds', $data ?? [], null);
     }
 
     /**
@@ -317,6 +282,12 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     {
         $invalidProperties = [];
 
+        if ($this->container['token'] === null) {
+            $invalidProperties[] = "'token' can't be null";
+        }
+        if ($this->container['expires_in_seconds'] === null) {
+            $invalidProperties[] = "'expires_in_seconds' can't be null";
+        }
         return $invalidProperties;
     }
 
@@ -333,218 +304,55 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
 
 
     /**
-     * Gets email
+     * Gets token
      *
-     * @return string|null
+     * @return string
      */
-    public function getEmail()
+    public function getToken()
     {
-        return $this->container['email'];
+        return $this->container['token'];
     }
 
     /**
-     * Sets email
+     * Sets token
      *
-     * @param string|null $email Primary email for the new user. If omitted, the user is created without a sign-in identity.
+     * @param string $token The single-use token. Redeem via POST /_torii/auth/session/impersonate.
      *
      * @return self
      */
-    public function setEmail($email)
+    public function setToken($token)
     {
-        if (is_null($email)) {
-            array_push($this->openAPINullablesSetToNull, 'email');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('email', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($token)) {
+            throw new \InvalidArgumentException('non-nullable token cannot be null');
         }
-        $this->container['email'] = $email;
+        $this->container['token'] = $token;
 
         return $this;
     }
 
     /**
-     * Gets password
+     * Gets expires_in_seconds
      *
-     * @return string|null
+     * @return int
      */
-    public function getPassword()
+    public function getExpiresInSeconds()
     {
-        return $this->container['password'];
+        return $this->container['expires_in_seconds'];
     }
 
     /**
-     * Sets password
+     * Sets expires_in_seconds
      *
-     * @param string|null $password Initial password. Subject to the environment's password policy. Omit to create a passwordless user (e.g. social-only).
+     * @param int $expires_in_seconds The token's lifetime in seconds (the resolved value after any override).
      *
      * @return self
      */
-    public function setPassword($password)
+    public function setExpiresInSeconds($expires_in_seconds)
     {
-        if (is_null($password)) {
-            array_push($this->openAPINullablesSetToNull, 'password');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('password', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+        if (is_null($expires_in_seconds)) {
+            throw new \InvalidArgumentException('non-nullable expires_in_seconds cannot be null');
         }
-        $this->container['password'] = $password;
-
-        return $this;
-    }
-
-    /**
-     * Gets first_name
-     *
-     * @return string|null
-     */
-    public function getFirstName()
-    {
-        return $this->container['first_name'];
-    }
-
-    /**
-     * Sets first_name
-     *
-     * @param string|null $first_name First (given) name to seed on the profile.
-     *
-     * @return self
-     */
-    public function setFirstName($first_name)
-    {
-        if (is_null($first_name)) {
-            array_push($this->openAPINullablesSetToNull, 'first_name');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('first_name', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['first_name'] = $first_name;
-
-        return $this;
-    }
-
-    /**
-     * Gets last_name
-     *
-     * @return string|null
-     */
-    public function getLastName()
-    {
-        return $this->container['last_name'];
-    }
-
-    /**
-     * Sets last_name
-     *
-     * @param string|null $last_name Last (family) name to seed on the profile.
-     *
-     * @return self
-     */
-    public function setLastName($last_name)
-    {
-        if (is_null($last_name)) {
-            array_push($this->openAPINullablesSetToNull, 'last_name');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('last_name', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['last_name'] = $last_name;
-
-        return $this;
-    }
-
-    /**
-     * Gets public_metadata
-     *
-     * @return array<string,mixed>|null
-     */
-    public function getPublicMetadata()
-    {
-        return $this->container['public_metadata'];
-    }
-
-    /**
-     * Sets public_metadata
-     *
-     * @param array<string,mixed>|null $public_metadata Initial public metadata (SDK-readable, server-written). Part of the 8 KB combined metadata budget.
-     *
-     * @return self
-     */
-    public function setPublicMetadata($public_metadata)
-    {
-        if (is_null($public_metadata)) {
-            throw new \InvalidArgumentException('non-nullable public_metadata cannot be null');
-        }
-        $this->container['public_metadata'] = $public_metadata;
-
-        return $this;
-    }
-
-    /**
-     * Gets private_metadata
-     *
-     * @return array<string,mixed>|null
-     */
-    public function getPrivateMetadata()
-    {
-        return $this->container['private_metadata'];
-    }
-
-    /**
-     * Sets private_metadata
-     *
-     * @param array<string,mixed>|null $private_metadata Initial private metadata (server-only). Part of the 8 KB combined metadata budget.
-     *
-     * @return self
-     */
-    public function setPrivateMetadata($private_metadata)
-    {
-        if (is_null($private_metadata)) {
-            throw new \InvalidArgumentException('non-nullable private_metadata cannot be null');
-        }
-        $this->container['private_metadata'] = $private_metadata;
-
-        return $this;
-    }
-
-    /**
-     * Gets unsafe_metadata
-     *
-     * @return array<string,mixed>|null
-     */
-    public function getUnsafeMetadata()
-    {
-        return $this->container['unsafe_metadata'];
-    }
-
-    /**
-     * Sets unsafe_metadata
-     *
-     * @param array<string,mixed>|null $unsafe_metadata Initial unsafe metadata (end-user writable). Part of the 8 KB combined metadata budget.
-     *
-     * @return self
-     */
-    public function setUnsafeMetadata($unsafe_metadata)
-    {
-        if (is_null($unsafe_metadata)) {
-            throw new \InvalidArgumentException('non-nullable unsafe_metadata cannot be null');
-        }
-        $this->container['unsafe_metadata'] = $unsafe_metadata;
+        $this->container['expires_in_seconds'] = $expires_in_seconds;
 
         return $this;
     }
