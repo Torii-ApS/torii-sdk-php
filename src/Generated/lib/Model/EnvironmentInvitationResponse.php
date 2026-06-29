@@ -1,6 +1,6 @@
 <?php
 /**
- * CreateUserRequest
+ * EnvironmentInvitationResponse
  *
  * PHP version 8.1
  *
@@ -32,16 +32,15 @@ use \ArrayAccess;
 use \Torii\Backend\Generated\ObjectSerializer;
 
 /**
- * CreateUserRequest Class Doc Comment
+ * EnvironmentInvitationResponse Class Doc Comment
  *
  * @category Class
- * @description Request body for creating an end-user in your environment. All fields are optional; supply at minimum an email if you want the user to be able to sign in via email + password.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializable
+class EnvironmentInvitationResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +49,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      *
      * @var string
      */
-    protected static $openAPIModelName = 'CreateUserRequest';
+    protected static $openAPIModelName = 'EnvironmentInvitationResponse';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,13 +57,14 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $openAPITypes = [
+        'id' => 'string',
+        'environment_id' => 'string',
         'email' => 'string',
-        'password' => 'string',
-        'first_name' => 'string',
-        'last_name' => 'string',
-        'public_metadata' => 'array<string,mixed>',
-        'private_metadata' => 'array<string,mixed>',
-        'unsafe_metadata' => 'array<string,mixed>'
+        'status' => 'string',
+        'expires_at' => '\DateTime',
+        'created_at' => '\DateTime',
+        'accepted_at' => '\DateTime',
+        'revoked_at' => '\DateTime'
     ];
 
     /**
@@ -75,13 +75,14 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
+        'id' => 'uuid',
+        'environment_id' => 'uuid',
         'email' => null,
-        'password' => null,
-        'first_name' => null,
-        'last_name' => null,
-        'public_metadata' => null,
-        'private_metadata' => null,
-        'unsafe_metadata' => null
+        'status' => null,
+        'expires_at' => 'date-time',
+        'created_at' => 'date-time',
+        'accepted_at' => 'date-time',
+        'revoked_at' => 'date-time'
     ];
 
     /**
@@ -90,13 +91,14 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'email' => true,
-        'password' => true,
-        'first_name' => true,
-        'last_name' => true,
-        'public_metadata' => false,
-        'private_metadata' => false,
-        'unsafe_metadata' => false
+        'id' => false,
+        'environment_id' => false,
+        'email' => false,
+        'status' => false,
+        'expires_at' => false,
+        'created_at' => false,
+        'accepted_at' => true,
+        'revoked_at' => true
     ];
 
     /**
@@ -185,13 +187,14 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $attributeMap = [
+        'id' => 'id',
+        'environment_id' => 'environmentId',
         'email' => 'email',
-        'password' => 'password',
-        'first_name' => 'firstName',
-        'last_name' => 'lastName',
-        'public_metadata' => 'publicMetadata',
-        'private_metadata' => 'privateMetadata',
-        'unsafe_metadata' => 'unsafeMetadata'
+        'status' => 'status',
+        'expires_at' => 'expiresAt',
+        'created_at' => 'createdAt',
+        'accepted_at' => 'acceptedAt',
+        'revoked_at' => 'revokedAt'
     ];
 
     /**
@@ -200,13 +203,14 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $setters = [
+        'id' => 'setId',
+        'environment_id' => 'setEnvironmentId',
         'email' => 'setEmail',
-        'password' => 'setPassword',
-        'first_name' => 'setFirstName',
-        'last_name' => 'setLastName',
-        'public_metadata' => 'setPublicMetadata',
-        'private_metadata' => 'setPrivateMetadata',
-        'unsafe_metadata' => 'setUnsafeMetadata'
+        'status' => 'setStatus',
+        'expires_at' => 'setExpiresAt',
+        'created_at' => 'setCreatedAt',
+        'accepted_at' => 'setAcceptedAt',
+        'revoked_at' => 'setRevokedAt'
     ];
 
     /**
@@ -215,13 +219,14 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $getters = [
+        'id' => 'getId',
+        'environment_id' => 'getEnvironmentId',
         'email' => 'getEmail',
-        'password' => 'getPassword',
-        'first_name' => 'getFirstName',
-        'last_name' => 'getLastName',
-        'public_metadata' => 'getPublicMetadata',
-        'private_metadata' => 'getPrivateMetadata',
-        'unsafe_metadata' => 'getUnsafeMetadata'
+        'status' => 'getStatus',
+        'expires_at' => 'getExpiresAt',
+        'created_at' => 'getCreatedAt',
+        'accepted_at' => 'getAcceptedAt',
+        'revoked_at' => 'getRevokedAt'
     ];
 
     /**
@@ -265,6 +270,25 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
         return self::$openAPIModelName;
     }
 
+    public const STATUS_PENDING = 'PENDING';
+    public const STATUS_ACCEPTED = 'ACCEPTED';
+    public const STATUS_REVOKED = 'REVOKED';
+    public const STATUS_EXPIRED = 'EXPIRED';
+
+    /**
+     * Gets allowable values of the enum
+     *
+     * @return string[]
+     */
+    public function getStatusAllowableValues()
+    {
+        return [
+            self::STATUS_PENDING,
+            self::STATUS_ACCEPTED,
+            self::STATUS_REVOKED,
+            self::STATUS_EXPIRED,
+        ];
+    }
 
     /**
      * Associative array for storing property values
@@ -281,13 +305,14 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      */
     public function __construct(?array $data = null)
     {
+        $this->setIfExists('id', $data ?? [], null);
+        $this->setIfExists('environment_id', $data ?? [], null);
         $this->setIfExists('email', $data ?? [], null);
-        $this->setIfExists('password', $data ?? [], null);
-        $this->setIfExists('first_name', $data ?? [], null);
-        $this->setIfExists('last_name', $data ?? [], null);
-        $this->setIfExists('public_metadata', $data ?? [], null);
-        $this->setIfExists('private_metadata', $data ?? [], null);
-        $this->setIfExists('unsafe_metadata', $data ?? [], null);
+        $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('expires_at', $data ?? [], null);
+        $this->setIfExists('created_at', $data ?? [], null);
+        $this->setIfExists('accepted_at', $data ?? [], null);
+        $this->setIfExists('revoked_at', $data ?? [], null);
     }
 
     /**
@@ -317,6 +342,33 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     {
         $invalidProperties = [];
 
+        if ($this->container['id'] === null) {
+            $invalidProperties[] = "'id' can't be null";
+        }
+        if ($this->container['environment_id'] === null) {
+            $invalidProperties[] = "'environment_id' can't be null";
+        }
+        if ($this->container['email'] === null) {
+            $invalidProperties[] = "'email' can't be null";
+        }
+        if ($this->container['status'] === null) {
+            $invalidProperties[] = "'status' can't be null";
+        }
+        $allowedValues = $this->getStatusAllowableValues();
+        if (!is_null($this->container['status']) && !in_array($this->container['status'], $allowedValues, true)) {
+            $invalidProperties[] = sprintf(
+                "invalid value '%s' for 'status', must be one of '%s'",
+                $this->container['status'],
+                implode("', '", $allowedValues)
+            );
+        }
+
+        if ($this->container['expires_at'] === null) {
+            $invalidProperties[] = "'expires_at' can't be null";
+        }
+        if ($this->container['created_at'] === null) {
+            $invalidProperties[] = "'created_at' can't be null";
+        }
         return $invalidProperties;
     }
 
@@ -333,9 +385,63 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
 
 
     /**
+     * Gets id
+     *
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
+
+    /**
+     * Sets id
+     *
+     * @param string $id id
+     *
+     * @return self
+     */
+    public function setId($id)
+    {
+        if (is_null($id)) {
+            throw new \InvalidArgumentException('non-nullable id cannot be null');
+        }
+        $this->container['id'] = $id;
+
+        return $this;
+    }
+
+    /**
+     * Gets environment_id
+     *
+     * @return string
+     */
+    public function getEnvironmentId()
+    {
+        return $this->container['environment_id'];
+    }
+
+    /**
+     * Sets environment_id
+     *
+     * @param string $environment_id environment_id
+     *
+     * @return self
+     */
+    public function setEnvironmentId($environment_id)
+    {
+        if (is_null($environment_id)) {
+            throw new \InvalidArgumentException('non-nullable environment_id cannot be null');
+        }
+        $this->container['environment_id'] = $environment_id;
+
+        return $this;
+    }
+
+    /**
      * Gets email
      *
-     * @return string|null
+     * @return string
      */
     public function getEmail()
     {
@@ -345,21 +451,14 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets email
      *
-     * @param string|null $email Primary email for the new user. If omitted, the user is created without a sign-in identity.
+     * @param string $email email
      *
      * @return self
      */
     public function setEmail($email)
     {
         if (is_null($email)) {
-            array_push($this->openAPINullablesSetToNull, 'email');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('email', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+            throw new \InvalidArgumentException('non-nullable email cannot be null');
         }
         $this->container['email'] = $email;
 
@@ -367,184 +466,160 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     }
 
     /**
-     * Gets password
+     * Gets status
      *
-     * @return string|null
+     * @return string
      */
-    public function getPassword()
+    public function getStatus()
     {
-        return $this->container['password'];
+        return $this->container['status'];
     }
 
     /**
-     * Sets password
+     * Sets status
      *
-     * @param string|null $password Initial password. Subject to the environment's password policy. Omit to create a passwordless user (e.g. social-only).
+     * @param string $status status
      *
      * @return self
      */
-    public function setPassword($password)
+    public function setStatus($status)
     {
-        if (is_null($password)) {
-            array_push($this->openAPINullablesSetToNull, 'password');
+        if (is_null($status)) {
+            throw new \InvalidArgumentException('non-nullable status cannot be null');
+        }
+        $allowedValues = $this->getStatusAllowableValues();
+        if (!in_array($status, $allowedValues, true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value '%s' for 'status', must be one of '%s'",
+                    $status,
+                    implode("', '", $allowedValues)
+                )
+            );
+        }
+        $this->container['status'] = $status;
+
+        return $this;
+    }
+
+    /**
+     * Gets expires_at
+     *
+     * @return \DateTime
+     */
+    public function getExpiresAt()
+    {
+        return $this->container['expires_at'];
+    }
+
+    /**
+     * Sets expires_at
+     *
+     * @param \DateTime $expires_at expires_at
+     *
+     * @return self
+     */
+    public function setExpiresAt($expires_at)
+    {
+        if (is_null($expires_at)) {
+            throw new \InvalidArgumentException('non-nullable expires_at cannot be null');
+        }
+        $this->container['expires_at'] = $expires_at;
+
+        return $this;
+    }
+
+    /**
+     * Gets created_at
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->container['created_at'];
+    }
+
+    /**
+     * Sets created_at
+     *
+     * @param \DateTime $created_at created_at
+     *
+     * @return self
+     */
+    public function setCreatedAt($created_at)
+    {
+        if (is_null($created_at)) {
+            throw new \InvalidArgumentException('non-nullable created_at cannot be null');
+        }
+        $this->container['created_at'] = $created_at;
+
+        return $this;
+    }
+
+    /**
+     * Gets accepted_at
+     *
+     * @return \DateTime|null
+     */
+    public function getAcceptedAt()
+    {
+        return $this->container['accepted_at'];
+    }
+
+    /**
+     * Sets accepted_at
+     *
+     * @param \DateTime|null $accepted_at accepted_at
+     *
+     * @return self
+     */
+    public function setAcceptedAt($accepted_at)
+    {
+        if (is_null($accepted_at)) {
+            array_push($this->openAPINullablesSetToNull, 'accepted_at');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('password', $nullablesSetToNull);
+            $index = array_search('accepted_at', $nullablesSetToNull);
             if ($index !== FALSE) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['password'] = $password;
+        $this->container['accepted_at'] = $accepted_at;
 
         return $this;
     }
 
     /**
-     * Gets first_name
+     * Gets revoked_at
      *
-     * @return string|null
+     * @return \DateTime|null
      */
-    public function getFirstName()
+    public function getRevokedAt()
     {
-        return $this->container['first_name'];
+        return $this->container['revoked_at'];
     }
 
     /**
-     * Sets first_name
+     * Sets revoked_at
      *
-     * @param string|null $first_name First (given) name to seed on the profile.
+     * @param \DateTime|null $revoked_at revoked_at
      *
      * @return self
      */
-    public function setFirstName($first_name)
+    public function setRevokedAt($revoked_at)
     {
-        if (is_null($first_name)) {
-            array_push($this->openAPINullablesSetToNull, 'first_name');
+        if (is_null($revoked_at)) {
+            array_push($this->openAPINullablesSetToNull, 'revoked_at');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('first_name', $nullablesSetToNull);
+            $index = array_search('revoked_at', $nullablesSetToNull);
             if ($index !== FALSE) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['first_name'] = $first_name;
-
-        return $this;
-    }
-
-    /**
-     * Gets last_name
-     *
-     * @return string|null
-     */
-    public function getLastName()
-    {
-        return $this->container['last_name'];
-    }
-
-    /**
-     * Sets last_name
-     *
-     * @param string|null $last_name Last (family) name to seed on the profile.
-     *
-     * @return self
-     */
-    public function setLastName($last_name)
-    {
-        if (is_null($last_name)) {
-            array_push($this->openAPINullablesSetToNull, 'last_name');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('last_name', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['last_name'] = $last_name;
-
-        return $this;
-    }
-
-    /**
-     * Gets public_metadata
-     *
-     * @return array<string,mixed>|null
-     */
-    public function getPublicMetadata()
-    {
-        return $this->container['public_metadata'];
-    }
-
-    /**
-     * Sets public_metadata
-     *
-     * @param array<string,mixed>|null $public_metadata Initial public metadata (SDK-readable, server-written). Part of the 8 KB combined metadata budget.
-     *
-     * @return self
-     */
-    public function setPublicMetadata($public_metadata)
-    {
-        if (is_null($public_metadata)) {
-            throw new \InvalidArgumentException('non-nullable public_metadata cannot be null');
-        }
-        $this->container['public_metadata'] = $public_metadata;
-
-        return $this;
-    }
-
-    /**
-     * Gets private_metadata
-     *
-     * @return array<string,mixed>|null
-     */
-    public function getPrivateMetadata()
-    {
-        return $this->container['private_metadata'];
-    }
-
-    /**
-     * Sets private_metadata
-     *
-     * @param array<string,mixed>|null $private_metadata Initial private metadata (server-only). Part of the 8 KB combined metadata budget.
-     *
-     * @return self
-     */
-    public function setPrivateMetadata($private_metadata)
-    {
-        if (is_null($private_metadata)) {
-            throw new \InvalidArgumentException('non-nullable private_metadata cannot be null');
-        }
-        $this->container['private_metadata'] = $private_metadata;
-
-        return $this;
-    }
-
-    /**
-     * Gets unsafe_metadata
-     *
-     * @return array<string,mixed>|null
-     */
-    public function getUnsafeMetadata()
-    {
-        return $this->container['unsafe_metadata'];
-    }
-
-    /**
-     * Sets unsafe_metadata
-     *
-     * @param array<string,mixed>|null $unsafe_metadata Initial unsafe metadata (end-user writable). Part of the 8 KB combined metadata budget.
-     *
-     * @return self
-     */
-    public function setUnsafeMetadata($unsafe_metadata)
-    {
-        if (is_null($unsafe_metadata)) {
-            throw new \InvalidArgumentException('non-nullable unsafe_metadata cannot be null');
-        }
-        $this->container['unsafe_metadata'] = $unsafe_metadata;
+        $this->container['revoked_at'] = $revoked_at;
 
         return $this;
     }

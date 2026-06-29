@@ -460,7 +460,7 @@ class UpdateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets unsafe_metadata
      *
-     * @param array<string,mixed>|null $unsafe_metadata Deep-merges into the user's unsafe metadata (a key set to null removes it); omit to leave unchanged. Merged result max 512 bytes.
+     * @param array<string,mixed>|null $unsafe_metadata Deep-merges into the user's unsafe metadata (a key set to null removes it); omit to leave unchanged. Counts toward the 8 KB combined metadata budget.
      *
      * @return self
      */

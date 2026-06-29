@@ -1,6 +1,6 @@
 <?php
 /**
- * CreateUserRequest
+ * CreateEnvironmentInvitationServerRequest
  *
  * PHP version 8.1
  *
@@ -32,16 +32,15 @@ use \ArrayAccess;
 use \Torii\Backend\Generated\ObjectSerializer;
 
 /**
- * CreateUserRequest Class Doc Comment
+ * CreateEnvironmentInvitationServerRequest Class Doc Comment
  *
  * @category Class
- * @description Request body for creating an end-user in your environment. All fields are optional; supply at minimum an email if you want the user to be able to sign in via email + password.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializable
+class CreateEnvironmentInvitationServerRequest implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +49,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      *
      * @var string
      */
-    protected static $openAPIModelName = 'CreateUserRequest';
+    protected static $openAPIModelName = 'CreateEnvironmentInvitationServerRequest';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -59,12 +58,10 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      */
     protected static $openAPITypes = [
         'email' => 'string',
-        'password' => 'string',
-        'first_name' => 'string',
-        'last_name' => 'string',
+        'expires_in_days' => 'int',
+        'redirect_url' => 'string',
         'public_metadata' => 'array<string,mixed>',
-        'private_metadata' => 'array<string,mixed>',
-        'unsafe_metadata' => 'array<string,mixed>'
+        'private_metadata' => 'array<string,mixed>'
     ];
 
     /**
@@ -76,12 +73,10 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      */
     protected static $openAPIFormats = [
         'email' => null,
-        'password' => null,
-        'first_name' => null,
-        'last_name' => null,
+        'expires_in_days' => 'int32',
+        'redirect_url' => null,
         'public_metadata' => null,
-        'private_metadata' => null,
-        'unsafe_metadata' => null
+        'private_metadata' => null
     ];
 
     /**
@@ -90,13 +85,11 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'email' => true,
-        'password' => true,
-        'first_name' => true,
-        'last_name' => true,
+        'email' => false,
+        'expires_in_days' => true,
+        'redirect_url' => true,
         'public_metadata' => false,
-        'private_metadata' => false,
-        'unsafe_metadata' => false
+        'private_metadata' => false
     ];
 
     /**
@@ -186,12 +179,10 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      */
     protected static $attributeMap = [
         'email' => 'email',
-        'password' => 'password',
-        'first_name' => 'firstName',
-        'last_name' => 'lastName',
+        'expires_in_days' => 'expiresInDays',
+        'redirect_url' => 'redirectUrl',
         'public_metadata' => 'publicMetadata',
-        'private_metadata' => 'privateMetadata',
-        'unsafe_metadata' => 'unsafeMetadata'
+        'private_metadata' => 'privateMetadata'
     ];
 
     /**
@@ -201,12 +192,10 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      */
     protected static $setters = [
         'email' => 'setEmail',
-        'password' => 'setPassword',
-        'first_name' => 'setFirstName',
-        'last_name' => 'setLastName',
+        'expires_in_days' => 'setExpiresInDays',
+        'redirect_url' => 'setRedirectUrl',
         'public_metadata' => 'setPublicMetadata',
-        'private_metadata' => 'setPrivateMetadata',
-        'unsafe_metadata' => 'setUnsafeMetadata'
+        'private_metadata' => 'setPrivateMetadata'
     ];
 
     /**
@@ -216,12 +205,10 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
      */
     protected static $getters = [
         'email' => 'getEmail',
-        'password' => 'getPassword',
-        'first_name' => 'getFirstName',
-        'last_name' => 'getLastName',
+        'expires_in_days' => 'getExpiresInDays',
+        'redirect_url' => 'getRedirectUrl',
         'public_metadata' => 'getPublicMetadata',
-        'private_metadata' => 'getPrivateMetadata',
-        'unsafe_metadata' => 'getUnsafeMetadata'
+        'private_metadata' => 'getPrivateMetadata'
     ];
 
     /**
@@ -282,12 +269,10 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function __construct(?array $data = null)
     {
         $this->setIfExists('email', $data ?? [], null);
-        $this->setIfExists('password', $data ?? [], null);
-        $this->setIfExists('first_name', $data ?? [], null);
-        $this->setIfExists('last_name', $data ?? [], null);
+        $this->setIfExists('expires_in_days', $data ?? [], null);
+        $this->setIfExists('redirect_url', $data ?? [], null);
         $this->setIfExists('public_metadata', $data ?? [], null);
         $this->setIfExists('private_metadata', $data ?? [], null);
-        $this->setIfExists('unsafe_metadata', $data ?? [], null);
     }
 
     /**
@@ -317,6 +302,15 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     {
         $invalidProperties = [];
 
+        if ($this->container['email'] === null) {
+            $invalidProperties[] = "'email' can't be null";
+        }
+        if ($this->container['public_metadata'] === null) {
+            $invalidProperties[] = "'public_metadata' can't be null";
+        }
+        if ($this->container['private_metadata'] === null) {
+            $invalidProperties[] = "'private_metadata' can't be null";
+        }
         return $invalidProperties;
     }
 
@@ -335,7 +329,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets email
      *
-     * @return string|null
+     * @return string
      */
     public function getEmail()
     {
@@ -345,21 +339,14 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets email
      *
-     * @param string|null $email Primary email for the new user. If omitted, the user is created without a sign-in identity.
+     * @param string $email email
      *
      * @return self
      */
     public function setEmail($email)
     {
         if (is_null($email)) {
-            array_push($this->openAPINullablesSetToNull, 'email');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('email', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
+            throw new \InvalidArgumentException('non-nullable email cannot be null');
         }
         $this->container['email'] = $email;
 
@@ -367,103 +354,69 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     }
 
     /**
-     * Gets password
+     * Gets expires_in_days
      *
-     * @return string|null
+     * @return int|null
      */
-    public function getPassword()
+    public function getExpiresInDays()
     {
-        return $this->container['password'];
+        return $this->container['expires_in_days'];
     }
 
     /**
-     * Sets password
+     * Sets expires_in_days
      *
-     * @param string|null $password Initial password. Subject to the environment's password policy. Omit to create a passwordless user (e.g. social-only).
+     * @param int|null $expires_in_days expires_in_days
      *
      * @return self
      */
-    public function setPassword($password)
+    public function setExpiresInDays($expires_in_days)
     {
-        if (is_null($password)) {
-            array_push($this->openAPINullablesSetToNull, 'password');
+        if (is_null($expires_in_days)) {
+            array_push($this->openAPINullablesSetToNull, 'expires_in_days');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('password', $nullablesSetToNull);
+            $index = array_search('expires_in_days', $nullablesSetToNull);
             if ($index !== FALSE) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['password'] = $password;
+        $this->container['expires_in_days'] = $expires_in_days;
 
         return $this;
     }
 
     /**
-     * Gets first_name
+     * Gets redirect_url
      *
      * @return string|null
      */
-    public function getFirstName()
+    public function getRedirectUrl()
     {
-        return $this->container['first_name'];
+        return $this->container['redirect_url'];
     }
 
     /**
-     * Sets first_name
+     * Sets redirect_url
      *
-     * @param string|null $first_name First (given) name to seed on the profile.
+     * @param string|null $redirect_url redirect_url
      *
      * @return self
      */
-    public function setFirstName($first_name)
+    public function setRedirectUrl($redirect_url)
     {
-        if (is_null($first_name)) {
-            array_push($this->openAPINullablesSetToNull, 'first_name');
+        if (is_null($redirect_url)) {
+            array_push($this->openAPINullablesSetToNull, 'redirect_url');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('first_name', $nullablesSetToNull);
+            $index = array_search('redirect_url', $nullablesSetToNull);
             if ($index !== FALSE) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['first_name'] = $first_name;
-
-        return $this;
-    }
-
-    /**
-     * Gets last_name
-     *
-     * @return string|null
-     */
-    public function getLastName()
-    {
-        return $this->container['last_name'];
-    }
-
-    /**
-     * Sets last_name
-     *
-     * @param string|null $last_name Last (family) name to seed on the profile.
-     *
-     * @return self
-     */
-    public function setLastName($last_name)
-    {
-        if (is_null($last_name)) {
-            array_push($this->openAPINullablesSetToNull, 'last_name');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('last_name', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['last_name'] = $last_name;
+        $this->container['redirect_url'] = $redirect_url;
 
         return $this;
     }
@@ -471,7 +424,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets public_metadata
      *
-     * @return array<string,mixed>|null
+     * @return array<string,mixed>
      */
     public function getPublicMetadata()
     {
@@ -481,7 +434,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets public_metadata
      *
-     * @param array<string,mixed>|null $public_metadata Initial public metadata (SDK-readable, server-written). Part of the 8 KB combined metadata budget.
+     * @param array<string,mixed> $public_metadata public_metadata
      *
      * @return self
      */
@@ -498,7 +451,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets private_metadata
      *
-     * @return array<string,mixed>|null
+     * @return array<string,mixed>
      */
     public function getPrivateMetadata()
     {
@@ -508,7 +461,7 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets private_metadata
      *
-     * @param array<string,mixed>|null $private_metadata Initial private metadata (server-only). Part of the 8 KB combined metadata budget.
+     * @param array<string,mixed> $private_metadata private_metadata
      *
      * @return self
      */
@@ -518,33 +471,6 @@ class CreateUserRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
             throw new \InvalidArgumentException('non-nullable private_metadata cannot be null');
         }
         $this->container['private_metadata'] = $private_metadata;
-
-        return $this;
-    }
-
-    /**
-     * Gets unsafe_metadata
-     *
-     * @return array<string,mixed>|null
-     */
-    public function getUnsafeMetadata()
-    {
-        return $this->container['unsafe_metadata'];
-    }
-
-    /**
-     * Sets unsafe_metadata
-     *
-     * @param array<string,mixed>|null $unsafe_metadata Initial unsafe metadata (end-user writable). Part of the 8 KB combined metadata budget.
-     *
-     * @return self
-     */
-    public function setUnsafeMetadata($unsafe_metadata)
-    {
-        if (is_null($unsafe_metadata)) {
-            throw new \InvalidArgumentException('non-nullable unsafe_metadata cannot be null');
-        }
-        $this->container['unsafe_metadata'] = $unsafe_metadata;
 
         return $this;
     }

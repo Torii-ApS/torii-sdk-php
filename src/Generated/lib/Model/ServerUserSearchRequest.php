@@ -35,7 +35,7 @@ use \Torii\Backend\Generated\ObjectSerializer;
  * ServerUserSearchRequest Class Doc Comment
  *
  * @category Class
- * @description Optional filter body for &#x60;POST /users/search&#x60;. Every field is tri-state: omit to skip that filter, send a value to require it. Fields whose inner type is nullable (currently &#x60;name&#x60;, &#x60;email&#x60;) additionally accept JSON null to filter for users where that column is null; the non-nullable &#x60;statuses&#x60; field rejects null.
+ * @description Optional filter body for &#x60;POST /users/search&#x60;. Every field is tri-state: omit to skip that filter, send a value to apply it. The three id-selectors (&#x60;userIds&#x60;, &#x60;emailAddresses&#x60;, &#x60;email&#x60;) resolve users to a set of ids and, when more than one is supplied, are combined with AND (intersection); a supplied id-selector whose resolved set is empty returns an empty page. &#x60;name&#x60; additionally accepts JSON null to match users with no name; an explicit null or blank &#x60;email&#x60; contributes no restriction; the non-nullable &#x60;statuses&#x60; field rejects null.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
@@ -59,6 +59,8 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
      */
     protected static $openAPITypes = [
         'name' => 'string',
+        'user_ids' => 'string[]',
+        'email_addresses' => 'string[]',
         'email' => 'string',
         'statuses' => 'string[]',
         'created_after' => '\DateTime',
@@ -74,6 +76,8 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
      */
     protected static $openAPIFormats = [
         'name' => null,
+        'user_ids' => 'uuid',
+        'email_addresses' => null,
         'email' => null,
         'statuses' => null,
         'created_after' => 'date-time',
@@ -87,6 +91,8 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
      */
     protected static array $openAPINullables = [
         'name' => true,
+        'user_ids' => false,
+        'email_addresses' => false,
         'email' => true,
         'statuses' => false,
         'created_after' => true,
@@ -180,6 +186,8 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
      */
     protected static $attributeMap = [
         'name' => 'name',
+        'user_ids' => 'userIds',
+        'email_addresses' => 'emailAddresses',
         'email' => 'email',
         'statuses' => 'statuses',
         'created_after' => 'createdAfter',
@@ -193,6 +201,8 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
      */
     protected static $setters = [
         'name' => 'setName',
+        'user_ids' => 'setUserIds',
+        'email_addresses' => 'setEmailAddresses',
         'email' => 'setEmail',
         'statuses' => 'setStatuses',
         'created_after' => 'setCreatedAfter',
@@ -206,6 +216,8 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
      */
     protected static $getters = [
         'name' => 'getName',
+        'user_ids' => 'getUserIds',
+        'email_addresses' => 'getEmailAddresses',
         'email' => 'getEmail',
         'statuses' => 'getStatuses',
         'created_after' => 'getCreatedAfter',
@@ -287,6 +299,8 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     public function __construct(?array $data = null)
     {
         $this->setIfExists('name', $data ?? [], null);
+        $this->setIfExists('user_ids', $data ?? [], null);
+        $this->setIfExists('email_addresses', $data ?? [], null);
         $this->setIfExists('email', $data ?? [], null);
         $this->setIfExists('statuses', $data ?? [], null);
         $this->setIfExists('created_after', $data ?? [], null);
@@ -370,6 +384,60 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     }
 
     /**
+     * Gets user_ids
+     *
+     * @return string[]|null
+     */
+    public function getUserIds()
+    {
+        return $this->container['user_ids'];
+    }
+
+    /**
+     * Sets user_ids
+     *
+     * @param string[]|null $user_ids Restrict to these user ids (the explicit batch-by-id lookup), at most 100. AND-combined with the other id-selectors; an empty list returns an empty page.
+     *
+     * @return self
+     */
+    public function setUserIds($user_ids)
+    {
+        if (is_null($user_ids)) {
+            throw new \InvalidArgumentException('non-nullable user_ids cannot be null');
+        }
+        $this->container['user_ids'] = $user_ids;
+
+        return $this;
+    }
+
+    /**
+     * Gets email_addresses
+     *
+     * @return string[]|null
+     */
+    public function getEmailAddresses()
+    {
+        return $this->container['email_addresses'];
+    }
+
+    /**
+     * Sets email_addresses
+     *
+     * @param string[]|null $email_addresses Resolve users by exact (case-insensitive) email address (one or more, at most 100). Unlike `email`, never matches a superstring. AND-combined with the other id-selectors; an empty list, or addresses matching nobody, returns an empty page.
+     *
+     * @return self
+     */
+    public function setEmailAddresses($email_addresses)
+    {
+        if (is_null($email_addresses)) {
+            throw new \InvalidArgumentException('non-nullable email_addresses cannot be null');
+        }
+        $this->container['email_addresses'] = $email_addresses;
+
+        return $this;
+    }
+
+    /**
      * Gets email
      *
      * @return string|null
@@ -382,7 +450,7 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets email
      *
-     * @param string|null $email Filter by primary email (case-insensitive substring match). Send null to require users with no email.
+     * @param string|null $email Filter by primary email (case-insensitive substring match). AND-combined with the other id-selectors. An explicit null or blank value contributes no restriction.
      *
      * @return self
      */
