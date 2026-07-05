@@ -59,7 +59,8 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      */
     protected static $openAPITypes = [
         'token' => 'string',
-        'expires_in_seconds' => 'int'
+        'expires_in_seconds' => 'int',
+        'url' => 'string'
     ];
 
     /**
@@ -71,7 +72,8 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      */
     protected static $openAPIFormats = [
         'token' => null,
-        'expires_in_seconds' => 'int64'
+        'expires_in_seconds' => 'int64',
+        'url' => null
     ];
 
     /**
@@ -81,7 +83,8 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      */
     protected static array $openAPINullables = [
         'token' => false,
-        'expires_in_seconds' => false
+        'expires_in_seconds' => false,
+        'url' => true
     ];
 
     /**
@@ -171,7 +174,8 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      */
     protected static $attributeMap = [
         'token' => 'token',
-        'expires_in_seconds' => 'expiresInSeconds'
+        'expires_in_seconds' => 'expiresInSeconds',
+        'url' => 'url'
     ];
 
     /**
@@ -181,7 +185,8 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      */
     protected static $setters = [
         'token' => 'setToken',
-        'expires_in_seconds' => 'setExpiresInSeconds'
+        'expires_in_seconds' => 'setExpiresInSeconds',
+        'url' => 'setUrl'
     ];
 
     /**
@@ -191,7 +196,8 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      */
     protected static $getters = [
         'token' => 'getToken',
-        'expires_in_seconds' => 'getExpiresInSeconds'
+        'expires_in_seconds' => 'getExpiresInSeconds',
+        'url' => 'getUrl'
     ];
 
     /**
@@ -253,6 +259,7 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
     {
         $this->setIfExists('token', $data ?? [], null);
         $this->setIfExists('expires_in_seconds', $data ?? [], null);
+        $this->setIfExists('url', $data ?? [], null);
     }
 
     /**
@@ -316,7 +323,7 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
     /**
      * Sets token
      *
-     * @param string $token The single-use token. Redeem via POST /_torii/auth/session/impersonate.
+     * @param string $token The single-use token. Redeem via POST /_torii/auth/session/impersonate, or hand the ready-to-use `url` to an operator.
      *
      * @return self
      */
@@ -353,6 +360,40 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
             throw new \InvalidArgumentException('non-nullable expires_in_seconds cannot be null');
         }
         $this->container['expires_in_seconds'] = $expires_in_seconds;
+
+        return $this;
+    }
+
+    /**
+     * Gets url
+     *
+     * @return string|null
+     */
+    public function getUrl()
+    {
+        return $this->container['url'];
+    }
+
+    /**
+     * Sets url
+     *
+     * @param string|null $url A ready-to-use, navigable redeem link on the environment's Frontend API host. Opening it in a browser establishes the impersonated session and redirects to the landing URL. Backed by the same single-use token. Null when no landing URL could be resolved (no `redirectUrl` given and the environment has no concrete allowed origin) — redeem the `token` via POST instead.
+     *
+     * @return self
+     */
+    public function setUrl($url)
+    {
+        if (is_null($url)) {
+            array_push($this->openAPINullablesSetToNull, 'url');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('url', $nullablesSetToNull);
+            if ($index !== FALSE) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['url'] = $url;
 
         return $this;
     }

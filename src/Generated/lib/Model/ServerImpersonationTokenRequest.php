@@ -60,6 +60,7 @@ class ServerImpersonationTokenRequest implements ModelInterface, ArrayAccess, \J
     protected static $openAPITypes = [
         'actor_user_id' => 'string',
         'reason' => 'string',
+        'redirect_url' => 'string',
         'expires_in_seconds' => 'int'
     ];
 
@@ -73,6 +74,7 @@ class ServerImpersonationTokenRequest implements ModelInterface, ArrayAccess, \J
     protected static $openAPIFormats = [
         'actor_user_id' => 'uuid',
         'reason' => null,
+        'redirect_url' => null,
         'expires_in_seconds' => 'int64'
     ];
 
@@ -84,6 +86,7 @@ class ServerImpersonationTokenRequest implements ModelInterface, ArrayAccess, \J
     protected static array $openAPINullables = [
         'actor_user_id' => false,
         'reason' => false,
+        'redirect_url' => true,
         'expires_in_seconds' => true
     ];
 
@@ -175,6 +178,7 @@ class ServerImpersonationTokenRequest implements ModelInterface, ArrayAccess, \J
     protected static $attributeMap = [
         'actor_user_id' => 'actorUserId',
         'reason' => 'reason',
+        'redirect_url' => 'redirectUrl',
         'expires_in_seconds' => 'expiresInSeconds'
     ];
 
@@ -186,6 +190,7 @@ class ServerImpersonationTokenRequest implements ModelInterface, ArrayAccess, \J
     protected static $setters = [
         'actor_user_id' => 'setActorUserId',
         'reason' => 'setReason',
+        'redirect_url' => 'setRedirectUrl',
         'expires_in_seconds' => 'setExpiresInSeconds'
     ];
 
@@ -197,6 +202,7 @@ class ServerImpersonationTokenRequest implements ModelInterface, ArrayAccess, \J
     protected static $getters = [
         'actor_user_id' => 'getActorUserId',
         'reason' => 'getReason',
+        'redirect_url' => 'getRedirectUrl',
         'expires_in_seconds' => 'getExpiresInSeconds'
     ];
 
@@ -259,6 +265,7 @@ class ServerImpersonationTokenRequest implements ModelInterface, ArrayAccess, \J
     {
         $this->setIfExists('actor_user_id', $data ?? [], null);
         $this->setIfExists('reason', $data ?? [], null);
+        $this->setIfExists('redirect_url', $data ?? [], null);
         $this->setIfExists('expires_in_seconds', $data ?? [], null);
     }
 
@@ -388,6 +395,40 @@ class ServerImpersonationTokenRequest implements ModelInterface, ArrayAccess, \J
     }
 
     /**
+     * Gets redirect_url
+     *
+     * @return string|null
+     */
+    public function getRedirectUrl()
+    {
+        return $this->container['redirect_url'];
+    }
+
+    /**
+     * Sets redirect_url
+     *
+     * @param string|null $redirect_url Optional post-redeem landing URL for the `url` redeem link; its origin must be in the environment's allowed origins. Omit to default to the environment's first non-wildcard allowed origin.
+     *
+     * @return self
+     */
+    public function setRedirectUrl($redirect_url)
+    {
+        if (is_null($redirect_url)) {
+            array_push($this->openAPINullablesSetToNull, 'redirect_url');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('redirect_url', $nullablesSetToNull);
+            if ($index !== FALSE) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['redirect_url'] = $redirect_url;
+
+        return $this;
+    }
+
+    /**
      * Gets expires_in_seconds
      *
      * @return int|null
@@ -400,7 +441,7 @@ class ServerImpersonationTokenRequest implements ModelInterface, ArrayAccess, \J
     /**
      * Sets expires_in_seconds
      *
-     * @param int|null $expires_in_seconds Optional token lifetime in seconds, 60..600. Omit for the 60s default.
+     * @param int|null $expires_in_seconds Optional token lifetime in seconds, 60..600. Omit for the 600s default.
      *
      * @return self
      */
