@@ -614,7 +614,7 @@ class UserSessionResponse implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets active_organization_id
      *
-     * @param string|null $active_organization_id Active organization pinned to this session (`org_id` claim on re-mint).
+     * @param string|null $active_organization_id Active organization pinned to this session (the `o` claim on re-mint).
      *
      * @return self
      */
