@@ -1,6 +1,6 @@
 <?php
 /**
- * ServerImpersonationTokenResponse
+ * CursorPageResponseServerOrganizationResponse
  *
  * PHP version 8.1
  *
@@ -32,16 +32,16 @@ use \ArrayAccess;
 use \Torii\Backend\Generated\ObjectSerializer;
 
 /**
- * ServerImpersonationTokenResponse Class Doc Comment
+ * CursorPageResponseServerOrganizationResponse Class Doc Comment
  *
  * @category Class
- * @description A minted impersonation token.
+ * @description A single page of results in a cursor-paginated list. Pass &#x60;nextCursor&#x60; as the &#x60;cursor&#x60; query parameter to fetch the following page.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class CursorPageResponseServerOrganizationResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      *
      * @var string
      */
-    protected static $openAPIModelName = 'ServerImpersonationTokenResponse';
+    protected static $openAPIModelName = 'CursorPageResponseServerOrganizationResponse';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,9 +58,9 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $openAPITypes = [
-        'token' => 'string',
-        'expires_in_seconds' => 'int',
-        'url' => 'string'
+        'items' => '\Torii\Backend\Generated\Model\ServerOrganizationResponse[]',
+        'next_cursor' => 'string',
+        'has_more' => 'bool'
     ];
 
     /**
@@ -71,9 +71,9 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'token' => null,
-        'expires_in_seconds' => 'int64',
-        'url' => null
+        'items' => null,
+        'next_cursor' => 'uuid',
+        'has_more' => null
     ];
 
     /**
@@ -82,9 +82,9 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'token' => false,
-        'expires_in_seconds' => false,
-        'url' => true
+        'items' => false,
+        'next_cursor' => true,
+        'has_more' => false
     ];
 
     /**
@@ -173,9 +173,9 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $attributeMap = [
-        'token' => 'token',
-        'expires_in_seconds' => 'expiresInSeconds',
-        'url' => 'url'
+        'items' => 'items',
+        'next_cursor' => 'nextCursor',
+        'has_more' => 'hasMore'
     ];
 
     /**
@@ -184,9 +184,9 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $setters = [
-        'token' => 'setToken',
-        'expires_in_seconds' => 'setExpiresInSeconds',
-        'url' => 'setUrl'
+        'items' => 'setItems',
+        'next_cursor' => 'setNextCursor',
+        'has_more' => 'setHasMore'
     ];
 
     /**
@@ -195,9 +195,9 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $getters = [
-        'token' => 'getToken',
-        'expires_in_seconds' => 'getExpiresInSeconds',
-        'url' => 'getUrl'
+        'items' => 'getItems',
+        'next_cursor' => 'getNextCursor',
+        'has_more' => 'getHasMore'
     ];
 
     /**
@@ -257,9 +257,9 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('token', $data ?? [], null);
-        $this->setIfExists('expires_in_seconds', $data ?? [], null);
-        $this->setIfExists('url', $data ?? [], null);
+        $this->setIfExists('items', $data ?? [], null);
+        $this->setIfExists('next_cursor', $data ?? [], null);
+        $this->setIfExists('has_more', $data ?? [], null);
     }
 
     /**
@@ -289,11 +289,11 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
     {
         $invalidProperties = [];
 
-        if ($this->container['token'] === null) {
-            $invalidProperties[] = "'token' can't be null";
+        if ($this->container['items'] === null) {
+            $invalidProperties[] = "'items' can't be null";
         }
-        if ($this->container['expires_in_seconds'] === null) {
-            $invalidProperties[] = "'expires_in_seconds' can't be null";
+        if ($this->container['has_more'] === null) {
+            $invalidProperties[] = "'has_more' can't be null";
         }
         return $invalidProperties;
     }
@@ -311,89 +311,89 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
 
 
     /**
-     * Gets token
+     * Gets items
      *
-     * @return string
+     * @return \Torii\Backend\Generated\Model\ServerOrganizationResponse[]
      */
-    public function getToken()
+    public function getItems()
     {
-        return $this->container['token'];
+        return $this->container['items'];
     }
 
     /**
-     * Sets token
+     * Sets items
      *
-     * @param string $token The single-use token. Redeem via POST /_torii/auth/session/impersonate, or hand the ready-to-use `url` to an operator.
+     * @param \Torii\Backend\Generated\Model\ServerOrganizationResponse[] $items Items in this page, in stable order.
      *
      * @return self
      */
-    public function setToken($token)
+    public function setItems($items)
     {
-        if (is_null($token)) {
-            throw new \InvalidArgumentException('non-nullable token cannot be null');
+        if (is_null($items)) {
+            throw new \InvalidArgumentException('non-nullable items cannot be null');
         }
-        $this->container['token'] = $token;
+        $this->container['items'] = $items;
 
         return $this;
     }
 
     /**
-     * Gets expires_in_seconds
-     *
-     * @return int
-     */
-    public function getExpiresInSeconds()
-    {
-        return $this->container['expires_in_seconds'];
-    }
-
-    /**
-     * Sets expires_in_seconds
-     *
-     * @param int $expires_in_seconds The token's lifetime in seconds (the resolved value after any override).
-     *
-     * @return self
-     */
-    public function setExpiresInSeconds($expires_in_seconds)
-    {
-        if (is_null($expires_in_seconds)) {
-            throw new \InvalidArgumentException('non-nullable expires_in_seconds cannot be null');
-        }
-        $this->container['expires_in_seconds'] = $expires_in_seconds;
-
-        return $this;
-    }
-
-    /**
-     * Gets url
+     * Gets next_cursor
      *
      * @return string|null
      */
-    public function getUrl()
+    public function getNextCursor()
     {
-        return $this->container['url'];
+        return $this->container['next_cursor'];
     }
 
     /**
-     * Sets url
+     * Sets next_cursor
      *
-     * @param string|null $url A ready-to-use, navigable redeem link on the environment's Frontend API host. Opening it in a browser establishes the impersonated session and redirects to the landing URL. Backed by the same single-use token. Null when no landing URL could be resolved: no `redirectUrl` given and the environment has no concrete allowed origin other than the hosted portal's own — redeem the `token` via POST instead.
+     * @param string|null $next_cursor Cursor to pass to fetch the next page. Null when this is the last page.
      *
      * @return self
      */
-    public function setUrl($url)
+    public function setNextCursor($next_cursor)
     {
-        if (is_null($url)) {
-            array_push($this->openAPINullablesSetToNull, 'url');
+        if (is_null($next_cursor)) {
+            array_push($this->openAPINullablesSetToNull, 'next_cursor');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('url', $nullablesSetToNull);
+            $index = array_search('next_cursor', $nullablesSetToNull);
             if ($index !== FALSE) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['url'] = $url;
+        $this->container['next_cursor'] = $next_cursor;
+
+        return $this;
+    }
+
+    /**
+     * Gets has_more
+     *
+     * @return bool
+     */
+    public function getHasMore()
+    {
+        return $this->container['has_more'];
+    }
+
+    /**
+     * Sets has_more
+     *
+     * @param bool $has_more True if more pages are available (equivalent to `nextCursor != null`).
+     *
+     * @return self
+     */
+    public function setHasMore($has_more)
+    {
+        if (is_null($has_more)) {
+            throw new \InvalidArgumentException('non-nullable has_more cannot be null');
+        }
+        $this->container['has_more'] = $has_more;
 
         return $this;
     }

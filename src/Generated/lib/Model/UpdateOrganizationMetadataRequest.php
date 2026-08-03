@@ -1,6 +1,6 @@
 <?php
 /**
- * ServerImpersonationTokenResponse
+ * UpdateOrganizationMetadataRequest
  *
  * PHP version 8.1
  *
@@ -32,16 +32,15 @@ use \ArrayAccess;
 use \Torii\Backend\Generated\ObjectSerializer;
 
 /**
- * ServerImpersonationTokenResponse Class Doc Comment
+ * UpdateOrganizationMetadataRequest Class Doc Comment
  *
  * @category Class
- * @description A minted impersonation token.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class UpdateOrganizationMetadataRequest implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +49,7 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      *
      * @var string
      */
-    protected static $openAPIModelName = 'ServerImpersonationTokenResponse';
+    protected static $openAPIModelName = 'UpdateOrganizationMetadataRequest';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,9 +57,8 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $openAPITypes = [
-        'token' => 'string',
-        'expires_in_seconds' => 'int',
-        'url' => 'string'
+        'public_metadata' => 'array<string,mixed>',
+        'private_metadata' => 'array<string,mixed>'
     ];
 
     /**
@@ -71,9 +69,8 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'token' => null,
-        'expires_in_seconds' => 'int64',
-        'url' => null
+        'public_metadata' => null,
+        'private_metadata' => null
     ];
 
     /**
@@ -82,9 +79,8 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'token' => false,
-        'expires_in_seconds' => false,
-        'url' => true
+        'public_metadata' => false,
+        'private_metadata' => false
     ];
 
     /**
@@ -173,9 +169,8 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $attributeMap = [
-        'token' => 'token',
-        'expires_in_seconds' => 'expiresInSeconds',
-        'url' => 'url'
+        'public_metadata' => 'publicMetadata',
+        'private_metadata' => 'privateMetadata'
     ];
 
     /**
@@ -184,9 +179,8 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $setters = [
-        'token' => 'setToken',
-        'expires_in_seconds' => 'setExpiresInSeconds',
-        'url' => 'setUrl'
+        'public_metadata' => 'setPublicMetadata',
+        'private_metadata' => 'setPrivateMetadata'
     ];
 
     /**
@@ -195,9 +189,8 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $getters = [
-        'token' => 'getToken',
-        'expires_in_seconds' => 'getExpiresInSeconds',
-        'url' => 'getUrl'
+        'public_metadata' => 'getPublicMetadata',
+        'private_metadata' => 'getPrivateMetadata'
     ];
 
     /**
@@ -257,9 +250,8 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('token', $data ?? [], null);
-        $this->setIfExists('expires_in_seconds', $data ?? [], null);
-        $this->setIfExists('url', $data ?? [], null);
+        $this->setIfExists('public_metadata', $data ?? [], null);
+        $this->setIfExists('private_metadata', $data ?? [], null);
     }
 
     /**
@@ -289,12 +281,6 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
     {
         $invalidProperties = [];
 
-        if ($this->container['token'] === null) {
-            $invalidProperties[] = "'token' can't be null";
-        }
-        if ($this->container['expires_in_seconds'] === null) {
-            $invalidProperties[] = "'expires_in_seconds' can't be null";
-        }
         return $invalidProperties;
     }
 
@@ -311,89 +297,55 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
 
 
     /**
-     * Gets token
+     * Gets public_metadata
      *
-     * @return string
+     * @return array<string,mixed>|null
      */
-    public function getToken()
+    public function getPublicMetadata()
     {
-        return $this->container['token'];
+        return $this->container['public_metadata'];
     }
 
     /**
-     * Sets token
+     * Sets public_metadata
      *
-     * @param string $token The single-use token. Redeem via POST /_torii/auth/session/impersonate, or hand the ready-to-use `url` to an operator.
+     * @param array<string,mixed>|null $public_metadata Public metadata bag. An organization's bag is readable over the client API by any member; a MEMBERSHIP's bags are server-plane only and are never returned on a client-facing read. Capped at 8 KB on its own.
      *
      * @return self
      */
-    public function setToken($token)
+    public function setPublicMetadata($public_metadata)
     {
-        if (is_null($token)) {
-            throw new \InvalidArgumentException('non-nullable token cannot be null');
+        if (is_null($public_metadata)) {
+            throw new \InvalidArgumentException('non-nullable public_metadata cannot be null');
         }
-        $this->container['token'] = $token;
+        $this->container['public_metadata'] = $public_metadata;
 
         return $this;
     }
 
     /**
-     * Gets expires_in_seconds
+     * Gets private_metadata
      *
-     * @return int
+     * @return array<string,mixed>|null
      */
-    public function getExpiresInSeconds()
+    public function getPrivateMetadata()
     {
-        return $this->container['expires_in_seconds'];
+        return $this->container['private_metadata'];
     }
 
     /**
-     * Sets expires_in_seconds
+     * Sets private_metadata
      *
-     * @param int $expires_in_seconds The token's lifetime in seconds (the resolved value after any override).
+     * @param array<string,mixed>|null $private_metadata Private metadata bag: server-only. Never exposed to the SDK, never in a JWT. Capped at 8 KB on its own.
      *
      * @return self
      */
-    public function setExpiresInSeconds($expires_in_seconds)
+    public function setPrivateMetadata($private_metadata)
     {
-        if (is_null($expires_in_seconds)) {
-            throw new \InvalidArgumentException('non-nullable expires_in_seconds cannot be null');
+        if (is_null($private_metadata)) {
+            throw new \InvalidArgumentException('non-nullable private_metadata cannot be null');
         }
-        $this->container['expires_in_seconds'] = $expires_in_seconds;
-
-        return $this;
-    }
-
-    /**
-     * Gets url
-     *
-     * @return string|null
-     */
-    public function getUrl()
-    {
-        return $this->container['url'];
-    }
-
-    /**
-     * Sets url
-     *
-     * @param string|null $url A ready-to-use, navigable redeem link on the environment's Frontend API host. Opening it in a browser establishes the impersonated session and redirects to the landing URL. Backed by the same single-use token. Null when no landing URL could be resolved: no `redirectUrl` given and the environment has no concrete allowed origin other than the hosted portal's own — redeem the `token` via POST instead.
-     *
-     * @return self
-     */
-    public function setUrl($url)
-    {
-        if (is_null($url)) {
-            array_push($this->openAPINullablesSetToNull, 'url');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('url', $nullablesSetToNull);
-            if ($index !== FALSE) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
-        $this->container['url'] = $url;
+        $this->container['private_metadata'] = $private_metadata;
 
         return $this;
     }

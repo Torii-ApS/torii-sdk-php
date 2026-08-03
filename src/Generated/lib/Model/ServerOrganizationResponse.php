@@ -1,6 +1,6 @@
 <?php
 /**
- * ServerImpersonationTokenResponse
+ * ServerOrganizationResponse
  *
  * PHP version 8.1
  *
@@ -32,16 +32,15 @@ use \ArrayAccess;
 use \Torii\Backend\Generated\ObjectSerializer;
 
 /**
- * ServerImpersonationTokenResponse Class Doc Comment
+ * ServerOrganizationResponse Class Doc Comment
  *
  * @category Class
- * @description A minted impersonation token.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class ServerOrganizationResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +49,7 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      *
      * @var string
      */
-    protected static $openAPIModelName = 'ServerImpersonationTokenResponse';
+    protected static $openAPIModelName = 'ServerOrganizationResponse';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,9 +57,13 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $openAPITypes = [
-        'token' => 'string',
-        'expires_in_seconds' => 'int',
-        'url' => 'string'
+        'id' => 'string',
+        'name' => 'string',
+        'slug' => 'string',
+        'role_set_id' => 'string',
+        'public_metadata' => 'array<string,mixed>',
+        'private_metadata' => 'array<string,mixed>',
+        'created_at' => '\DateTime'
     ];
 
     /**
@@ -71,9 +74,13 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'token' => null,
-        'expires_in_seconds' => 'int64',
-        'url' => null
+        'id' => 'uuid',
+        'name' => null,
+        'slug' => null,
+        'role_set_id' => 'uuid',
+        'public_metadata' => null,
+        'private_metadata' => null,
+        'created_at' => 'date-time'
     ];
 
     /**
@@ -82,9 +89,13 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'token' => false,
-        'expires_in_seconds' => false,
-        'url' => true
+        'id' => false,
+        'name' => false,
+        'slug' => true,
+        'role_set_id' => true,
+        'public_metadata' => false,
+        'private_metadata' => false,
+        'created_at' => false
     ];
 
     /**
@@ -173,9 +184,13 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $attributeMap = [
-        'token' => 'token',
-        'expires_in_seconds' => 'expiresInSeconds',
-        'url' => 'url'
+        'id' => 'id',
+        'name' => 'name',
+        'slug' => 'slug',
+        'role_set_id' => 'roleSetId',
+        'public_metadata' => 'publicMetadata',
+        'private_metadata' => 'privateMetadata',
+        'created_at' => 'createdAt'
     ];
 
     /**
@@ -184,9 +199,13 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $setters = [
-        'token' => 'setToken',
-        'expires_in_seconds' => 'setExpiresInSeconds',
-        'url' => 'setUrl'
+        'id' => 'setId',
+        'name' => 'setName',
+        'slug' => 'setSlug',
+        'role_set_id' => 'setRoleSetId',
+        'public_metadata' => 'setPublicMetadata',
+        'private_metadata' => 'setPrivateMetadata',
+        'created_at' => 'setCreatedAt'
     ];
 
     /**
@@ -195,9 +214,13 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $getters = [
-        'token' => 'getToken',
-        'expires_in_seconds' => 'getExpiresInSeconds',
-        'url' => 'getUrl'
+        'id' => 'getId',
+        'name' => 'getName',
+        'slug' => 'getSlug',
+        'role_set_id' => 'getRoleSetId',
+        'public_metadata' => 'getPublicMetadata',
+        'private_metadata' => 'getPrivateMetadata',
+        'created_at' => 'getCreatedAt'
     ];
 
     /**
@@ -257,9 +280,13 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('token', $data ?? [], null);
-        $this->setIfExists('expires_in_seconds', $data ?? [], null);
-        $this->setIfExists('url', $data ?? [], null);
+        $this->setIfExists('id', $data ?? [], null);
+        $this->setIfExists('name', $data ?? [], null);
+        $this->setIfExists('slug', $data ?? [], null);
+        $this->setIfExists('role_set_id', $data ?? [], null);
+        $this->setIfExists('public_metadata', $data ?? [], null);
+        $this->setIfExists('private_metadata', $data ?? [], null);
+        $this->setIfExists('created_at', $data ?? [], null);
     }
 
     /**
@@ -289,11 +316,20 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
     {
         $invalidProperties = [];
 
-        if ($this->container['token'] === null) {
-            $invalidProperties[] = "'token' can't be null";
+        if ($this->container['id'] === null) {
+            $invalidProperties[] = "'id' can't be null";
         }
-        if ($this->container['expires_in_seconds'] === null) {
-            $invalidProperties[] = "'expires_in_seconds' can't be null";
+        if ($this->container['name'] === null) {
+            $invalidProperties[] = "'name' can't be null";
+        }
+        if ($this->container['public_metadata'] === null) {
+            $invalidProperties[] = "'public_metadata' can't be null";
+        }
+        if ($this->container['private_metadata'] === null) {
+            $invalidProperties[] = "'private_metadata' can't be null";
+        }
+        if ($this->container['created_at'] === null) {
+            $invalidProperties[] = "'created_at' can't be null";
         }
         return $invalidProperties;
     }
@@ -311,89 +347,204 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
 
 
     /**
-     * Gets token
+     * Gets id
      *
      * @return string
      */
-    public function getToken()
+    public function getId()
     {
-        return $this->container['token'];
+        return $this->container['id'];
     }
 
     /**
-     * Sets token
+     * Sets id
      *
-     * @param string $token The single-use token. Redeem via POST /_torii/auth/session/impersonate, or hand the ready-to-use `url` to an operator.
+     * @param string $id id
      *
      * @return self
      */
-    public function setToken($token)
+    public function setId($id)
     {
-        if (is_null($token)) {
-            throw new \InvalidArgumentException('non-nullable token cannot be null');
+        if (is_null($id)) {
+            throw new \InvalidArgumentException('non-nullable id cannot be null');
         }
-        $this->container['token'] = $token;
+        $this->container['id'] = $id;
 
         return $this;
     }
 
     /**
-     * Gets expires_in_seconds
+     * Gets name
      *
-     * @return int
+     * @return string
      */
-    public function getExpiresInSeconds()
+    public function getName()
     {
-        return $this->container['expires_in_seconds'];
+        return $this->container['name'];
     }
 
     /**
-     * Sets expires_in_seconds
+     * Sets name
      *
-     * @param int $expires_in_seconds The token's lifetime in seconds (the resolved value after any override).
+     * @param string $name name
      *
      * @return self
      */
-    public function setExpiresInSeconds($expires_in_seconds)
+    public function setName($name)
     {
-        if (is_null($expires_in_seconds)) {
-            throw new \InvalidArgumentException('non-nullable expires_in_seconds cannot be null');
+        if (is_null($name)) {
+            throw new \InvalidArgumentException('non-nullable name cannot be null');
         }
-        $this->container['expires_in_seconds'] = $expires_in_seconds;
+        $this->container['name'] = $name;
 
         return $this;
     }
 
     /**
-     * Gets url
+     * Gets slug
      *
      * @return string|null
      */
-    public function getUrl()
+    public function getSlug()
     {
-        return $this->container['url'];
+        return $this->container['slug'];
     }
 
     /**
-     * Sets url
+     * Sets slug
      *
-     * @param string|null $url A ready-to-use, navigable redeem link on the environment's Frontend API host. Opening it in a browser establishes the impersonated session and redirects to the landing URL. Backed by the same single-use token. Null when no landing URL could be resolved: no `redirectUrl` given and the environment has no concrete allowed origin other than the hosted portal's own — redeem the `token` via POST instead.
+     * @param string|null $slug slug
      *
      * @return self
      */
-    public function setUrl($url)
+    public function setSlug($slug)
     {
-        if (is_null($url)) {
-            array_push($this->openAPINullablesSetToNull, 'url');
+        if (is_null($slug)) {
+            array_push($this->openAPINullablesSetToNull, 'slug');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('url', $nullablesSetToNull);
+            $index = array_search('slug', $nullablesSetToNull);
             if ($index !== FALSE) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['url'] = $url;
+        $this->container['slug'] = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Gets role_set_id
+     *
+     * @return string|null
+     */
+    public function getRoleSetId()
+    {
+        return $this->container['role_set_id'];
+    }
+
+    /**
+     * Sets role_set_id
+     *
+     * @param string|null $role_set_id role_set_id
+     *
+     * @return self
+     */
+    public function setRoleSetId($role_set_id)
+    {
+        if (is_null($role_set_id)) {
+            array_push($this->openAPINullablesSetToNull, 'role_set_id');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('role_set_id', $nullablesSetToNull);
+            if ($index !== FALSE) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['role_set_id'] = $role_set_id;
+
+        return $this;
+    }
+
+    /**
+     * Gets public_metadata
+     *
+     * @return array<string,mixed>
+     */
+    public function getPublicMetadata()
+    {
+        return $this->container['public_metadata'];
+    }
+
+    /**
+     * Sets public_metadata
+     *
+     * @param array<string,mixed> $public_metadata public_metadata
+     *
+     * @return self
+     */
+    public function setPublicMetadata($public_metadata)
+    {
+        if (is_null($public_metadata)) {
+            throw new \InvalidArgumentException('non-nullable public_metadata cannot be null');
+        }
+        $this->container['public_metadata'] = $public_metadata;
+
+        return $this;
+    }
+
+    /**
+     * Gets private_metadata
+     *
+     * @return array<string,mixed>
+     */
+    public function getPrivateMetadata()
+    {
+        return $this->container['private_metadata'];
+    }
+
+    /**
+     * Sets private_metadata
+     *
+     * @param array<string,mixed> $private_metadata private_metadata
+     *
+     * @return self
+     */
+    public function setPrivateMetadata($private_metadata)
+    {
+        if (is_null($private_metadata)) {
+            throw new \InvalidArgumentException('non-nullable private_metadata cannot be null');
+        }
+        $this->container['private_metadata'] = $private_metadata;
+
+        return $this;
+    }
+
+    /**
+     * Gets created_at
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->container['created_at'];
+    }
+
+    /**
+     * Sets created_at
+     *
+     * @param \DateTime $created_at created_at
+     *
+     * @return self
+     */
+    public function setCreatedAt($created_at)
+    {
+        if (is_null($created_at)) {
+            throw new \InvalidArgumentException('non-nullable created_at cannot be null');
+        }
+        $this->container['created_at'] = $created_at;
 
         return $this;
     }

@@ -86,6 +86,9 @@ class ServerUsersApi
         'getUser' => [
             'application/json',
         ],
+        'listUserOrganizations' => [
+            'application/json',
+        ],
         'searchUsers' => [
             'application/json',
         ],
@@ -1264,6 +1267,336 @@ class ServerUsersApi
         $httpBody = '';
         $multipart = false;
 
+
+
+        // path params
+        if ($user_id !== null) {
+            $resourcePath = str_replace(
+                '{userId}',
+                ObjectSerializer::toPathValue($user_id),
+                $resourcePath
+            );
+        }
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/problem+json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'GET',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation listUserOrganizations
+     *
+     * List a user&#39;s organizations
+     *
+     * @param  string $user_id Identifier of the user whose organizations to list. (required)
+     * @param  int|null $limit Maximum number of items in the returned page (default 20). (optional, default to 20)
+     * @param  string|null $cursor Opaque cursor returned by the previous page&#39;s &#x60;nextCursor&#x60;. Omit to fetch the first page. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listUserOrganizations'] to see the possible values for this operation
+     *
+     * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \Torii\Backend\Generated\Model\CursorPageResponseServerUserOrganizationResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail
+     */
+    public function listUserOrganizations($user_id, $limit = 20, $cursor = null, string $contentType = self::contentTypes['listUserOrganizations'][0])
+    {
+        list($response) = $this->listUserOrganizationsWithHttpInfo($user_id, $limit, $cursor, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation listUserOrganizationsWithHttpInfo
+     *
+     * List a user&#39;s organizations
+     *
+     * @param  string $user_id Identifier of the user whose organizations to list. (required)
+     * @param  int|null $limit Maximum number of items in the returned page (default 20). (optional, default to 20)
+     * @param  string|null $cursor Opaque cursor returned by the previous page&#39;s &#x60;nextCursor&#x60;. Omit to fetch the first page. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listUserOrganizations'] to see the possible values for this operation
+     *
+     * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \Torii\Backend\Generated\Model\CursorPageResponseServerUserOrganizationResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function listUserOrganizationsWithHttpInfo($user_id, $limit = 20, $cursor = null, string $contentType = self::contentTypes['listUserOrganizations'][0])
+    {
+        $request = $this->listUserOrganizationsRequest($user_id, $limit, $cursor, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\CursorPageResponseServerUserOrganizationResponse',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 403:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Torii\Backend\Generated\Model\CursorPageResponseServerUserOrganizationResponse',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\CursorPageResponseServerUserOrganizationResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 403:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation listUserOrganizationsAsync
+     *
+     * List a user&#39;s organizations
+     *
+     * @param  string $user_id Identifier of the user whose organizations to list. (required)
+     * @param  int|null $limit Maximum number of items in the returned page (default 20). (optional, default to 20)
+     * @param  string|null $cursor Opaque cursor returned by the previous page&#39;s &#x60;nextCursor&#x60;. Omit to fetch the first page. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listUserOrganizations'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function listUserOrganizationsAsync($user_id, $limit = 20, $cursor = null, string $contentType = self::contentTypes['listUserOrganizations'][0])
+    {
+        return $this->listUserOrganizationsAsyncWithHttpInfo($user_id, $limit, $cursor, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation listUserOrganizationsAsyncWithHttpInfo
+     *
+     * List a user&#39;s organizations
+     *
+     * @param  string $user_id Identifier of the user whose organizations to list. (required)
+     * @param  int|null $limit Maximum number of items in the returned page (default 20). (optional, default to 20)
+     * @param  string|null $cursor Opaque cursor returned by the previous page&#39;s &#x60;nextCursor&#x60;. Omit to fetch the first page. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listUserOrganizations'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function listUserOrganizationsAsyncWithHttpInfo($user_id, $limit = 20, $cursor = null, string $contentType = self::contentTypes['listUserOrganizations'][0])
+    {
+        $returnType = '\Torii\Backend\Generated\Model\CursorPageResponseServerUserOrganizationResponse';
+        $request = $this->listUserOrganizationsRequest($user_id, $limit, $cursor, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'listUserOrganizations'
+     *
+     * @param  string $user_id Identifier of the user whose organizations to list. (required)
+     * @param  int|null $limit Maximum number of items in the returned page (default 20). (optional, default to 20)
+     * @param  string|null $cursor Opaque cursor returned by the previous page&#39;s &#x60;nextCursor&#x60;. Omit to fetch the first page. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listUserOrganizations'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function listUserOrganizationsRequest($user_id, $limit = 20, $cursor = null, string $contentType = self::contentTypes['listUserOrganizations'][0])
+    {
+
+        // verify the required parameter 'user_id' is set
+        if ($user_id === null || (is_array($user_id) && count($user_id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $user_id when calling listUserOrganizations'
+            );
+        }
+
+
+
+
+        $resourcePath = '/api/server/v1/users/{userId}/organizations';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $limit,
+            'limit', // param base name
+            'integer', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $cursor,
+            'cursor', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
 
 
         // path params
