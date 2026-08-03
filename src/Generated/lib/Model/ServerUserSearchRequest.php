@@ -64,7 +64,8 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
         'email' => 'string',
         'statuses' => 'string[]',
         'created_after' => '\DateTime',
-        'created_before' => '\DateTime'
+        'created_before' => '\DateTime',
+        'organization_id' => 'string'
     ];
 
     /**
@@ -81,7 +82,8 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
         'email' => null,
         'statuses' => null,
         'created_after' => 'date-time',
-        'created_before' => 'date-time'
+        'created_before' => 'date-time',
+        'organization_id' => 'uuid'
     ];
 
     /**
@@ -96,7 +98,8 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
         'email' => true,
         'statuses' => false,
         'created_after' => true,
-        'created_before' => true
+        'created_before' => true,
+        'organization_id' => true
     ];
 
     /**
@@ -191,7 +194,8 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
         'email' => 'email',
         'statuses' => 'statuses',
         'created_after' => 'createdAfter',
-        'created_before' => 'createdBefore'
+        'created_before' => 'createdBefore',
+        'organization_id' => 'organizationId'
     ];
 
     /**
@@ -206,7 +210,8 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
         'email' => 'setEmail',
         'statuses' => 'setStatuses',
         'created_after' => 'setCreatedAfter',
-        'created_before' => 'setCreatedBefore'
+        'created_before' => 'setCreatedBefore',
+        'organization_id' => 'setOrganizationId'
     ];
 
     /**
@@ -221,7 +226,8 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
         'email' => 'getEmail',
         'statuses' => 'getStatuses',
         'created_after' => 'getCreatedAfter',
-        'created_before' => 'getCreatedBefore'
+        'created_before' => 'getCreatedBefore',
+        'organization_id' => 'getOrganizationId'
     ];
 
     /**
@@ -305,6 +311,7 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
         $this->setIfExists('statuses', $data ?? [], null);
         $this->setIfExists('created_after', $data ?? [], null);
         $this->setIfExists('created_before', $data ?? [], null);
+        $this->setIfExists('organization_id', $data ?? [], null);
     }
 
     /**
@@ -573,6 +580,40 @@ class ServerUserSearchRequest implements ModelInterface, ArrayAccess, \JsonSeria
             }
         }
         $this->container['created_before'] = $created_before;
+
+        return $this;
+    }
+
+    /**
+     * Gets organization_id
+     *
+     * @return string|null
+     */
+    public function getOrganizationId()
+    {
+        return $this->container['organization_id'];
+    }
+
+    /**
+     * Sets organization_id
+     *
+     * @param string|null $organization_id Only return members of this organization. An organization from another environment matches nobody. Not an id-selector: it is applied as a membership semi-join, so it is never capped and always ANDs with the rest of the filters.
+     *
+     * @return self
+     */
+    public function setOrganizationId($organization_id)
+    {
+        if (is_null($organization_id)) {
+            array_push($this->openAPINullablesSetToNull, 'organization_id');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('organization_id', $nullablesSetToNull);
+            if ($index !== FALSE) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['organization_id'] = $organization_id;
 
         return $this;
     }

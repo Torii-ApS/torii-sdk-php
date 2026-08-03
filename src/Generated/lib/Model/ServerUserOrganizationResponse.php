@@ -1,6 +1,6 @@
 <?php
 /**
- * ServerImpersonationTokenResponse
+ * ServerUserOrganizationResponse
  *
  * PHP version 8.1
  *
@@ -32,16 +32,15 @@ use \ArrayAccess;
 use \Torii\Backend\Generated\ObjectSerializer;
 
 /**
- * ServerImpersonationTokenResponse Class Doc Comment
+ * ServerUserOrganizationResponse Class Doc Comment
  *
  * @category Class
- * @description A minted impersonation token.
  * @package  Torii\Backend\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class ServerUserOrganizationResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +49,7 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      *
      * @var string
      */
-    protected static $openAPIModelName = 'ServerImpersonationTokenResponse';
+    protected static $openAPIModelName = 'ServerUserOrganizationResponse';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,9 +57,14 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $openAPITypes = [
-        'token' => 'string',
-        'expires_in_seconds' => 'int',
-        'url' => 'string'
+        'organization_id' => 'string',
+        'name' => 'string',
+        'slug' => 'string',
+        'role' => 'string',
+        'role_name' => 'string',
+        'public_metadata' => 'array<string,mixed>',
+        'private_metadata' => 'array<string,mixed>',
+        'joined_at' => '\DateTime'
     ];
 
     /**
@@ -71,9 +75,14 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'token' => null,
-        'expires_in_seconds' => 'int64',
-        'url' => null
+        'organization_id' => 'uuid',
+        'name' => null,
+        'slug' => null,
+        'role' => null,
+        'role_name' => null,
+        'public_metadata' => null,
+        'private_metadata' => null,
+        'joined_at' => 'date-time'
     ];
 
     /**
@@ -82,9 +91,14 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'token' => false,
-        'expires_in_seconds' => false,
-        'url' => true
+        'organization_id' => false,
+        'name' => false,
+        'slug' => true,
+        'role' => false,
+        'role_name' => true,
+        'public_metadata' => false,
+        'private_metadata' => false,
+        'joined_at' => false
     ];
 
     /**
@@ -173,9 +187,14 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $attributeMap = [
-        'token' => 'token',
-        'expires_in_seconds' => 'expiresInSeconds',
-        'url' => 'url'
+        'organization_id' => 'organizationId',
+        'name' => 'name',
+        'slug' => 'slug',
+        'role' => 'role',
+        'role_name' => 'roleName',
+        'public_metadata' => 'publicMetadata',
+        'private_metadata' => 'privateMetadata',
+        'joined_at' => 'joinedAt'
     ];
 
     /**
@@ -184,9 +203,14 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $setters = [
-        'token' => 'setToken',
-        'expires_in_seconds' => 'setExpiresInSeconds',
-        'url' => 'setUrl'
+        'organization_id' => 'setOrganizationId',
+        'name' => 'setName',
+        'slug' => 'setSlug',
+        'role' => 'setRole',
+        'role_name' => 'setRoleName',
+        'public_metadata' => 'setPublicMetadata',
+        'private_metadata' => 'setPrivateMetadata',
+        'joined_at' => 'setJoinedAt'
     ];
 
     /**
@@ -195,9 +219,14 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $getters = [
-        'token' => 'getToken',
-        'expires_in_seconds' => 'getExpiresInSeconds',
-        'url' => 'getUrl'
+        'organization_id' => 'getOrganizationId',
+        'name' => 'getName',
+        'slug' => 'getSlug',
+        'role' => 'getRole',
+        'role_name' => 'getRoleName',
+        'public_metadata' => 'getPublicMetadata',
+        'private_metadata' => 'getPrivateMetadata',
+        'joined_at' => 'getJoinedAt'
     ];
 
     /**
@@ -257,9 +286,14 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('token', $data ?? [], null);
-        $this->setIfExists('expires_in_seconds', $data ?? [], null);
-        $this->setIfExists('url', $data ?? [], null);
+        $this->setIfExists('organization_id', $data ?? [], null);
+        $this->setIfExists('name', $data ?? [], null);
+        $this->setIfExists('slug', $data ?? [], null);
+        $this->setIfExists('role', $data ?? [], null);
+        $this->setIfExists('role_name', $data ?? [], null);
+        $this->setIfExists('public_metadata', $data ?? [], null);
+        $this->setIfExists('private_metadata', $data ?? [], null);
+        $this->setIfExists('joined_at', $data ?? [], null);
     }
 
     /**
@@ -289,11 +323,23 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
     {
         $invalidProperties = [];
 
-        if ($this->container['token'] === null) {
-            $invalidProperties[] = "'token' can't be null";
+        if ($this->container['organization_id'] === null) {
+            $invalidProperties[] = "'organization_id' can't be null";
         }
-        if ($this->container['expires_in_seconds'] === null) {
-            $invalidProperties[] = "'expires_in_seconds' can't be null";
+        if ($this->container['name'] === null) {
+            $invalidProperties[] = "'name' can't be null";
+        }
+        if ($this->container['role'] === null) {
+            $invalidProperties[] = "'role' can't be null";
+        }
+        if ($this->container['public_metadata'] === null) {
+            $invalidProperties[] = "'public_metadata' can't be null";
+        }
+        if ($this->container['private_metadata'] === null) {
+            $invalidProperties[] = "'private_metadata' can't be null";
+        }
+        if ($this->container['joined_at'] === null) {
+            $invalidProperties[] = "'joined_at' can't be null";
         }
         return $invalidProperties;
     }
@@ -311,89 +357,231 @@ class ServerImpersonationTokenResponse implements ModelInterface, ArrayAccess, \
 
 
     /**
-     * Gets token
+     * Gets organization_id
      *
      * @return string
      */
-    public function getToken()
+    public function getOrganizationId()
     {
-        return $this->container['token'];
+        return $this->container['organization_id'];
     }
 
     /**
-     * Sets token
+     * Sets organization_id
      *
-     * @param string $token The single-use token. Redeem via POST /_torii/auth/session/impersonate, or hand the ready-to-use `url` to an operator.
+     * @param string $organization_id organization_id
      *
      * @return self
      */
-    public function setToken($token)
+    public function setOrganizationId($organization_id)
     {
-        if (is_null($token)) {
-            throw new \InvalidArgumentException('non-nullable token cannot be null');
+        if (is_null($organization_id)) {
+            throw new \InvalidArgumentException('non-nullable organization_id cannot be null');
         }
-        $this->container['token'] = $token;
+        $this->container['organization_id'] = $organization_id;
 
         return $this;
     }
 
     /**
-     * Gets expires_in_seconds
+     * Gets name
      *
-     * @return int
+     * @return string
      */
-    public function getExpiresInSeconds()
+    public function getName()
     {
-        return $this->container['expires_in_seconds'];
+        return $this->container['name'];
     }
 
     /**
-     * Sets expires_in_seconds
+     * Sets name
      *
-     * @param int $expires_in_seconds The token's lifetime in seconds (the resolved value after any override).
+     * @param string $name The organization's display name.
      *
      * @return self
      */
-    public function setExpiresInSeconds($expires_in_seconds)
+    public function setName($name)
     {
-        if (is_null($expires_in_seconds)) {
-            throw new \InvalidArgumentException('non-nullable expires_in_seconds cannot be null');
+        if (is_null($name)) {
+            throw new \InvalidArgumentException('non-nullable name cannot be null');
         }
-        $this->container['expires_in_seconds'] = $expires_in_seconds;
+        $this->container['name'] = $name;
 
         return $this;
     }
 
     /**
-     * Gets url
+     * Gets slug
      *
      * @return string|null
      */
-    public function getUrl()
+    public function getSlug()
     {
-        return $this->container['url'];
+        return $this->container['slug'];
     }
 
     /**
-     * Sets url
+     * Sets slug
      *
-     * @param string|null $url A ready-to-use, navigable redeem link on the environment's Frontend API host. Opening it in a browser establishes the impersonated session and redirects to the landing URL. Backed by the same single-use token. Null when no landing URL could be resolved: no `redirectUrl` given and the environment has no concrete allowed origin other than the hosted portal's own — redeem the `token` via POST instead.
+     * @param string|null $slug The organization's slug, when it has one.
      *
      * @return self
      */
-    public function setUrl($url)
+    public function setSlug($slug)
     {
-        if (is_null($url)) {
-            array_push($this->openAPINullablesSetToNull, 'url');
+        if (is_null($slug)) {
+            array_push($this->openAPINullablesSetToNull, 'slug');
         } else {
             $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('url', $nullablesSetToNull);
+            $index = array_search('slug', $nullablesSetToNull);
             if ($index !== FALSE) {
                 unset($nullablesSetToNull[$index]);
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
-        $this->container['url'] = $url;
+        $this->container['slug'] = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Gets role
+     *
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->container['role'];
+    }
+
+    /**
+     * Sets role
+     *
+     * @param string $role This user's role key in the organization (e.g. org:administrator).
+     *
+     * @return self
+     */
+    public function setRole($role)
+    {
+        if (is_null($role)) {
+            throw new \InvalidArgumentException('non-nullable role cannot be null');
+        }
+        $this->container['role'] = $role;
+
+        return $this;
+    }
+
+    /**
+     * Gets role_name
+     *
+     * @return string|null
+     */
+    public function getRoleName()
+    {
+        return $this->container['role_name'];
+    }
+
+    /**
+     * Sets role_name
+     *
+     * @param string|null $role_name Display name of that role, from the organization's bound role set. Null when the organization has no bound set or the key is not in it.
+     *
+     * @return self
+     */
+    public function setRoleName($role_name)
+    {
+        if (is_null($role_name)) {
+            array_push($this->openAPINullablesSetToNull, 'role_name');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('role_name', $nullablesSetToNull);
+            if ($index !== FALSE) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $this->container['role_name'] = $role_name;
+
+        return $this;
+    }
+
+    /**
+     * Gets public_metadata
+     *
+     * @return array<string,mixed>
+     */
+    public function getPublicMetadata()
+    {
+        return $this->container['public_metadata'];
+    }
+
+    /**
+     * Sets public_metadata
+     *
+     * @param array<string,mixed> $public_metadata The MEMBERSHIP's public metadata bag, not the organization's.
+     *
+     * @return self
+     */
+    public function setPublicMetadata($public_metadata)
+    {
+        if (is_null($public_metadata)) {
+            throw new \InvalidArgumentException('non-nullable public_metadata cannot be null');
+        }
+        $this->container['public_metadata'] = $public_metadata;
+
+        return $this;
+    }
+
+    /**
+     * Gets private_metadata
+     *
+     * @return array<string,mixed>
+     */
+    public function getPrivateMetadata()
+    {
+        return $this->container['private_metadata'];
+    }
+
+    /**
+     * Sets private_metadata
+     *
+     * @param array<string,mixed> $private_metadata The MEMBERSHIP's private metadata bag, not the organization's. Server-only, never exposed to the SDK.
+     *
+     * @return self
+     */
+    public function setPrivateMetadata($private_metadata)
+    {
+        if (is_null($private_metadata)) {
+            throw new \InvalidArgumentException('non-nullable private_metadata cannot be null');
+        }
+        $this->container['private_metadata'] = $private_metadata;
+
+        return $this;
+    }
+
+    /**
+     * Gets joined_at
+     *
+     * @return \DateTime
+     */
+    public function getJoinedAt()
+    {
+        return $this->container['joined_at'];
+    }
+
+    /**
+     * Sets joined_at
+     *
+     * @param \DateTime $joined_at joined_at
+     *
+     * @return self
+     */
+    public function setJoinedAt($joined_at)
+    {
+        if (is_null($joined_at)) {
+            throw new \InvalidArgumentException('non-nullable joined_at cannot be null');
+        }
+        $this->container['joined_at'] = $joined_at;
 
         return $this;
     }
