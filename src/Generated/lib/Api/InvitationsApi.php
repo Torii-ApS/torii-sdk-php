@@ -89,6 +89,9 @@ class InvitationsApi
         'revoke' => [
             'application/json',
         ],
+        'updateMetadata' => [
+            'application/json',
+        ],
     ];
 
     /**
@@ -467,14 +470,14 @@ class InvitationsApi
     /**
      * Operation get
      *
-     * Get an invitation by id
+     * Get an invitation by id, including both metadata bags
      *
      * @param  string $invitation_id invitation_id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['get'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \Torii\Backend\Generated\Model\EnvironmentInvitationResponse
+     * @return \Torii\Backend\Generated\Model\EnvironmentInvitationDetailResponse
      */
     public function get($invitation_id, string $contentType = self::contentTypes['get'][0])
     {
@@ -485,14 +488,14 @@ class InvitationsApi
     /**
      * Operation getWithHttpInfo
      *
-     * Get an invitation by id
+     * Get an invitation by id, including both metadata bags
      *
      * @param  string $invitation_id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['get'] to see the possible values for this operation
      *
      * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \Torii\Backend\Generated\Model\EnvironmentInvitationResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Torii\Backend\Generated\Model\EnvironmentInvitationDetailResponse, HTTP status code, HTTP response headers (array of strings)
      */
     public function getWithHttpInfo($invitation_id, string $contentType = self::contentTypes['get'][0])
     {
@@ -524,7 +527,7 @@ class InvitationsApi
             switch($statusCode) {
                 case 200:
                     return $this->handleResponseWithDataType(
-                        '\Torii\Backend\Generated\Model\EnvironmentInvitationResponse',
+                        '\Torii\Backend\Generated\Model\EnvironmentInvitationDetailResponse',
                         $request,
                         $response,
                     );
@@ -546,7 +549,7 @@ class InvitationsApi
             }
 
             return $this->handleResponseWithDataType(
-                '\Torii\Backend\Generated\Model\EnvironmentInvitationResponse',
+                '\Torii\Backend\Generated\Model\EnvironmentInvitationDetailResponse',
                 $request,
                 $response,
             );
@@ -555,7 +558,7 @@ class InvitationsApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Torii\Backend\Generated\Model\EnvironmentInvitationResponse',
+                        '\Torii\Backend\Generated\Model\EnvironmentInvitationDetailResponse',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -570,7 +573,7 @@ class InvitationsApi
     /**
      * Operation getAsync
      *
-     * Get an invitation by id
+     * Get an invitation by id, including both metadata bags
      *
      * @param  string $invitation_id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['get'] to see the possible values for this operation
@@ -591,7 +594,7 @@ class InvitationsApi
     /**
      * Operation getAsyncWithHttpInfo
      *
-     * Get an invitation by id
+     * Get an invitation by id, including both metadata bags
      *
      * @param  string $invitation_id (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['get'] to see the possible values for this operation
@@ -601,7 +604,7 @@ class InvitationsApi
      */
     public function getAsyncWithHttpInfo($invitation_id, string $contentType = self::contentTypes['get'][0])
     {
-        $returnType = '\Torii\Backend\Generated\Model\EnvironmentInvitationResponse';
+        $returnType = '\Torii\Backend\Generated\Model\EnvironmentInvitationDetailResponse';
         $request = $this->getRequest($invitation_id, $contentType);
 
         return $this->client
@@ -1536,6 +1539,353 @@ class InvitationsApi
         $query = ObjectSerializer::buildQuery($queryParams);
         return new Request(
             'DELETE',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation updateMetadata
+     *
+     * Deep-merge metadata into a pending invitation
+     *
+     * @param  string $invitation_id invitation_id (required)
+     * @param  \Torii\Backend\Generated\Model\UpdateEnvironmentInvitationMetadataRequest $update_environment_invitation_metadata_request update_environment_invitation_metadata_request (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateMetadata'] to see the possible values for this operation
+     *
+     * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \Torii\Backend\Generated\Model\EnvironmentInvitationDetailResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail
+     */
+    public function updateMetadata($invitation_id, $update_environment_invitation_metadata_request, string $contentType = self::contentTypes['updateMetadata'][0])
+    {
+        list($response) = $this->updateMetadataWithHttpInfo($invitation_id, $update_environment_invitation_metadata_request, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation updateMetadataWithHttpInfo
+     *
+     * Deep-merge metadata into a pending invitation
+     *
+     * @param  string $invitation_id (required)
+     * @param  \Torii\Backend\Generated\Model\UpdateEnvironmentInvitationMetadataRequest $update_environment_invitation_metadata_request (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateMetadata'] to see the possible values for this operation
+     *
+     * @throws \Torii\Backend\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \Torii\Backend\Generated\Model\EnvironmentInvitationDetailResponse|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail|\Torii\Backend\Generated\Model\ProblemDetail, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function updateMetadataWithHttpInfo($invitation_id, $update_environment_invitation_metadata_request, string $contentType = self::contentTypes['updateMetadata'][0])
+    {
+        $request = $this->updateMetadataRequest($invitation_id, $update_environment_invitation_metadata_request, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\EnvironmentInvitationDetailResponse',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+                case 409:
+                    return $this->handleResponseWithDataType(
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Torii\Backend\Generated\Model\EnvironmentInvitationDetailResponse',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\EnvironmentInvitationDetailResponse',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 409:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Torii\Backend\Generated\Model\ProblemDetail',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation updateMetadataAsync
+     *
+     * Deep-merge metadata into a pending invitation
+     *
+     * @param  string $invitation_id (required)
+     * @param  \Torii\Backend\Generated\Model\UpdateEnvironmentInvitationMetadataRequest $update_environment_invitation_metadata_request (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateMetadata'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function updateMetadataAsync($invitation_id, $update_environment_invitation_metadata_request, string $contentType = self::contentTypes['updateMetadata'][0])
+    {
+        return $this->updateMetadataAsyncWithHttpInfo($invitation_id, $update_environment_invitation_metadata_request, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation updateMetadataAsyncWithHttpInfo
+     *
+     * Deep-merge metadata into a pending invitation
+     *
+     * @param  string $invitation_id (required)
+     * @param  \Torii\Backend\Generated\Model\UpdateEnvironmentInvitationMetadataRequest $update_environment_invitation_metadata_request (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateMetadata'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function updateMetadataAsyncWithHttpInfo($invitation_id, $update_environment_invitation_metadata_request, string $contentType = self::contentTypes['updateMetadata'][0])
+    {
+        $returnType = '\Torii\Backend\Generated\Model\EnvironmentInvitationDetailResponse';
+        $request = $this->updateMetadataRequest($invitation_id, $update_environment_invitation_metadata_request, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'updateMetadata'
+     *
+     * @param  string $invitation_id (required)
+     * @param  \Torii\Backend\Generated\Model\UpdateEnvironmentInvitationMetadataRequest $update_environment_invitation_metadata_request (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateMetadata'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function updateMetadataRequest($invitation_id, $update_environment_invitation_metadata_request, string $contentType = self::contentTypes['updateMetadata'][0])
+    {
+
+        // verify the required parameter 'invitation_id' is set
+        if ($invitation_id === null || (is_array($invitation_id) && count($invitation_id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $invitation_id when calling updateMetadata'
+            );
+        }
+
+        // verify the required parameter 'update_environment_invitation_metadata_request' is set
+        if ($update_environment_invitation_metadata_request === null || (is_array($update_environment_invitation_metadata_request) && count($update_environment_invitation_metadata_request) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $update_environment_invitation_metadata_request when calling updateMetadata'
+            );
+        }
+
+
+        $resourcePath = '/api/server/v1/invitations/{invitationId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+
+        // path params
+        if ($invitation_id !== null) {
+            $resourcePath = str_replace(
+                '{invitationId}',
+                ObjectSerializer::toPathValue($invitation_id),
+                $resourcePath
+            );
+        }
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/problem+json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($update_environment_invitation_metadata_request)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($update_environment_invitation_metadata_request));
+            } else {
+                $httpBody = $update_environment_invitation_metadata_request;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'PATCH',
             $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody
